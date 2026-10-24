@@ -1,0 +1,54 @@
+
+# Secrets and local configuration
+.env
+.env.*
+!.env.example
+
+# Python environments and generated files
+admin/backend/venv/
+admin/backend/.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Editor and operating-system files
+.DS_Store
+.vscode/
+
+# Database dumps and exports
+*.sql
+*.dump
+*.bak
+*.backup
+*.sql.gz
+*.sql.bz2
+*.tar.gz
+
+# Allow only explicitly reviewed SQL files (review before committing)
+!/Database/school_admin.sql
+!/Database/teacher_details.sql
+!/Database/student_details.sql
+!/Database/add_rbac_accounts.sql
+!/Database/demo_student.sql
+!/Database/migrate_to_school_management.sql
+
+# Local backups and audit artifacts
+/backup/
+/reports/
+/docs/
+/files/
+
+# Logs and archives
+*.log
+*.zip
+*.7z
+*.rar
+*.tar
+
+# Private keys and certificates
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+*.keystore
