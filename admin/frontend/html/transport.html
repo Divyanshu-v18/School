@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Manage school transport vehicles, drivers, and student enrollments.">
+
+    <title>Transport</title>
+
+    <!-- COMMON CSS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../css/style.css">
+
+    <!-- TRANSPORT CSS -->
+    <link rel="stylesheet" href="../css/transport.css">
+</head>
+
+<body>
+
+    <div class="page-layout">
+
+        <!-- ========================================
+             SIDEBAR
+        ========================================= -->
+        <!-- ========================================
+             MAIN CONTENT
+        ========================================= -->
+        <main class="main-content">
+
+            <!-- ========================================
+                 NAVBAR
+            ========================================= -->
+            <header class="topbar">
+
+                <h1>ABC Public School</h1>
+
+                <div class="topbar-actions">
+
+                    <button
+                        class="notification-btn"
+                        id="notificationBtn"
+                        title="Notifications">
+                        ♧
+                        <span class="notification-dot"></span>
+                    </button>
+
+                    <div class="top-profile">
+                        <div class="profile-avatar">AS</div>
+
+                        <div class="top-profile-info">
+                            <strong>Admin</strong>
+                            <span>Administrator</span>
+                        </div>
+                    </div>
+
+                </div>
+
+            </header>
+
+
+            <!-- ========================================
+                 TRANSPORT CONTENT
+            ========================================= -->
+            <section class="transport-content">
+
+                <!-- HEADER -->
+                <div class="transport-header">
+                    <div class="page-title">
+                        <h2>Transport Management</h2>
+                        <p>Manage transport-enrolled students, driver records, and school vehicle fleet details.</p>
+                    </div>
+
+                    <div class="transport-header-actions">
+                        <button class="add-transport-btn" id="openAddBtn">
+                            + Add New Entry
+                        </button>
+                    </div>
+                </div>
+
+                <!-- STATS -->
+                <div class="transport-stats-grid">
+                    <div class="trans-stat-card">
+                        <span class="stat-label">Enrolled Students</span>
+                        <h3 class="stat-val" id="statStudentCount">0</h3>
+                        <span class="stat-sub">Availing school transport</span>
+                    </div>
+                    <div class="trans-stat-card">
+                        <span class="stat-label">Registered Drivers</span>
+                        <h3 class="stat-val" id="statDriverCount">0</h3>
+                        <span class="stat-sub">Active & licensed personnel</span>
+                    </div>
+                    <div class="trans-stat-card">
+                        <span class="stat-label">Vehicle Fleet</span>
+                        <h3 class="stat-val" id="statVehicleCount">0</h3>
+                        <span class="stat-sub">Buses & vans in operation</span>
+                    </div>
+                </div>
+
+                <!-- TABS -->
+                <div class="transport-tabs">
+                    <button class="transport-tab-btn active" id="tabStudentsBtn" data-tab="students">
+                        🚌 Enrolled Students (<span id="tabCountStudents">0</span>)
+                    </button>
+                    <button class="transport-tab-btn" id="tabDriversBtn" data-tab="drivers">
+                        👨‍✈️ Driver List (<span id="tabCountDrivers">0</span>)
+                    </button>
+                    <button class="transport-tab-btn" id="tabVehiclesBtn" data-tab="vehicles">
+                        🚐 Vehicle Details (<span id="tabCountVehicles">0</span>)
+                    </button>
+                </div>
+
+                <!-- TAB 1: STUDENTS ENROLLED IN TRANSPORT -->
+                <div class="transport-tab-panel active" id="panelStudents">
+                    <div class="panel-toolbar">
+                        <div class="search-box">
+                            <span class="search-icon">🔍</span>
+                            <input type="text" id="studentSearchInput" placeholder="Search by name, student ID, stop, or route...">
+                        </div>
+                        <div class="filter-controls">
+                            <select id="studentClassFilter">
+                                <option value="">All Classes</option>
+                                <option value="12">Class 12</option>
+                                <option value="11">Class 11</option>
+                                <option value="10">Class 10</option>
+                                <option value="9">Class 9</option>
+                                <option value="8">Class 8</option>
+                                <option value="7">Class 7</option>
+                                <option value="6">Class 6</option>
+                                <option value="5">Class 5</option>
+                                <option value="4">Class 4</option>
+                                <option value="3">Class 3</option>
+                                <option value="2">Class 2</option>
+                                <option value="1">Class 1</option>
+                                <option value="UKG">UKG</option>
+                                <option value="LKG">LKG</option>
+                                <option value="NUR">NUR</option>
+                                <option value="KIDSCARE">KIDSCARE</option>
+                            </select>
+                            <select id="studentRouteFilter">
+                                <option value="">All Routes</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="transport-table-wrap">
+                        <table class="transport-table" id="studentsTransportTable">
+                            <thead>
+                                <tr>
+                                    <th style="width: 100px;">Student ID</th>
+                                    <th>Student Name</th>
+                                    <th style="width: 90px;">Class</th>
+                                    <th>Pickup / Drop Stop</th>
+                                    <th>Assigned Route</th>
+                                    <th>Assigned Vehicle</th>
+                                    <th>Emergency Contact</th>
+                                    <th style="width: 90px; text-align: center;">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="studentsTableBody">
+                                <tr>
+                                    <td colspan="8" class="table-loading">Loading transport students...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- TAB 2: DRIVERS LIST -->
+                <div class="transport-tab-panel" id="panelDrivers">
+                    <div class="panel-toolbar">
+                        <div class="search-box">
+                            <span class="search-icon">🔍</span>
+                            <input type="text" id="driverSearchInput" placeholder="Search by driver name, phone, license, or route...">
+                        </div>
+                        <div class="filter-controls">
+                            <select id="driverStatusFilter">
+                                <option value="">All Statuses</option>
+                                <option value="Active">Active</option>
+                                <option value="On Route">On Route</option>
+                                <option value="On Leave">On Leave</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="transport-table-wrap">
+                        <table class="transport-table" id="driversTable">
+                            <thead>
+                                <tr>
+                                    <th style="width: 90px;">Driver ID</th>
+                                    <th>Driver Name</th>
+                                    <th>Contact Number</th>
+                                    <th>License Number</th>
+                                    <th>Assigned Vehicle</th>
+                                    <th>Route Name</th>
+                                    <th>Status</th>
+                                    <th style="width: 90px; text-align: center;">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="driversTableBody">
+                                <tr>
+                                    <td colspan="8" class="table-loading">Loading drivers list...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- TAB 3: VEHICLES DETAILS -->
+                <div class="transport-tab-panel" id="panelVehicles">
+                    <div class="panel-toolbar">
+                        <div class="search-box">
+                            <span class="search-icon">🔍</span>
+                            <input type="text" id="vehicleSearchInput" placeholder="Search by vehicle no., model, driver, or route...">
+                        </div>
+                        <div class="filter-controls">
+                            <select id="vehicleTypeFilter">
+                                <option value="">All Vehicle Types</option>
+                                <option value="Bus">Bus</option>
+                                <option value="Mini Bus">Mini Bus</option>
+                                <option value="Van">Van</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="transport-table-wrap">
+                        <table class="transport-table" id="vehiclesTable">
+                            <thead>
+                                <tr>
+                                    <th>Vehicle Number</th>
+                                    <th>Type & Model</th>
+                                    <th>Seating Capacity</th>
+                                    <th>Assigned Driver</th>
+                                    <th>Route & Stops</th>
+                                    <th>Insurance / Fitness</th>
+                                    <th>Status</th>
+                                    <th style="width: 90px; text-align: center;">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="vehiclesTableBody">
+                                <tr>
+                                    <td colspan="8" class="table-loading">Loading vehicle details...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- ================= MODAL: ADD / ENROLL ================= -->
+                <div class="modal-overlay" id="addModal" style="display: none;">
+                    <div class="modal-card">
+                        <div class="modal-header">
+                            <h3 id="modalTitle">Enroll Student for Transport</h3>
+                            <button type="button" class="modal-close-btn" id="closeModalBtn">&times;</button>
+                        </div>
+
+                        <!-- Form Type Switcher inside Modal -->
+                        <div class="modal-type-switcher">
+                            <button type="button" class="type-btn active" id="modalTypeStudentBtn">Student Enrollment</button>
+                            <button type="button" class="type-btn" id="modalTypeDriverBtn">Add Driver</button>
+                            <button type="button" class="type-btn" id="modalTypeVehicleBtn">Add Vehicle</button>
+                        </div>
+
+                        <!-- Form: Student Enrollment -->
+                        <form id="studentEnrollForm" class="modal-form-view">
+                            <div class="form-group">
+                                <label for="enrollStudentSelect">Select Student *</label>
+                                <select id="enrollStudentSelect" required>
+                                    <option value="">-- Choose Student from Directory --</option>
+                                </select>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group flex-1">
+                                    <label for="enrollRoute">Route Name *</label>
+                                    <select id="enrollRoute" required>
+                                        <!-- populated dynamically -->
+                                    </select>
+                                </div>
+                                <div class="form-group flex-1">
+                                    <label for="enrollStop">Pickup / Drop Stop *</label>
+                                    <input type="text" id="enrollStop" placeholder="e.g. Sector 14 Gate" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group flex-1">
+                                    <label for="enrollPhone">Parent / Emergency Contact</label>
+                                    <input type="tel" id="enrollPhone" placeholder="10-digit mobile number">
+                                </div>
+                            </div>
+                            <div class="modal-actions">
+                                <button type="button" class="btn-cancel" id="cancelEnrollBtn">Cancel</button>
+                                <button type="submit" class="btn-save">Enroll Student</button>
+                            </div>
+                        </form>
+
+                        <!-- Form: Add Driver -->
+                        <form id="driverAddForm" class="modal-form-view" style="display: none;">
+                            <div class="form-group">
+                                <label for="driverName">Driver Full Name *</label>
+                                <input type="text" id="driverName" placeholder="e.g. Ramesh Kumar" required>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group flex-1">
+                                    <label for="driverPhone">Mobile Phone *</label>
+                                    <input type="tel" id="driverPhone" placeholder="+91 98765 43210" required>
+                                </div>
+                                <div class="form-group flex-1">
+                                    <label for="driverLicense">Driving License No. *</label>
+                                    <input type="text" id="driverLicense" placeholder="DL-1420110012345" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group flex-1">
+                                    <label for="driverVehicle">Assigned Vehicle</label>
+                                    <select id="driverVehicle">
+                                        <!-- populated from vehicles -->
+                                    </select>
+                                </div>
+                                <div class="form-group flex-1">
+                                    <label for="driverStatus">Status</label>
+                                    <select id="driverStatus">
+                                        <option value="Active">Active</option>
+                                        <option value="On Route">On Route</option>
+                                        <option value="On Leave">On Leave</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="modal-actions">
+                                <button type="button" class="btn-cancel" id="cancelDriverBtn">Cancel</button>
+                                <button type="submit" class="btn-save">Save Driver</button>
+                            </div>
+                        </form>
+
+                        <!-- Form: Add Vehicle -->
+                        <form id="vehicleAddForm" class="modal-form-view" style="display: none;">
+                            <div class="form-row">
+                                <div class="form-group flex-1">
+                                    <label for="vehiclePlate">Vehicle Number Plate *</label>
+                                    <input type="text" id="vehiclePlate" placeholder="e.g. DL 01 AB 4321" required>
+                                </div>
+                                <div class="form-group flex-1">
+                                    <label for="vehicleType">Type *</label>
+                                    <select id="vehicleType" required>
+                                        <option value="Bus">Bus</option>
+                                        <option value="Mini Bus">Mini Bus</option>
+                                        <option value="Van">Van</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group flex-1">
+                                    <label for="vehicleModel">Model / Make *</label>
+                                    <input type="text" id="vehicleModel" placeholder="e.g. Tata Starbus 50S" required>
+                                </div>
+                                <div class="form-group flex-1">
+                                    <label for="vehicleCapacity">Total Capacity (Seats) *</label>
+                                    <input type="number" id="vehicleCapacity" min="1" max="100" placeholder="50" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group flex-1">
+                                    <label for="vehicleRoute">Assigned Route *</label>
+                                    <input type="text" id="vehicleRoute" placeholder="e.g. Route 01 - Green Line" required>
+                                </div>
+                                <div class="form-group flex-1">
+                                    <label for="vehicleFitness">Fitness / Insurance Valid Till</label>
+                                    <input type="date" id="vehicleFitness">
+                                </div>
+                            </div>
+                            <div class="modal-actions">
+                                <button type="button" class="btn-cancel" id="cancelVehicleBtn">Cancel</button>
+                                <button type="submit" class="btn-save">Save Vehicle</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+
+    <!-- COMMON JS -->
+    <script src="../js/sidebar.js"></script>
+    <script src="../js/feature-toggle.js"></script>
+
+    <script src="../js/api.js"></script>
+    <script src="../js/script.js"></script>
+
+    <!-- TRANSPORT JS -->
+    <script src="../js/transport.js"></script>
+
+</body>
+</html>

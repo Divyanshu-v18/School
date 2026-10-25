@@ -1,0 +1,330 @@
+/* ========================================
+   SUBJECT PAGE
+======================================== */
+
+.subject-content {
+    width: 100%;
+    min-height: calc(100vh - 88px);
+    padding: 28px 32px 50px;
+    box-sizing: border-box;
+    background: #f6f6f2;
+}
+
+/* ========================================
+   HEADER
+======================================== */
+
+.subject-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 24px;
+}
+
+.page-title h2 {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+.page-title p {
+    margin: 7px 0 0;
+    color: var(--text-muted);
+    font-size: 14px;
+}
+
+.add-subject-btn {
+    border: none;
+    padding: 11px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    white-space: nowrap;
+    background: var(--olive);
+    color: #ffffff;
+    transition: opacity 0.2s ease;
+}
+
+.add-subject-btn:hover {
+    opacity: 0.9;
+}
+
+/* ========================================
+   TOOLBAR
+======================================== */
+
+.subject-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.subject-search {
+    position: relative;
+    width: 100%;
+    max-width: 340px;
+}
+
+.subject-search input {
+    width: 100%;
+    height: 42px;
+    padding: 0 14px 0 40px;
+    box-sizing: border-box;
+    border: 1px solid #d8d8d8;
+    border-radius: 8px;
+    outline: none;
+    font-size: 14px;
+    background: #ffffff;
+    color: var(--text-dark);
+}
+
+.subject-search input:focus {
+    border-color: var(--olive);
+}
+
+.search-icon {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 16px;
+    color: var(--text-muted);
+    pointer-events: none;
+}
+
+.class-filter-wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    color: var(--text-dark);
+    font-weight: 500;
+}
+
+.class-filter-wrap select {
+    height: 42px;
+    padding: 0 14px;
+    border: 1px solid #d8d8d8;
+    border-radius: 8px;
+    background: #ffffff;
+    color: var(--text-dark);
+    font-size: 14px;
+    outline: none;
+    cursor: pointer;
+}
+
+.class-filter-wrap select:focus {
+    border-color: var(--olive);
+}
+
+/* ========================================
+   TABLE
+======================================== */
+
+.subject-list-section {
+    margin-top: 10px;
+}
+
+.subject-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    background: #fff;
+    border-radius: 12px;
+    border: 1px solid #e5e5e5;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+}
+
+.subject-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+}
+
+.subject-table th,
+.subject-table td {
+    padding: 14px 18px;
+    border-bottom: 1px solid #e5e5e5;
+    text-align: left;
+    vertical-align: middle;
+    font-size: 14px;
+}
+
+.subject-table th {
+    background: #fafaf8;
+    font-weight: 600;
+    color: var(--text-dark);
+    white-space: nowrap;
+}
+
+.subject-table tbody tr:hover {
+    background: #fafafa;
+}
+
+.subject-code-badge {
+    background: #f0f3eb;
+    color: var(--olive-dark);
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 12px;
+    display: inline-block;
+}
+
+.class-badge {
+    background: #e8edf3;
+    color: #1e3a8a;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+    display: inline-block;
+}
+
+.table-loading {
+    text-align: center;
+    color: var(--text-muted);
+    padding: 30px !important;
+}
+
+.delete-btn {
+    border: none;
+    padding: 7px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    background: #d9534f;
+    color: white;
+    font-size: 13px;
+    transition: opacity 0.2s;
+}
+
+.delete-btn:hover {
+    opacity: 0.9;
+}
+
+/* ========================================
+   MODAL
+======================================== */
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-card {
+    background: #ffffff;
+    width: 100%;
+    max-width: 480px;
+    border-radius: 12px;
+    padding: 24px 28px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #eee;
+}
+
+.modal-header h3 {
+    margin: 0;
+    font-size: 18px;
+    color: var(--text-dark);
+}
+
+.modal-close-btn {
+    border: none;
+    background: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #888;
+}
+
+.modal-close-btn:hover {
+    color: #333;
+}
+
+.form-group {
+    margin-bottom: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.form-group label {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-dark);
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    padding: 10px 12px;
+    border: 1px solid #d8d8d8;
+    border-radius: 7px;
+    font-size: 14px;
+    font-family: inherit;
+    outline: none;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    border-color: var(--olive);
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.btn-cancel {
+    padding: 10px 18px;
+    border: 1px solid #ccc;
+    background: #fff;
+    border-radius: 7px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.btn-save {
+    padding: 10px 18px;
+    border: none;
+    background: var(--olive);
+    color: #fff;
+    border-radius: 7px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.btn-save:hover {
+    opacity: 0.92;
+}
+
+@media (max-width: 650px) {
+    .subject-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .subject-search {
+        max-width: 100%;
+    }
+}

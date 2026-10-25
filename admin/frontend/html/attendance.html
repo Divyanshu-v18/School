@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Mark and review daily attendance for students and teachers.">
+
+
+    <title>Attendance</title>
+
+    <!-- ================= COMMON CSS ================= -->
+    <!-- Navbar + Sidebar -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../css/style.css">
+
+    <!-- ================= ATTENDANCE CSS ================= -->
+    <!-- Attendance-specific styling -->
+    <link rel="stylesheet" href="../css/attendance.css">
+</head>
+
+<body>
+
+    <div class="page-layout">
+
+
+        <!-- ================= SIDEBAR ================= -->
+<!-- ================= MAIN CONTENT ================= -->
+
+        <main class="main-content">
+
+
+            <!-- ================= NAVBAR ================= -->
+
+            <header class="topbar">
+
+                <h1>ABC Public School</h1>
+
+                <div class="topbar-actions">
+
+                    <!-- Notification -->
+                    <button
+                        class="notification-btn"
+                        id="notificationBtn"
+                        title="Notifications">
+
+                        ♧
+
+                        <span class="notification-dot"></span>
+
+                    </button>
+
+
+                    <!-- Admin Profile -->
+                    <div class="top-profile">
+
+                        <div class="profile-avatar">
+                            AS
+                        </div>
+
+                        <div class="top-profile-info">
+
+                            <strong>Admin</strong>
+
+                            <span>Administrator</span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </header>
+
+
+            <!-- ================= ATTENDANCE CONTENT ================= -->
+
+            <section class="attendance-content">
+
+                <!-- HEADER -->
+                <div class="attendance-header">
+                    <div class="page-title">
+                        <h2>Attendance Management</h2>
+                        <p>Track, mark, and analyze daily student attendance records.</p>
+                    </div>
+
+                    <div class="attendance-actions">
+                        <button class="btn-mark-all" id="markAllPresentBtn">Mark All Present</button>
+                        <button class="save-attendance-btn" id="saveAttendanceBtn">Save Attendance</button>
+                    </div>
+                </div>
+
+                <!-- FILTER CONTROLS -->
+                <div class="attendance-filter-bar">
+                    <div class="filter-group">
+                        <label for="attDate">Date</label>
+                        <input type="date" id="attDate">
+                    </div>
+
+                    <div class="filter-group" id="classFilterGroup">
+                        <label for="attClass">Class</label>
+                        <select id="attClass">
+                            <option value="ALL">All Classes</option>
+                            <option value="10">Class 12</option>
+                            <option value="11">Class 11</option>
+                            <option value="12">Class 10</option>
+                            <option value="9">Class 9</option>
+                            <option value="8">Class 8</option>
+                            <option value="7">Class 7</option>
+                            <option value="6">Class 6</option>
+                            <option value="5">Class 5</option>
+                            <option value="4">Class 4</option>
+                            <option value="3">Class 3</option>
+                            <option value="2">Class 2</option>
+                            <option value="1">Class 1</option>
+                            <option value="UKG">UKG</option>
+                            <option value="LKG">LKG</option>
+                            <option value="NUR">Nursery</option>
+                            <option value="KIDSCARE">Kids Care</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group" id="sectionFilterGroup">
+                        <label for="attSection">Section</label>
+                        <select id="attSection">
+                            <option value="ALL">All Sections</option>
+                            <option value="A">Section A</option>
+                            <option value="B">Section B</option>
+                            <option value="C">Section C</option>
+                            <option value="D">Section D</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group flex-1">
+                        <label for="attSearch" id="searchLabel">Search Student</label>
+                        <input type="text" id="attSearch" placeholder="Type name or ID...">
+                    </div>
+
+                    <button class="btn-load" id="loadAttendanceBtn">Fetch Roster</button>
+                </div>
+
+                <!-- KPI METRICS -->
+                <div class="attendance-kpis">
+                    <div class="kpi-card target-type-card">
+                        <span class="kpi-label">Attendance For</span>
+                        <div class="target-toggle-group">
+                            <button type="button" class="target-toggle-btn active" id="targetStudentBtn">Students</button>
+                            <button type="button" class="target-toggle-btn" id="targetTeacherBtn">Teachers</button>
+                        </div>
+                    </div>
+                    <div class="kpi-card total-count-card">
+                        <span class="kpi-label" id="kpiTotalLabel">Total Enrolled</span>
+                        <span class="kpi-val" id="kpiTotal">0</span>
+                    </div>
+                    <div class="kpi-card present">
+                        <span class="kpi-label">Present</span>
+                        <span class="kpi-val" id="kpiPresent">0</span>
+                    </div>
+                    <div class="kpi-card absent">
+                        <span class="kpi-label">Absent</span>
+                        <span class="kpi-val" id="kpiAbsent">0</span>
+                    </div>
+                    <div class="kpi-card rate">
+                        <span class="kpi-label">Attendance Rate</span>
+                        <span class="kpi-val" id="kpiRate">0%</span>
+                    </div>
+                </div>
+
+                <!-- TABLE SECTION -->
+                <div class="attendance-table-wrap">
+                    <table class="attendance-table" id="attendanceTable">
+                        <thead id="attendanceTableHead">
+                            <tr>
+                                <th style="width: 110px;">Student ID</th>
+                                <th>Student Name</th>
+                                <th style="width: 160px;">Class & Section</th>
+                                <th style="width: 220px; text-align: center;">Attendance Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="attendanceTableBody">
+                            <tr>
+                                <td colspan="4" class="table-loading">Loading roster...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+
+    <!-- ================= COMMON JAVASCRIPT ================= -->
+    <script src="../js/sidebar.js"></script>
+    <script src="../js/feature-toggle.js"></script>
+
+    <script src="../js/api.js"></script>
+    <script src="../js/script.js"></script>
+
+    <!-- ================= ATTENDANCE JAVASCRIPT ================= -->
+    <script src="../js/attendance.js"></script>
+
+</body>
+
+</html>

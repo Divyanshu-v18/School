@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="View the details, roster, and statistics for a specific class.">
+  <title>Class Details</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/class_details.css" />
+</head>
+<body>
+  <div class="page-layout">
+    <!-- Sidebar injected by sidebar.js -->
+
+      <!-- MAIN CONTENT -->
+    <main class="main-content">
+      <header class="topbar">
+        <h1>ABC Public School</h1>
+        <div class="topbar-actions">
+          <button class="notification-btn" id="notificationBtn" title="Notifications">♧<span class="notification-dot"></span></button>
+          <div class="top-profile">
+            <div class="profile-avatar">AS</div>
+            <div class="top-profile-info"><strong>Admin</strong><span>Administrator</span></div>
+          </div>
+        </div>
+      </header>
+
+      <section class="class-details-content">
+        <div class="breadcrumb">
+          <a href="class.html">Classes</a><span aria-hidden="true">/</span><span id="breadcrumbClass">Class</span>
+        </div>
+
+        <div class="detail-heading">
+          <div class="detail-title-group">
+            <div>
+              <p class="eyebrow">CLASS OVERVIEW</p>
+              <h2 id="classTitle">Class</h2>
+              <p id="classCategory" class="class-category">
+                Class information and academic overview
+              </p>
+            </div>
+          </div>
+        
+          <a class="back-button" href="class.html">
+            ← <span>Back to Classes</span>
+          </a>
+        </div>
+
+
+        <div class="stats-grid">
+          <article class="stat-card">
+            <span class="stat-label">Total Students</span>
+            <strong class="stat-number">—</strong>
+            <span class="stat-note">Students enrolled in this class</span>
+          </article>
+          
+          <article class="stat-card subjects-stat-card" id="subjectsStatCard">
+            <span class="stat-label">Subjects</span>
+            <strong class="stat-number" id="subjectsCount">—</strong>
+            <span class="stat-note" id="subjectsNote">Subjects taught in this class</span>
+            <div class="subjects-tooltip" id="subjectsTooltip">
+              <div class="tooltip-header">Subjects List</div>
+              <ul class="subjects-tooltip-list" id="subjectsTooltipList">
+                <li class="tooltip-empty">No subjects assigned</li>
+              </ul>
+            </div>
+          </article>
+
+          <article class="stat-card">
+            <span class="stat-label">To be decided</span>
+            <strong class="stat-number">—</strong>
+            <span class="stat-note">To be decided</span>
+          </article>
+
+          <article class="stat-card" id="attendanceStatCard">
+            <span class="stat-label">Attendance</span>
+            <div class="attendance-stat-row">
+              <span class="att-metric present"><strong id="attPresentCount">0</strong> Present</span>
+              <span class="att-divider">•</span>
+              <span class="att-metric absent"><strong id="attAbsentCount">0</strong> Absent</span>
+            </div>
+            <span class="stat-note" id="attNote">Today's attendance</span>
+          </article>
+        </div>
+
+        <div class="detail-panels">
+          <section class="detail-panel sections-table-panel">
+            <div class="panel-heading">
+              <div><h3>Sections</h3><p>Sections configured under this class</p></div>
+            </div>
+            <div class="section-table-wrap">
+              <table class="section-table">
+                <thead>
+                  <tr>
+                    <th scope="col">Class</th>
+                    <th scope="col">Section</th>
+                    <th scope="col">Total Students</th>
+                    <th scope="col">Class Teacher</th>
+                  </tr>
+                </thead>
+                <tbody id="sectionsTableBody">
+                  <tr class="empty-row">
+                    <td colspan="4">
+                      <div class="table-empty-state">
+                        <strong>No sections to display</strong>
+                        <span>Section details will appear here when they are configured.</span>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+
+        
+        <section class="detail-panel students-panel">
+          <div class="panel-heading">
+            <div>
+              <h3>Students</h3>
+              <p id="studentRosterSubtitle">Student roster for this class</p>
+            </div>
+            <a href="student.html" class="text-link">
+              Go to Students →
+            </a>
+          </div>
+        
+          <div class="section-table-wrap">
+            <table class="section-table">
+              <thead>
+                <tr>
+                  <th>Student ID</th>
+                  <th>Student Name</th>
+                  <th>Phone</th>
+                  <th>Class</th>
+                </tr>
+              </thead>
+              <tbody id="classStudentsBody">
+                <tr>
+                  <td colspan="4">Loading students...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+      </section>
+    </main>
+  </div>
+  <script src="../js/sidebar.js"></script>
+  <script src="../js/feature-toggle.js"></script>
+
+  <script src="../js/api.js"></script>
+    <script src="../js/script.js"></script>
+  <script src="../js/class_details.js"></script>
+</body>
+</html>

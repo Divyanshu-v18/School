@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Manage library book inventory and borrowing records.">
+
+    <title>Library</title>
+
+    <!-- COMMON CSS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../css/style.css">
+
+    <!-- LIBRARY CSS -->
+    <link rel="stylesheet" href="../css/library.css">
+</head>
+
+<body>
+
+    <div class="page-layout">
+
+        <!-- ========================================
+             SIDEBAR
+        ========================================= -->
+<!-- ========================================
+             MAIN CONTENT
+        ========================================= -->
+        <main class="main-content">
+
+            <!-- ========================================
+                 NAVBAR
+            ========================================= -->
+            <header class="topbar">
+
+                <h1>ABC Public School</h1>
+
+                <div class="topbar-actions">
+
+                    <button
+                        class="notification-btn"
+                        id="notificationBtn"
+                        title="Notifications">
+                        ♧
+                        <span class="notification-dot"></span>
+                    </button>
+
+                    <div class="top-profile">
+                        <div class="profile-avatar">AS</div>
+
+                        <div class="top-profile-info">
+                            <strong>Admin</strong>
+                            <span>Administrator</span>
+                        </div>
+                    </div>
+
+                </div>
+
+            </header>
+
+
+            <!-- ========================================
+                 LIBRARY CONTENT
+            ========================================= -->
+            <section class="library-content">
+
+                <!-- HEADER -->
+                <div class="library-header">
+                    <div class="page-title">
+                        <h2>Library & Resource Center</h2>
+                        <p>Search collection catalogue, track student book loans, and view inventory availability.</p>
+                    </div>
+
+                    <button class="add-book-btn" id="openIssueBookBtn">
+                        + Issue Book
+                    </button>
+                </div>
+
+                <!-- STATS -->
+                <div class="library-stats-grid">
+                    <div class="lib-stat-card">
+                        <span class="stat-label">Total Catalogue</span>
+                        <h3 class="stat-val">4,850</h3>
+                        <span class="stat-sub">Books & Journals</span>
+                    </div>
+                    <div class="lib-stat-card">
+                        <span class="stat-label">Currently Issued</span>
+                        <h3 class="stat-val">312</h3>
+                        <span class="stat-sub">To students & faculty</span>
+                    </div>
+                    <div class="lib-stat-card">
+                        <span class="stat-label">Available Copies</span>
+                        <h3 class="stat-val">4,538</h3>
+                        <span class="stat-sub">Ready on shelves</span>
+                    </div>
+                </div>
+
+                <!-- SEARCH & FILTER -->
+                <div class="library-toolbar">
+                    <div class="lib-search">
+                        <span class="search-icon">🔍</span>
+                        <input type="text" id="bookSearchInput" placeholder="Search by title, author, or ISBN...">
+                    </div>
+                    <div class="lib-genre-filter">
+                        <select id="genreFilter">
+                            <option value="">All Categories</option>
+                            <option value="Science">Science & Technology</option>
+                            <option value="Mathematics">Mathematics</option>
+                            <option value="Literature">Literature & Fiction</option>
+                            <option value="History">History & Social Sciences</option>
+                            <option value="Reference">Encyclopedias & Reference</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- BOOKS TABLE -->
+                <div class="library-table-wrap">
+                    <table class="library-table">
+                        <thead>
+                            <tr>
+                                <th>Accession #</th>
+                                <th>Book Title</th>
+                                <th>Author</th>
+                                <th>Category</th>
+                                <th>Shelf Rack</th>
+                                <th>Availability</th>
+                            </tr>
+                        </thead>
+                        <tbody id="booksTableBody">
+                            <tr>
+                                <td><strong>#LIB-1029</strong></td>
+                                <td><strong>A Brief History of Time</strong></td>
+                                <td>Stephen Hawking</td>
+                                <td>Science</td>
+                                <td>Rack B-04</td>
+                                <td><span class="avail-badge in-stock">4 Available</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>#LIB-1045</strong></td>
+                                <td><strong>Higher Engineering Mathematics</strong></td>
+                                <td>B.S. Grewal</td>
+                                <td>Mathematics</td>
+                                <td>Rack M-02</td>
+                                <td><span class="avail-badge in-stock">6 Available</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>#LIB-2104</strong></td>
+                                <td><strong>To Kill a Mockingbird</strong></td>
+                                <td>Harper Lee</td>
+                                <td>Literature</td>
+                                <td>Rack L-11</td>
+                                <td><span class="avail-badge in-stock">2 Available</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>#LIB-3081</strong></td>
+                                <td><strong>Concepts of Physics (Vol 1 & 2)</strong></td>
+                                <td>H.C. Verma</td>
+                                <td>Science</td>
+                                <td>Rack P-08</td>
+                                <td><span class="avail-badge in-stock">10 Available</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>#LIB-4190</strong></td>
+                                <td><strong>The Discovery of India</strong></td>
+                                <td>Jawaharlal Nehru</td>
+                                <td>History</td>
+                                <td>Rack H-03</td>
+                                <td><span class="avail-badge in-stock">3 Available</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>#LIB-5211</strong></td>
+                                <td><strong>Introduction to Algorithms (CLRS)</strong></td>
+                                <td>Cormen, Leiserson, Rivest</td>
+                                <td>Computer Science</td>
+                                <td>Rack C-01</td>
+                                <td><span class="avail-badge issued">Checked Out</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+
+    <!-- COMMON JS -->
+    <script src="../js/sidebar.js"></script>
+    <script src="../js/feature-toggle.js"></script>
+
+    <script src="../js/api.js"></script>
+    <script src="../js/script.js"></script>
+
+    <!-- LIBRARY JS -->
+    <script src="../js/library.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Manage fee structures and record student fee payments.">
+
+    <title>Fees</title>
+
+    <!-- COMMON CSS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../css/style.css">
+
+    <!-- FEES CSS -->
+    <link rel="stylesheet" href="../css/fees.css">
+</head>
+
+<body>
+
+    <div class="page-layout">
+
+        <!-- ========================================
+             SIDEBAR
+        ========================================= -->
+<!-- ========================================
+             MAIN CONTENT
+        ========================================= -->
+        <main class="main-content">
+
+            <!-- ========================================
+                 NAVBAR
+            ========================================= -->
+            <header class="topbar">
+
+                <h1>ABC Public School</h1>
+
+                <div class="topbar-actions">
+
+                    <button
+                        class="notification-btn"
+                        id="notificationBtn"
+                        title="Notifications">
+                        ♧
+                        <span class="notification-dot"></span>
+                    </button>
+
+                    <div class="top-profile">
+                        <div class="profile-avatar">AS</div>
+
+                        <div class="top-profile-info">
+                            <strong>Admin</strong>
+                            <span>Administrator</span>
+                        </div>
+                    </div>
+
+                </div>
+
+            </header>
+
+
+            <!-- ========================================
+                 FEES CONTENT
+            ========================================= -->
+            <section class="fees-content">
+
+                <!-- HEADER -->
+                <div class="fees-header">
+                    <div class="page-title">
+                        <h2>Fees Management</h2>
+                        <p>Track student fee payments, collections, and academic fee structures.</p>
+                    </div>
+
+                    <div class="fees-header-actions">
+                        <button class="btn-structure" id="openAddStructureBtn">+ Add Fee Structure</button>
+                        <button class="btn-collect" id="openCollectFeeBtn">+ Record Payment</button>
+                    </div>
+                </div>
+
+                <!-- STATS CARDS -->
+                <div class="fee-stats-grid">
+                    <div class="fee-stat-card">
+                        <span class="stat-title">Total Collected</span>
+                        <h3 class="stat-num" id="totalCollectedVal">₹0</h3>
+                        <span class="stat-sub">Across all payment modes</span>
+                    </div>
+                    <div class="fee-stat-card">
+                        <span class="stat-title">Transactions Recorded</span>
+                        <h3 class="stat-num" id="totalTransactionsVal">0</h3>
+                        <span class="stat-sub">Verified payments</span>
+                    </div>
+                    <div class="fee-stat-card">
+                        <span class="stat-title">Configured Structures</span>
+                        <h3 class="stat-num" id="totalStructuresVal">0</h3>
+                        <span class="stat-sub">Academic year 2026-2027</span>
+                    </div>
+                </div>
+
+                <!-- TABS -->
+                <div class="fee-tabs">
+                    <button class="tab-btn active" id="tabPaymentsBtn">Payment Records</button>
+                    <button class="tab-btn" id="tabStructuresBtn">Fee Structure</button>
+                </div>
+
+                <!-- TAB 1: PAYMENTS TABLE -->
+                <div class="tab-panel active" id="panelPayments">
+                    <div class="panel-toolbar">
+                        <div class="search-box">
+                            <span class="search-icon">🔍</span>
+                            <input type="text" id="paymentSearchInput" placeholder="Search by student name or fee type...">
+                        </div>
+                        <div class="filter-box">
+                            <select id="paymentClassFilter">
+                                <option value="">All Classes</option>
+                                <option value="12">Class 12</option>
+                                <option value="11">Class 11</option>
+                                <option value="10">Class 10</option>
+                                <option value="9">Class 9</option>
+                                <option value="8">Class 8</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="fee-table-wrap">
+                        <table class="fee-table">
+                            <thead>
+                                <tr>
+                                    <th>Receipt #</th>
+                                    <th>Student</th>
+                                    <th>Class</th>
+                                    <th>Fee Type</th>
+                                    <th>Amount Paid</th>
+                                    <th>Date</th>
+                                    <th>Payment Mode</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="paymentsTableBody">
+                                <tr>
+                                    <td colspan="9" class="table-loading">Loading payment history...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- TAB 2: STRUCTURES TABLE -->
+                <div class="tab-panel" id="panelStructures" style="display: none;">
+                    <div class="fee-table-wrap">
+                        <table class="fee-table">
+                            <thead>
+                                <tr>
+                                    <th>Class</th>
+                                    <th>Fee Head</th>
+                                    <th>Amount</th>
+                                    <th>Academic Year</th>
+                                    <th>Due Date</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="structuresTableBody">
+                                <tr>
+                                    <td colspan="6" class="table-loading">Loading fee structures...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- MODAL: RECORD PAYMENT -->
+                <div class="modal-overlay" id="collectFeeModal" style="display: none;">
+                    <div class="modal-card">
+                        <div class="modal-header">
+                            <h3>Record Fee Payment</h3>
+                            <button class="modal-close-btn" id="closeCollectFeeBtn">&times;</button>
+                        </div>
+                        <form id="collectFeeForm">
+                            <div class="form-row">
+                                <div class="form-group flex-1">
+                                    <label for="payStudentId">Student ID *</label>
+                                    <input type="number" id="payStudentId" required placeholder="e.g. 1">
+                                </div>
+                                <div class="form-group flex-2">
+                                    <label for="payStudentName">Student Name *</label>
+                                    <input type="text" id="payStudentName" required placeholder="e.g. Aarav Gupta">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group flex-1">
+                                    <label for="payClass">Class *</label>
+                                    <select id="payClass" required>
+                                        <option value="10">Class 10</option>
+                                        <option value="11">Class 11</option>
+                                        <option value="12">Class 12</option>
+                                        <option value="9">Class 9</option>
+                                        <option value="8">Class 8</option>
+                                    </select>
+                                </div>
+                                <div class="form-group flex-2">
+                                    <label for="payFeeType">Fee Type *</label>
+                                    <input type="text" id="payFeeType" required placeholder="e.g. Tuition Fee (Q2)">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group flex-1">
+                                    <label for="payAmount">Amount Paid (₹) *</label>
+                                    <input type="number" step="0.01" id="payAmount" required placeholder="12500">
+                                </div>
+                                <div class="form-group flex-1">
+                                    <label for="payDate">Payment Date *</label>
+                                    <input type="date" id="payDate" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group flex-1">
+                                    <label for="payMode">Payment Mode *</label>
+                                    <select id="payMode">
+                                        <option value="Online">Online / Card</option>
+                                        <option value="UPI">UPI</option>
+                                        <option value="Cash">Cash</option>
+                                        <option value="Cheque">Cheque</option>
+                                    </select>
+                                </div>
+                                <div class="form-group flex-1">
+                                    <label for="payStatus">Status *</label>
+                                    <select id="payStatus">
+                                        <option value="Paid">Paid</option>
+                                        <option value="Partial">Partial</option>
+                                        <option value="Pending">Pending</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="payRemarks">Remarks / Ref No.</label>
+                                <input type="text" id="payRemarks" placeholder="e.g. Transaction #TXN99234">
+                            </div>
+                            <div class="modal-actions">
+                                <button type="button" class="btn-cancel" id="cancelCollectFeeBtn">Cancel</button>
+                                <button type="submit" class="btn-save">Save Record</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- MODAL: ADD STRUCTURE -->
+                <div class="modal-overlay" id="addStructureModal" style="display: none;">
+                    <div class="modal-card">
+                        <div class="modal-header">
+                            <h3>Create Fee Structure</h3>
+                            <button class="modal-close-btn" id="closeAddStructureBtn">&times;</button>
+                        </div>
+                        <form id="addStructureForm">
+                            <div class="form-group">
+                                <label for="strClass">Class *</label>
+                                <select id="strClass" required>
+                                    <option value="12">Class 12</option>
+                                    <option value="11">Class 11</option>
+                                    <option value="10">Class 10</option>
+                                    <option value="9">Class 9</option>
+                                    <option value="8">Class 8</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="strType">Fee Name / Head *</label>
+                                <input type="text" id="strType" required placeholder="e.g. Annual Sports Fee">
+                            </div>
+                            <div class="form-group">
+                                <label for="strAmount">Amount (₹) *</label>
+                                <input type="number" step="0.01" id="strAmount" required placeholder="5000">
+                            </div>
+                            <div class="form-group">
+                                <label for="strYear">Academic Year *</label>
+                                <input type="text" id="strYear" required value="2026-2027">
+                            </div>
+                            <div class="form-group">
+                                <label for="strDue">Due Date</label>
+                                <input type="date" id="strDue">
+                            </div>
+                            <div class="modal-actions">
+                                <button type="button" class="btn-cancel" id="cancelAddStructureBtn">Cancel</button>
+                                <button type="submit" class="btn-save">Save Fee Head</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+
+    <!-- COMMON JS -->
+    <script src="../js/sidebar.js"></script>
+    <script src="../js/feature-toggle.js"></script>
+
+    <script src="../js/api.js"></script>
+    <script src="../js/script.js"></script>
+
+    <!-- FEES JS -->
+    <script src="../js/fees.js"></script>
+
+</body>
+</html>

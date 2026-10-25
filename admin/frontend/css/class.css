@@ -1,0 +1,142 @@
+/* ========================================
+   CLASS PAGE
+======================================== */
+
+.class-content {
+    min-height: calc(100vh - 88px);
+    background: var(--off-white);
+    padding: 32px;
+}
+
+.page-header {
+    margin-bottom: 24px;
+}
+
+.page-header h2 {
+    margin: 0 0 6px;
+    font-size: 28px;
+    color: var(--text-dark);
+}
+
+.page-header p {
+    margin: 0;
+    color: var(--text-light);
+    font-size: 14px;
+}
+
+/* Class list table */
+.class-table-container {
+    width: 100%;
+    overflow-x: auto;
+    background: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+}
+
+.class-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    min-width: 650px;
+}
+
+.class-table thead {
+    background: #f5f4ee;
+}
+
+.class-table th {
+    padding: 16px 20px;
+    color: var(--text-light);
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.class-table td {
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-dark);
+    font-size: 14px;
+}
+
+.class-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.class-table tbody tr {
+    transition: background 0.18s ease;
+}
+
+.class-table tbody tr:hover {
+    background: #fafaf6;
+}
+
+.class-name-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: inherit;
+    text-decoration: none;
+    min-width: 180px;
+}
+
+.class-icon {
+    width: 40px;
+    height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border-radius: 9px;
+    background: var(--olive);
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.class-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.class-info strong {
+    color: var(--text-dark);
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.class-info small {
+    color: var(--text-light);
+    font-size: 12px;
+}
+
+.table-value {
+    color: var(--text-dark);
+    font-size: 14px;
+}
+
+@media (max-width: 700px) {
+    .class-content {
+        padding: 20px;
+    }
+
+    .page-header h2 {
+        font-size: 24px;
+    }
+
+    .class-table th,
+    .class-table td {
+        padding: 13px 15px;
+    }
+}
+
+@media (max-width: 500px) {
+    .class-content {
+        min-height: calc(100vh - 70px);
+        padding: 16px;
+    }
+}

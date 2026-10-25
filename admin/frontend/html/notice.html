@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Post and manage notices and announcements for the school.">
+
+    <title>Notice</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/notice.css">
+</head>
+
+<body>
+
+    <div class="page-layout">
+
+        <!-- ========================================
+             SIDEBAR
+        ========================================= -->
+<!-- ========================================
+             MAIN CONTENT
+        ========================================= -->
+        <main class="main-content">
+
+            <!-- NAVBAR -->
+            <header class="topbar">
+
+                <h1>ABC Public School</h1>
+
+                <div class="topbar-actions">
+
+                    <button
+                        class="notification-btn"
+                        id="notificationBtn"
+                        title="Notifications">
+                        ♧
+                        <span class="notification-dot"></span>
+                    </button>
+
+                    <div class="top-profile">
+                        <div class="profile-avatar">AS</div>
+
+                        <div class="top-profile-info">
+                            <strong>Admin</strong>
+                            <span>Administrator</span>
+                        </div>
+                    </div>
+
+                </div>
+
+            </header>
+
+
+            <!-- Notice CONTENT -->
+            <section class="notice-content">
+
+                <!-- HEADER -->
+                <div class="notice-header">
+                    <div class="page-title">
+                        <h2>Notice Board & Announcements</h2>
+                        <p>Broadcast school announcements, circulars, and urgent notifications.</p>
+                    </div>
+
+                    <button class="add-notice-btn" id="openPublishNoticeBtn">
+                        + Publish Notice
+                    </button>
+                </div>
+
+                <!-- TOOLBAR -->
+                <div class="notice-toolbar">
+                    <div class="notice-search">
+                        <span class="search-icon">🔍</span>
+                        <input type="text" id="noticeSearchInput" placeholder="Search notices by keyword...">
+                    </div>
+
+                    <div class="category-pills">
+                        <button class="cat-pill active" data-category="">All</button>
+                        <button class="cat-pill" data-category="General">General</button>
+                        <button class="cat-pill" data-category="Academic">Academic</button>
+                        <button class="cat-pill" data-category="Event">Events</button>
+                        <button class="cat-pill" data-category="Holiday">Holidays</button>
+                        <button class="cat-pill" data-category="Urgent">Urgent</button>
+                    </div>
+                </div>
+
+                <!-- NOTICE CARDS GRID -->
+                <div class="notices-grid" id="noticesContainer">
+                    <p class="muted-loading">Loading published notices...</p>
+                </div>
+
+                <!-- MODAL: PUBLISH NOTICE -->
+                <div class="modal-overlay" id="publishNoticeModal" style="display: none;">
+                    <div class="modal-card">
+                        <div class="modal-header">
+                            <h3>Publish New Notice</h3>
+                            <button class="modal-close-btn" id="closePublishNoticeBtn">&times;</button>
+                        </div>
+                        <form id="publishNoticeForm">
+                            <div class="form-group">
+                                <label for="notTitle">Notice Title *</label>
+                                <input type="text" id="notTitle" required placeholder="e.g. Annual Sports Meet 2026">
+                            </div>
+                            <div class="form-group">
+                                <label for="notCat">Category *</label>
+                                <select id="notCat" required>
+                                    <option value="General">General</option>
+                                    <option value="Academic">Academic</option>
+                                    <option value="Event">Event</option>
+                                    <option value="Holiday">Holiday</option>
+                                    <option value="Urgent">Urgent</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="notContent">Content / Announcement *</label>
+                                <textarea id="notContent" rows="4" required placeholder="Write the full notice text..."></textarea>
+                            </div>
+                            <div class="modal-actions">
+                                <button type="button" class="btn-cancel" id="cancelPublishNoticeBtn">Cancel</button>
+                                <button type="submit" class="btn-save">Publish Notice</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+    <script src="../js/sidebar.js"></script>
+    <script src="../js/feature-toggle.js"></script>
+
+    <script src="../js/api.js"></script>
+    <script src="../js/script.js"></script>
+    <script src="../js/notice.js"></script>
+
+</body>
+</html>

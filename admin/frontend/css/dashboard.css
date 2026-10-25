@@ -1,0 +1,313 @@
+/* ========================================
+   DASHBOARD PAGE
+======================================== */
+
+.dashboard-content {
+    min-height: calc(100vh - 88px);
+    padding: 28px 32px 50px;
+    box-sizing: border-box;
+    background: #f6f6f2;
+}
+
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 24px;
+}
+
+.dashboard-quick-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.add-btn {
+    display: inline-block;
+    padding: 11px 18px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    background: var(--olive);
+    color: #ffffff;
+    transition: opacity 0.2s ease, transform 0.1s ease;
+}
+
+.add-btn:hover {
+    opacity: 0.92;
+    transform: translateY(-1px);
+}
+
+.add-btn.secondary {
+    background: #fff;
+    color: var(--olive);
+    border: 1px solid var(--olive);
+}
+
+.add-btn.secondary:hover {
+    background: #f0f3eb;
+}
+
+/* ========================================
+   STATS GRID
+======================================== */
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-bottom: 26px;
+}
+
+.stat-card {
+    background: #ffffff;
+    border: 1px solid #e5e5e5;
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+.stat-icon-wrap {
+    width: 52px;
+    height: 52px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    flex-shrink: 0;
+}
+
+.stat-icon-wrap.students {
+    background: #eef2eb;
+}
+
+.stat-icon-wrap.teachers {
+    background: #e8edf3;
+}
+
+.stat-icon-wrap.classes {
+    background: #fbf0ea;
+}
+
+.stat-icon-wrap.fees {
+    background: #ebf5ee;
+}
+
+.stat-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.stat-label {
+    font-size: 13px;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+.stat-value {
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin: 4px 0 6px;
+}
+
+.stat-link {
+    font-size: 12px;
+    color: var(--olive);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.stat-link:hover {
+    text-decoration: underline;
+}
+
+/* ========================================
+   WIDGETS GRID
+======================================== */
+
+.widgets-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    margin-bottom: 24px;
+}
+
+.widget-card {
+    background: #ffffff;
+    border: 1px solid #e5e5e5;
+    border-radius: 12px;
+    padding: 22px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.widget-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 14px;
+    margin-bottom: 16px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.widget-header h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin: 0;
+}
+
+.widget-link {
+    font-size: 13px;
+    color: var(--olive);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.widget-link:hover {
+    text-decoration: underline;
+}
+
+/* Attendance Summary Metrics */
+.attendance-summary-wrap {
+    display: flex;
+    gap: 16px;
+}
+
+.att-metric {
+    flex: 1;
+    padding: 16px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.att-metric.present {
+    background: #f0f7f1;
+    border: 1px solid #cce5d2;
+}
+
+.att-metric.absent {
+    background: #fdf2f2;
+    border: 1px solid #f8d7da;
+}
+
+.att-metric.late {
+    background: #fffbf0;
+    border: 1px solid #ffeeba;
+}
+
+.att-count {
+    display: block;
+    font-size: 26px;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.att-metric.present .att-count { color: #2e7d32; }
+.att-metric.absent .att-count { color: #c62828; }
+.att-metric.late .att-count { color: #f57f17; }
+
+.att-name {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-muted);
+}
+
+/* Widget Lists */
+.widget-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-height: 120px;
+}
+
+.widget-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 14px;
+    background: #fafaf8;
+    border-radius: 8px;
+    border-left: 4px solid var(--olive);
+}
+
+.widget-item.urgent { border-left-color: #d9534f; }
+.widget-item.academic { border-left-color: #3b82f6; }
+.widget-item.event { border-left-color: #f59e0b; }
+.widget-item.holiday { border-left-color: #10b981; }
+
+.item-left {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.item-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+.item-meta {
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+.item-badge {
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.badge-exam { background: #e0f2fe; color: #0369a1; }
+.badge-event { background: #fef3c7; color: #92400e; }
+.badge-holiday { background: #dcfce7; color: #166534; }
+.badge-general { background: #f3f4f6; color: #374151; }
+
+.muted-loading {
+    color: var(--text-muted);
+    font-size: 13px;
+    text-align: center;
+    padding: 20px;
+}
+
+/* ========================================
+   RESPONSIVE
+======================================== */
+
+@media (max-width: 1024px) {
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .widgets-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 600px) {
+    .dashboard-content {
+        padding: 18px 16px 30px;
+    }
+    .dashboard-header {
+        flex-direction: column;
+        gap: 14px;
+    }
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+    .attendance-summary-wrap {
+        flex-direction: column;
+    }
+}

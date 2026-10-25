@@ -1,0 +1,366 @@
+/* ========================================
+   FEES PAGE
+======================================== */
+
+.fees-content {
+    width: 100%;
+    min-height: calc(100vh - 88px);
+    padding: 28px 32px 50px;
+    box-sizing: border-box;
+    background: #f6f6f2;
+}
+
+.fees-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 24px;
+}
+
+.fees-header-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.btn-collect {
+    padding: 11px 18px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    border: none;
+    background: var(--olive);
+    color: #fff;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.btn-collect:hover {
+    opacity: 0.92;
+}
+
+.btn-structure {
+    padding: 11px 18px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    border: 1px solid var(--olive);
+    background: #fff;
+    color: var(--olive);
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-structure:hover {
+    background: #eef2ea;
+}
+
+/* ========================================
+   STATS GRID
+======================================== */
+
+.fee-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    margin-bottom: 24px;
+}
+
+.fee-stat-card {
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    border-radius: 12px;
+    padding: 20px 24px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+}
+
+.stat-title {
+    font-size: 13px;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+.stat-num {
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin: 6px 0 4px;
+}
+
+.stat-sub {
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+/* ========================================
+   TABS
+======================================== */
+
+.fee-tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #e5e5e5;
+}
+
+.tab-btn {
+    padding: 12px 20px;
+    border: none;
+    background: none;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-muted);
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+    transition: all 0.2s;
+}
+
+.tab-btn.active {
+    color: var(--olive);
+    border-bottom-color: var(--olive);
+}
+
+/* ========================================
+   TOOLBAR & TABLES
+======================================== */
+
+.panel-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.search-box {
+    position: relative;
+    width: 100%;
+    max-width: 340px;
+}
+
+.search-box input {
+    width: 100%;
+    height: 40px;
+    padding: 0 14px 0 38px;
+    border: 1px solid #d8d8d8;
+    border-radius: 8px;
+    font-size: 14px;
+    background: #fff;
+    outline: none;
+}
+
+.search-box input:focus {
+    border-color: var(--olive);
+}
+
+.search-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 16px;
+    color: var(--text-muted);
+    pointer-events: none;
+}
+
+.filter-box select {
+    height: 40px;
+    padding: 0 14px;
+    border: 1px solid #d8d8d8;
+    border-radius: 8px;
+    background: #fff;
+    font-size: 14px;
+    outline: none;
+    cursor: pointer;
+}
+
+.fee-table-wrap {
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    border-radius: 12px;
+    overflow-x: auto;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+}
+
+.fee-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.fee-table th,
+.fee-table td {
+    padding: 13px 18px;
+    border-bottom: 1px solid #e5e5e5;
+    font-size: 14px;
+    vertical-align: middle;
+}
+
+.fee-table th {
+    background: #fafaf8;
+    font-weight: 600;
+    color: var(--text-dark);
+    white-space: nowrap;
+}
+
+.fee-table tbody tr:hover {
+    background: #fafafa;
+}
+
+/* Badges */
+.badge-status {
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.badge-status.paid { background: #dcfce7; color: #15803d; }
+.badge-status.partial { background: #fef3c7; color: #b45309; }
+.badge-status.pending { background: #fee2e2; color: #b91c1c; }
+
+.badge-mode {
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    background: #f1f5f9;
+    color: #475569;
+}
+
+.delete-btn {
+    border: none;
+    padding: 6px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    background: #d9534f;
+    color: white;
+    font-size: 12px;
+}
+
+.delete-btn:hover { opacity: 0.9; }
+
+.table-loading {
+    text-align: center;
+    color: var(--text-muted);
+    padding: 30px !important;
+}
+
+/* ========================================
+   MODALS
+======================================== */
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-card {
+    background: #fff;
+    width: 100%;
+    max-width: 520px;
+    border-radius: 12px;
+    padding: 24px 28px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #eee;
+}
+
+.modal-header h3 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.modal-close-btn {
+    border: none;
+    background: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #888;
+}
+
+.form-row {
+    display: flex;
+    gap: 14px;
+}
+
+.form-group {
+    margin-bottom: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.form-group.flex-1 { flex: 1; }
+.form-group.flex-2 { flex: 2; }
+
+.form-group label {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-dark);
+}
+
+.form-group input,
+.form-group select {
+    padding: 9px 12px;
+    border: 1px solid #d8d8d8;
+    border-radius: 7px;
+    font-size: 14px;
+    outline: none;
+    background: #fafaf8;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    border-color: var(--olive);
+    background: #fff;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.btn-cancel {
+    padding: 9px 16px;
+    border: 1px solid #ccc;
+    background: #fff;
+    border-radius: 7px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.btn-save {
+    padding: 9px 18px;
+    border: none;
+    background: var(--olive);
+    color: #fff;
+    border-radius: 7px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.btn-save:hover { opacity: 0.92; }
+
+@media (max-width: 768px) {
+    .fee-stats-grid { grid-template-columns: 1fr; }
+    .form-row { flex-direction: column; }
+}

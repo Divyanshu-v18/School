@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Secure portal login for ABC Public School administration, teachers, and staff members.">
+
+    <title>Portal Login – ABC Public School</title>
+
+    <!-- Google Fonts Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/login.css">
+</head>
+
+<body>
+    <div class="login-page-wrapper">
+        <!-- Floating Ambient Background Blobs -->
+        <div class="login-bg-decor" aria-hidden="true">
+            <div class="decor-circle decor-circle-1"></div>
+            <div class="decor-circle decor-circle-2"></div>
+        </div>
+
+        <!-- Central Card Container -->
+        <main class="login-container" id="loginContainer">
+            
+            <!-- Left Panel: Branding & Showcase -->
+            <section class="login-hero-panel">
+                <div class="hero-pattern" aria-hidden="true"></div>
+
+                <div class="hero-header">
+                    <div class="school-brand">
+                        <div class="school-emblem">A</div>
+                        <div class="brand-text">
+                            <h1>ABC Public School</h1>
+                            <span class="brand-tagline">Excellence in Education</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="hero-body">
+                    <h2>Centralized School Management Portal</h2>
+                    <p>
+                        A single unified workspace for managing students, faculty rosters, 
+                        class scheduling, fee reconciliations, and academic analytics.
+                    </p>
+
+                    <ul class="hero-highlights">
+                        <li>
+                            <span class="highlight-icon">✓</span>
+                            <span>Comprehensive student records &amp; attendance tracking</span>
+                        </li>
+                        <li>
+                            <span class="highlight-icon">✓</span>
+                            <span>Automated fee collection &amp; instant receipts</span>
+                        </li>
+                        <li>
+                            <span class="highlight-icon">✓</span>
+                            <span>Fleet transport, library, and examination workflows</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="hero-footer">
+                    <div class="system-status">
+                        <span class="status-dot"></span>
+                        <span>Enterprise Cloud v2.4 (Online)</span>
+                    </div>
+                    <span>© 2026 ABC Public School</span>
+                </div>
+            </section>
+
+            <!-- Right Panel: Login Form -->
+            <section class="login-form-panel">
+                <div>
+                    <header class="form-header">
+                        <h2>Welcome Back</h2>
+                        <p>Sign in to access your administrative dashboard.</p>
+                    </header>
+
+                    <!-- Role Switcher -->
+                    <div class="role-tabs" role="tablist" aria-label="Account Role Selection">
+                        <button type="button" class="role-tab active" data-role="admin" role="tab" aria-selected="true" id="tabAdmin">
+                            <span>🛡️</span> Admin
+                        </button>
+                        <button type="button" class="role-tab" data-role="teacher" role="tab" aria-selected="false" id="tabTeacher">
+                            <span>👨‍🏫</span> Teacher
+                        </button>
+                        <button type="button" class="role-tab" data-role="staff" role="tab" aria-selected="false" id="tabStaff">
+                            <span>💼</span> Staff
+                        </button>
+                    </div>
+
+                    <!-- Notification Alert Banner -->
+                    <div class="login-alert" id="loginAlert" role="alert" aria-live="polite">
+                        <span class="alert-icon">ℹ️</span>
+                        <span class="alert-message" id="alertMessage"></span>
+                    </div>
+
+                    <!-- Sign In Form -->
+                    <form id="loginForm" novalidate autocomplete="on">
+                        <input type="hidden" id="selectedRole" name="role" value="admin">
+
+                        <!-- Username / Email Field -->
+                        <div class="form-group" id="usernameGroup">
+                            <label for="username">
+                                <span>Username or Email</span>
+                            </label>
+                            <div class="input-wrapper">
+                                <span class="input-icon" aria-hidden="true">✉</span>
+                                <input 
+                                    type="text" 
+                                    id="username" 
+                                    name="username" 
+                                    class="form-input" 
+                                    placeholder="e.g. admin@example.edu" 
+                                    required 
+                                    autocomplete="username"
+                                >
+                            </div>
+                            <span class="field-error-msg" id="usernameError"></span>
+                        </div>
+
+                        <!-- Password Field -->
+                        <div class="form-group" id="passwordGroup">
+                            <label for="password">
+                                <span>Password</span>
+                            </label>
+                            <div class="input-wrapper">
+                                <span class="input-icon" aria-hidden="true">🔒</span>
+                                <input 
+                                    type="password" 
+                                    id="password" 
+                                    name="password" 
+                                    class="form-input" 
+                                    placeholder="Enter your account password" 
+                                    required 
+                                    autocomplete="current-password"
+                                >
+                                <button type="button" class="toggle-pwd-btn" id="togglePasswordBtn" aria-label="Toggle password visibility">
+                                    👁️
+                                </button>
+                            </div>
+                            <span class="field-error-msg" id="passwordError"></span>
+                        </div>
+
+                        <!-- Form Options (Remember Me & Forgot Password) -->
+                        <div class="form-options">
+                            <label class="remember-label" for="rememberMe">
+                                <input type="checkbox" id="rememberMe" name="rememberMe" class="remember-checkbox">
+                                <span>Keep me logged in</span>
+                            </label>
+                            <a href="#" class="forgot-link" id="forgotPasswordLink">Forgot password?</a>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button type="submit" class="login-submit-btn" id="loginSubmitBtn">
+                            <span class="btn-spinner" aria-hidden="true"></span>
+                            <span class="btn-label">Sign In to Portal</span>
+                        </button>
+                    </form>
+
+                    <!-- Quick Demo Credentials Pill -->
+                    <!-- <div class="demo-credentials-box">
+                        <div class="demo-header">
+                            <span class="demo-title">Demo Access</span>
+                            <button type="button" class="demo-fill-btn" id="demoFillBtn">Auto-fill Credentials</button>
+                        </div>
+                        <div class="demo-info-grid">
+                            <div>User: <span class="demo-pill" id="demoUserPill">Enter administrator username</span></div>
+                            <div>Pass: <span class="demo-pill" id="demoPassPill">Use your configured password</span></div>
+                        </div>
+                    </div> -->
+                </div>
+
+                <!-- Footer -->
+                <footer class="form-footer">
+                    <p>Need support or account provisioning? <a href="help.html">Contact IT Helpdesk</a></p>
+                </footer>
+            </section>
+        </main>
+    </div>
+
+    <!-- Forgot Password Modal -->
+    <div class="modal-overlay" id="forgotModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3 id="modalTitle">Reset Account Password</h3>
+                <button type="button" class="modal-close-btn" id="closeForgotModal" aria-label="Close dialog">×</button>
+            </div>
+            <div class="modal-body">
+                <p>Provide your registered school institutional email address. A recovery reset link will be dispatched immediately.</p>
+                <form id="forgotForm">
+                    <div class="form-group">
+                        <label for="resetEmail">Institutional Email</label>
+                        <div class="input-wrapper">
+                            <span class="input-icon" aria-hidden="true">✉</span>
+                            <input 
+                                type="email" 
+                                id="resetEmail" 
+                                class="form-input" 
+                                placeholder="name@abcpublic.edu" 
+                                required
+                            >
+                        </div>
+                    </div>
+                    <div style="margin-top: 18px; display: flex; justify-content: flex-end; gap: 10px;">
+                        <button type="button" class="add-btn secondary" style="padding: 10px 16px; border-radius: 8px; cursor: pointer;" onclick="document.getElementById('forgotModal').classList.remove('active')">Cancel</button>
+                        <button type="submit" class="login-submit-btn" style="width: auto; padding: 10px 20px;">Send Instructions</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../js/api.js"></script>
+    <script src="../js/script.js"></script>
+    <script src="../js/login.js"></script>
+</body>
+</html>

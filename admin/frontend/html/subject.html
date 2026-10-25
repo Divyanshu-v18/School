@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Manage subjects assigned to each class in the school curriculum.">
+
+
+    <title>Subjects</title>
+
+    <!-- ================= COMMON CSS ================= -->
+    <!-- Navbar + Sidebar -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../css/style.css">
+
+    <!-- ================= SUBJECT CSS ================= -->
+    <!-- Subject-specific styling -->
+    <link rel="stylesheet" href="../css/subject.css">
+</head>
+
+<body>
+
+    <div class="page-layout">
+
+
+        <!-- ================= SIDEBAR ================= -->
+<!-- ================= MAIN CONTENT ================= -->
+
+        <main class="main-content">
+
+
+            <!-- ================= NAVBAR ================= -->
+
+            <header class="topbar">
+
+                <h1>ABC Public School</h1>
+
+                <div class="topbar-actions">
+
+                    <!-- Notification -->
+                    <button
+                        class="notification-btn"
+                        id="notificationBtn"
+                        title="Notifications">
+
+                        ♧
+
+                        <span class="notification-dot"></span>
+
+                    </button>
+
+
+                    <!-- Admin Profile -->
+                    <div class="top-profile">
+
+                        <div class="profile-avatar">
+                            AS
+                        </div>
+
+                        <div class="top-profile-info">
+
+                            <strong>Admin</strong>
+
+                            <span>Administrator</span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </header>
+
+
+            <!-- ================= SUBJECT CONTENT ================= -->
+
+            <section class="subject-content">
+
+                <!-- HEADER -->
+                <div class="subject-header">
+                    <div class="page-title">
+                        <h2>Subjects Management</h2>
+                        <p>Configure course subjects and assign them to respective classes.</p>
+                    </div>
+
+                    <button class="add-subject-btn" id="openAddSubjectBtn">
+                        + Add Subject
+                    </button>
+                </div>
+
+                <!-- TOOLBAR (Search + Class Filter) -->
+                <div class="subject-toolbar">
+                    <div class="subject-search">
+                        <span class="search-icon">🔍</span>
+                        <input type="text" id="subjectSearchInput" placeholder="Search by name or code...">
+                    </div>
+
+                    <div class="class-filter-wrap">
+                        <label for="classFilter">Filter by Class:</label>
+                        <select id="classFilter">
+                            <option value="">All Classes</option>
+                            <option value="12">12</option>
+                            <option value="11">11</option>
+                            <option value="10">10</option>
+                            <option value="9">9</option>
+                            <option value="8">8</option>
+                            <option value="7">7</option>
+                            <option value="6">6</option>
+                            <option value="5">5</option>
+                            <option value="4">4</option>
+                            <option value="3">3</option>
+                            <option value="2">2</option>
+                            <option value="1">1</option>
+                            <option value="UKG">UKG</option>
+                            <option value="LKG">LKG</option>
+                            <option value="NUR">NURSERY</option>
+                            <option value="KIDSCARE">KIDSCARE</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- TABLE SECTION -->
+                <div class="subject-list-section">
+                    <div class="subject-table-wrapper">
+                        <table class="subject-table">
+                            <thead>
+                                <tr>
+                                    <th>Subject Code</th>
+                                    <th>Subject Name</th>
+                                    <th>Class</th>
+                                    <th>Description</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="subjectTableBody">
+                                <tr>
+                                    <td colspan="5" class="table-loading">Loading subjects...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- ADD SUBJECT MODAL -->
+                <div class="modal-overlay" id="addSubjectModal" style="display: none;">
+                    <div class="modal-card">
+                        <div class="modal-header">
+                            <h3>Add New Subject</h3>
+                            <button class="modal-close-btn" id="closeAddSubjectBtn">&times;</button>
+                        </div>
+                        <form id="addSubjectForm">
+                            <div class="form-group">
+                                <label for="subName">Subject Name *</label>
+                                <input type="text" id="subName" required placeholder="e.g. Mathematics">
+                            </div>
+                            <div class="form-group">
+                                <label for="subCode">Subject Code *</label>
+                                <input type="text" id="subCode" required placeholder="e.g. MATH101">
+                            </div>
+                            <div class="form-group">
+                                <label for="subClass">Class *</label>
+                                <select id="subClass" required>
+                                    <option value="">Select Class</option>
+                                    <option value="12">12</option>
+                                    <option value="11">11</option>
+                                    <option value="10">10</option>
+                                    <option value="9">9</option>
+                                    <option value="8">8</option>
+                                    <option value="7">7</option>
+                                    <option value="6">6</option>
+                                    <option value="5">5</option>
+                                    <option value="4">4</option>
+                                    <option value="3">3</option>
+                                    <option value="2">2</option>
+                                    <option value="1">1</option>
+                                    <option value="UKG">UKG</option>
+                                    <option value="LKG">LKG</option>
+                                    <option value="NUR">NURSERY</option>
+                                    <option value="KIDSCARE">KIDSCARE</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="subDesc">Description</label>
+                                <textarea id="subDesc" rows="3" placeholder="Brief syllabus or overview..."></textarea>
+                            </div>
+                            <div class="modal-actions">
+                                <button type="button" class="btn-cancel" id="cancelAddSubjectBtn">Cancel</button>
+                                <button type="submit" class="btn-save">Save Subject</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+
+    <!-- ================= COMMON JAVASCRIPT ================= -->
+    <script src="../js/sidebar.js"></script>
+    <script src="../js/feature-toggle.js"></script>
+
+    <script src="../js/api.js"></script>
+    <script src="../js/script.js"></script>
+
+    <!-- ================= SUBJECT JAVASCRIPT ================= -->
+    <script src="../js/subject.js"></script>
+
+</body>
+
+</html>

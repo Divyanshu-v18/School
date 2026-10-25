@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="ABC Public School Admin Dashboard – overview of students, teachers, attendance, and notices.">
+
+
+    <title>Admin Dashboard</title>
+
+    <!-- CSS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../css/style.css" />
+    <link rel="stylesheet" href="../css/dashboard.css" />
+  </head>
+
+  <body>
+    <div class="page-layout">
+      <!-- Sidebar injected by sidebar.js -->
+
+      <!-- MAIN CONTENT -->
+      <main class="main-content">
+        <!-- NAVBAR -->
+        <header class="topbar">
+          <h1>ABC Public School</h1>
+
+          <div class="topbar-actions">
+            <button
+              class="notification-btn"
+              id="notificationBtn"
+              title="Notifications"
+            >
+              ♧
+              <span class="notification-dot"></span>
+            </button>
+
+            <div class="top-profile">
+              <div class="profile-avatar">AS</div>
+
+              <div class="top-profile-info">
+                <strong>Admin</strong>
+                <span>Administrator</span>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <!-- DASHBOARD -->
+        <section class="dashboard-content">
+          <div class="dashboard-header">
+            <div class="page-title">
+              <h2>Dashboard Overview</h2>
+              <p>Welcome to ABC Public School administration panel.</p>
+            </div>
+            <div class="dashboard-quick-actions">
+              <a href="add_student.html" class="add-btn">+ Add Student</a>
+              <a href="add_teacher.html" class="add-btn secondary">+ Add Teacher</a>
+            </div>
+          </div>
+
+          <!-- STATS CARDS -->
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-icon-wrap students">🎓</div>
+              <div class="stat-info">
+                <span class="stat-label">Total Students</span>
+                <h3 class="stat-value" id="statStudents">--</h3>
+                <a href="student.html" class="stat-link">View all students →</a>
+              </div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-icon-wrap teachers">👨‍🏫</div>
+              <div class="stat-info">
+                <span class="stat-label">Total Teachers</span>
+                <h3 class="stat-value" id="statTeachers">--</h3>
+                <a href="teacher.html" class="stat-link">View all teachers →</a>
+              </div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-icon-wrap classes">🏫</div>
+              <div class="stat-info">
+                <span class="stat-label">Total Classes</span>
+                <h3 class="stat-value" id="statClasses">--</h3>
+                <a href="class.html" class="stat-link">View class list →</a>
+              </div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-icon-wrap fees">💳</div>
+              <div class="stat-info">
+                <span class="stat-label">Fees Collected</span>
+                <h3 class="stat-value" id="statFees">--</h3>
+                <a href="fees.html" class="stat-link">Manage fees →</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- TWO COLUMN WIDGETS -->
+          <div class="widgets-grid">
+            <!-- ATTENDANCE SUMMARY -->
+            <div class="widget-card">
+              <div class="widget-header">
+                <h3>Today's Attendance Summary</h3>
+                <a href="attendance.html" class="widget-link">Mark Attendance</a>
+              </div>
+              <div class="attendance-summary-wrap" id="attendanceSummaryWrap">
+                <div class="att-metric present">
+                  <span class="att-count" id="attPresent">--</span>
+                  <span class="att-name">Present</span>
+                </div>
+                <div class="att-metric absent">
+                  <span class="att-count" id="attAbsent">--</span>
+                  <span class="att-name">Absent</span>
+                </div>
+                <div class="att-metric late">
+                  <span class="att-count" id="attLate">--</span>
+                  <span class="att-name">Late</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- UPCOMING EXAMS -->
+            <div class="widget-card">
+              <div class="widget-header">
+                <h3>Upcoming Exams</h3>
+                <a href="exam.html" class="widget-link">View All Exams</a>
+              </div>
+              <div class="widget-list" id="upcomingExamsList">
+                <p class="muted-loading">Loading upcoming exams...</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- NOTICES AND EVENTS -->
+          <div class="widgets-grid">
+            <!-- LATEST NOTICES -->
+            <div class="widget-card">
+              <div class="widget-header">
+                <h3>Latest Notice Board</h3>
+                <a href="notice.html" class="widget-link">Manage Notices</a>
+              </div>
+              <div class="widget-list" id="noticesList">
+                <p class="muted-loading">Loading notices...</p>
+              </div>
+            </div>
+
+            <!-- UPCOMING EVENTS -->
+            <div class="widget-card">
+              <div class="widget-header">
+                <h3>Upcoming Academic Events</h3>
+                <a href="calendar.html" class="widget-link">View Calendar</a>
+              </div>
+              <div class="widget-list" id="eventsList">
+                <p class="muted-loading">Loading events...</p>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <!-- JAVASCRIPT -->
+    <script src="../js/sidebar.js"></script>
+    <script src="../js/feature-toggle.js"></script>
+
+    <script src="../js/api.js"></script>
+    <script src="../js/script.js"></script>
+    <script src="../js/dashboard.js"></script>
+  </body>
+</html>

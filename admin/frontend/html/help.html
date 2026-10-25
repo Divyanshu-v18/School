@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Help documentation and support information for the admin system.">
+
+    <title>Help</title>
+
+    <!-- COMMON CSS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../css/style.css">
+
+    <!-- HELP CSS -->
+    <link rel="stylesheet" href="../css/help.css">
+</head>
+
+<body>
+
+    <div class="page-layout">
+
+        <!-- ========================================
+             SIDEBAR
+        ========================================= -->
+<!-- ========================================
+             MAIN CONTENT
+        ========================================= -->
+        <main class="main-content">
+
+            <!-- ========================================
+                 NAVBAR
+            ========================================= -->
+            <header class="topbar">
+
+                <h1>ABC Public School</h1>
+
+                <div class="topbar-actions">
+
+                    <button
+                        class="notification-btn"
+                        id="notificationBtn"
+                        title="Notifications">
+                        ♧
+                        <span class="notification-dot"></span>
+                    </button>
+
+                    <div class="top-profile">
+                        <div class="profile-avatar">AS</div>
+
+                        <div class="top-profile-info">
+                            <strong>Admin</strong>
+                            <span>Administrator</span>
+                        </div>
+                    </div>
+
+                </div>
+
+            </header>
+
+
+            <!-- ========================================
+                 HELP CONTENT
+            ========================================= -->
+            <section class="help-content">
+
+                <!-- HEADER -->
+                <div class="help-header">
+                    <div class="page-title">
+                        <h2>Help Center & Documentation</h2>
+                        <p>User guides, FAQs, and technical support for the School Management Admin Portal.</p>
+                    </div>
+
+                    <a href="mailto:support@sunriseacademy.edu" class="contact-support-btn">
+                        ✉ Contact IT Support
+                    </a>
+                </div>
+
+                <!-- QUICK GUIDES GRID -->
+                <div class="help-grid">
+                    <div class="help-card">
+                        <div class="help-card-icon">🎓</div>
+                        <h3>Managing Students</h3>
+                        <p>Learn how to admit new students, update contact and parent records, and view class profiles.</p>
+                        <a href="student.html" class="help-card-link">Go to Students →</a>
+                    </div>
+
+                    <div class="help-card">
+                        <div class="help-card-icon">💳</div>
+                        <h3>Fee Collection</h3>
+                        <p>Setup annual tuition heads, generate receipts, and monitor pending balances across classes.</p>
+                        <a href="fees.html" class="help-card-link">Go to Fees →</a>
+                    </div>
+
+                    <div class="help-card">
+                        <div class="help-card-icon">📝</div>
+                        <h3>Exams & Grading</h3>
+                        <p>Schedule term exams, record marks obtained by students, and generate grade breakdowns.</p>
+                        <a href="exam.html" class="help-card-link">Go to Exams →</a>
+                    </div>
+                </div>
+
+                <!-- FAQS ACCORDION SECTION -->
+                <div class="faq-section">
+                    <div class="faq-header">
+                        <h3>Frequently Asked Questions</h3>
+                        <p>Common questions regarding portal operations and troubleshooting.</p>
+                    </div>
+
+                    <div class="faq-list">
+                        <div class="faq-item">
+                            <button class="faq-question">
+                                <span>How do I mark daily student attendance?</span>
+                                <span class="faq-icon">+</span>
+                            </button>
+                            <div class="faq-answer">
+                                <p>Navigate to <strong>Attendance</strong> from the sidebar, select your desired Class and Section, choose the date, and click 'Fetch Roster'. You can click the status pills for each student (Present, Absent, Late) or click 'Mark All Present', then press 'Save Attendance'.</p>
+                            </div>
+                        </div>
+
+                        <div class="faq-item">
+                            <button class="faq-question">
+                                <span>How are new subjects added to classes?</span>
+                                <span class="faq-icon">+</span>
+                            </button>
+                            <div class="faq-answer">
+                                <p>Navigate to <strong>Subjects</strong>, click '+ Add Subject', enter the subject name, subject code (e.g. MATH101), select the respective class, and save.</p>
+                            </div>
+                        </div>
+
+                        <div class="faq-item">
+                            <button class="faq-question">
+                                <span>Can I broadcast announcements to all users?</span>
+                                <span class="faq-icon">+</span>
+                            </button>
+                            <div class="faq-answer">
+                                <p>Yes! Visit the <strong>Notice Board</strong> module, click '+ Publish Notice', select the category (General, Academic, Holiday, Event, or Urgent), and submit. Active notices immediately appear on the main dashboard.</p>
+                            </div>
+                        </div>
+
+                        <div class="faq-item">
+                            <button class="faq-question">
+                                <span>What should I do if a student has unpaid fees?</span>
+                                <span class="faq-icon">+</span>
+                            </button>
+                            <div class="faq-answer">
+                                <p>In the <strong>Fees</strong> module, you can view all transaction receipts and pending amounts. Click '+ Record Payment' once the student or parent clears dues via Cash, UPI, Online transfer, or Cheque.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SUPPORT FOOTER CARD -->
+                <div class="support-footer-card">
+                    <div>
+                        <h4>Need immediate technical assistance?</h4>
+                        <p>Our dedicated IT administrative team is available Monday through Saturday, 8:00 AM to 5:00 PM.</p>
+                    </div>
+                    <div class="support-contacts">
+                        <span>📞 <strong>Helpline:</strong> +91 (011) 2345-6789</span>
+                        <span>✉ <strong>Email:</strong> admin-helpdesk@sunriseacademy.edu</span>
+                    </div>
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+
+    <!-- COMMON JS -->
+    <script src="../js/sidebar.js"></script>
+    <script src="../js/feature-toggle.js"></script>
+
+    <script src="../js/api.js"></script>
+    <script src="../js/script.js"></script>
+
+    <!-- HELP JS -->
+    <script src="../js/help.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="View complete details for a student including personal and academic information.">
+
+    <title>Student Details</title>
+
+    <!-- COMMON CSS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/student_details.css">
+</head>
+
+<!-- ================= STUDENT DETAILS ================= -->
+
+<body>
+
+    <div class="student-details-page">
+        <div class="student-details-wrap">
+
+            <div class="details-header">
+                <div>
+                    <h1>Student Details</h1>
+                    <p>Complete information about the student</p>
+                </div> 
+
+                <div class="header-actions">
+                    <button type="button" id="printStudentBtn" class="action-btn print-btn">
+                        Print
+                    </button>
+                    <button type="button" id="editStudentBtn" class="action-btn edit-btn">
+                        Edit
+                    </button>
+                    <button type="button" id="deleteStudentBtn" class="action-btn delete-btn">
+                        Delete
+                    </button>
+                    <button type="button" id="backToStudents" class="back-btn">
+                        ← Back to Students
+                    </button>
+                </div>
+            </div>
+
+            <!-- ================= BASIC DETAILS ================= -->
+
+            <section class="details-section">
+                <h2>Basic Details</h2>
+
+                <div class="details-grid">
+                    <div class="details-group">
+                        <span>Student ID</span>
+                        <strong id="studentId">-</strong>
+                    </div>
+                    <div class="details-group">
+                        <span>Full Name</span>
+                        <strong id="fullName">-</strong>
+                    </div>
+                    <div class="details-group">
+                        <span>Date of Birth</span>
+                        <strong id="dateOfBirth">-</strong>
+                    </div>
+                    <div class="details-group">
+                        <span>Gender</span>
+                        <strong id="gender">-</strong>
+                    </div>
+                    <div class="details-group">
+                        <span>Category</span>
+                        <strong id="category">-</strong>
+                    </div>
+                    <div class="details-group">
+                        <span>Blood Group</span>
+                        <strong id="bloodGroup">-</strong>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= ADDRESS DETAILS ================= -->
+
+            <section class="details-section">
+                <h2>Address Details</h2>
+
+                <div class="details-grid">
+                    <div class="details-group">
+                        <span>House No.</span>
+                        <strong id="houseNo">-</strong>
+                    </div>
+                    <div class="details-group">
+                        <span>Street</span>
+                        <strong id="street">-</strong>
+                    </div>
+                    <div class="details-group">
+                        <span>City</span>
+                        <strong id="city">-</strong>
+                    </div>
+                    <div class="details-group">
+                        <span>State</span>
+                        <strong id="state">-</strong>
+                    </div>
+                    <div class="details-group">
+                        <span>Pincode</span>
+                        <strong id="pincode">-</strong>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= ADMISSION & SCHOOL DETAILS ================= -->
+
+            <section class="details-section">
+                <h2>Admission & School Details</h2>
+
+                <div class="details-grid">
+                    <div class="details-group">
+                        <span>Admission Date</span>
+                        <strong id="admissionDate">-</strong>
+                    </div>
+                    <div class="details-group">
+                        <span>Admission No.</span>
+                        <strong id="admissionNo">-</strong>
+                    </div>
+                    <div class="details-group">
+                        <span>Aadhaar Last 4</span>
+                        <strong id="aadharLastFour">-</strong>
+                    </div>
+                    <div class="details-group">
+                        <span>APAAR No.</span>
+                        <strong id="apaarNo">-</strong>
+                    </div>
+                    <div class="details-group">
+                        <span>PEN No.</span>
+                        <strong id="penNo">-</strong>
+                    </div>
+                    <div class="details-group">
+                        <span>BPL</span>
+                        <strong id="bpl">-</strong>
+                    </div>
+                    <div class="details-group">
+                        <span>Class</span>
+                        <strong id="className">-</strong>
+                    </div>
+                    <div class="details-group">
+                        <span>Section</span>
+                        <strong id="section">-</strong>
+                    </div>
+                    <div class="details-group">
+                        <span>Transportation</span>
+                        <strong id="transport">-</strong>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= FATHER DETAILS ================= -->
+
+            <section class="details-section">
+                <h2>Father Details</h2>
+
+                <div class="details-grid">
+                    <div class="details-group">
+                        <span>Father's Name</span>
+                        <strong id="fatherName">-</strong>
+                    </div>
+                    <div class="details-group">
+                        <span>Aadhaar Last 4</span>
+                        <strong id="fatherAadhar">-</strong>
+                    </div>
+                    <div class="details-group">
+                        <span>Phone</span>
+                        <strong id="fatherPhone">-</strong>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= MOTHER DETAILS ================= -->
+
+            <section class="details-section">
+                <h2>Mother Details</h2>
+
+                <div class="details-grid">
+                    <div class="details-group">
+                        <span>Mother's Name</span>
+                        <strong id="motherName">-</strong>
+                    </div>
+                    <div class="details-group">
+                        <span>Aadhaar Last 4</span>
+                        <strong id="motherAadhar">-</strong>
+                    </div>
+                    <div class="details-group">
+                        <span>Phone</span>
+                        <strong id="motherPhone">-</strong>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="../js/sidebar.js"></script>
+    <script src="../js/feature-toggle.js"></script>
+
+    <script src="../js/api.js"></script>
+    <script src="../js/script.js"></script>
+    <script src="../js/student_details.js"></script>
+
+</body>
+</html>

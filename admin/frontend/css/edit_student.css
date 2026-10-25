@@ -1,0 +1,20 @@
+/* ==========================================================================
+   EDIT STUDENT PAGE STYLES
+   Base layout and form inputs inherit from teacher.css.
+   This file provides student-specific adjustments and overrides.
+   ========================================================================== */
+
+/* Close (x) button matching the form header style */
+#closeStudentForm {
+    border: none;
+    background: transparent;
+    font-size: 28px;
+    line-height: 1;
+    cursor: pointer;
+    color: var(--text-light, #70776C);
+    transition: color 0.15s ease;
+}
+
+#closeStudentForm:hover {
+    color: var(--text-dark, #20251F);
+}
