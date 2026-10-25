@@ -1,0 +1,487 @@
+/* ========================================
+   TEACHER PAGE
+======================================== */
+
+.teacher-content {
+    width: 100%;
+    min-height: calc(100vh - 88px);
+    padding: 28px 32px 50px;
+    box-sizing: border-box;
+    background: #f6f6f2;
+}
+
+
+/* ========================================
+   TEACHER HEADER
+======================================== */
+
+.teacher-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 24px;
+}
+
+.page-title h2 {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+.page-title p {
+    margin: 7px 0 0;
+    color: var(--text-light);
+    font-size: 14px;
+}
+
+
+/* ========================================
+   ADD TEACHER BUTTON
+======================================== */
+
+.add_teacher-btn {
+    border: none;
+    padding: 11px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    white-space: nowrap;
+
+    background: var(--olive);
+    color: #ffffff;
+}
+
+.add_teacher-btn:hover {
+    opacity: 0.9;
+}
+
+
+/* ========================================
+   SEARCH
+======================================== */
+
+.teacher-toolbar {
+    margin-bottom: 24px;
+}
+
+.teacher-search {
+    position: relative;
+    width: 100%;
+    max-width: 340px;
+}
+
+.teacher-search input {
+    width: 100%;
+    height: 42px;
+
+    padding: 0 14px 0 40px;
+    box-sizing: border-box;
+
+    border: 1px solid #d8d8d8;
+    border-radius: 8px;
+    outline: none;
+
+    font-size: 14px;
+    background: #ffffff;
+    color: var(--text-dark);
+}
+
+.teacher-search input:focus {
+    border-color: var(--olive);
+}
+
+.search-icon {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+
+    font-size: 20px;
+    color: var(--text-light);
+    pointer-events: none;
+}
+
+
+/* ========================================
+   ADD TEACHER PAGE (full screen, own scroll)
+======================================== */
+
+html:has(body.add_teacher-page) {
+    height: auto !important;
+    overflow-y: auto !important;
+}
+
+body.add_teacher-page {
+    display: block !important;
+    height: auto !important;
+    min-height: 100vh;
+    overflow-y: auto !important;
+
+    margin: 0;
+    background: #f6f6f2;
+}
+
+.add_teacher-wrap {
+    width: 100%;
+    min-height: 100vh;
+    box-sizing: border-box;
+
+    padding: 28px 32px;
+}
+
+
+/* ========================================
+   ADD TEACHER FORM
+======================================== */
+
+.add_teacher-section {
+    width: 100%;
+    box-sizing: border-box;
+
+    background: #fff;
+    border: 1px solid #e2e2e2;
+    border-radius: 12px;
+
+    padding: 26px 32px 0;
+
+    min-height: calc(100vh - 56px);
+}
+
+
+/* ========================================
+   FORM HEADER
+======================================== */
+
+.form-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+
+    padding-bottom: 18px;
+    margin-bottom: 20px;
+
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.form-header h2 {
+    margin: 0;
+    font-size: 21px;
+    font-weight: 600;
+}
+
+.form-header p {
+    margin: 6px 0 0;
+    color: #777;
+    font-size: 13px;
+}
+
+.close-form-btn {
+    width: 34px;
+    height: 34px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: none;
+    border-radius: 7px;
+
+    background: transparent;
+
+    font-size: 25px;
+    cursor: pointer;
+    color: #666;
+}
+
+.close-form-btn:hover {
+    background: #f1f1f1;
+}
+
+
+/* ========================================
+   FORM SECTIONS
+======================================== */
+
+.form-section {
+    margin-bottom: 30px;
+}
+
+.form-section h3 {
+    margin: 0 0 18px;
+
+    font-size: 16px;
+    font-weight: 600;
+}
+
+
+/* ========================================
+   FORM GRID
+======================================== */
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px 22px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.form-group label {
+    margin-bottom: 7px;
+
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.form-group label span {
+    color: #b00020;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    height: 42px;
+
+    box-sizing: border-box;
+
+    padding: 0 12px;
+
+    border: 1px solid #d8d8d8;
+    border-radius: 7px;
+
+    outline: none;
+
+    font-size: 14px;
+    background: #fff;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    border-color: #5f6f4a;
+}
+
+.form-group small {
+    margin-top: 5px;
+
+    color: #888;
+    font-size: 11px;
+}
+
+
+/* ========================================
+   FORM ACTIONS
+======================================== */
+
+.form-actions {
+    position: sticky;
+    bottom: 0;
+    z-index: 10;
+
+    background: #fff;
+
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 18px 0 22px;
+    margin-top: 10px;
+    border-radius: 0 0 12px 12px;
+
+    border-top: 1px solid #e5e5e5;
+}
+
+.cancel-btn,
+.submit-teacher-btn {
+    height: 42px;
+
+    padding: 0 20px;
+
+    border: none;
+    border-radius: 7px;
+
+    cursor: pointer;
+
+    font-size: 14px;
+}
+
+.cancel-btn {
+    background: #eee;
+    color: #333;
+}
+
+.cancel-btn:hover {
+    background: #e2e2e2;
+}
+
+.submit-teacher-btn {
+    background: #5f6f4a;
+    color: #fff;
+}
+
+.submit-teacher-btn:hover {
+    background: #52613f;
+}
+
+
+/* ========================================
+   RESPONSIVE
+======================================== */
+
+@media (max-width: 768px) {
+
+    .teacher-content {
+        padding: 22px 18px 40px;
+    }
+
+    .teacher-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 15px;
+    }
+
+    .add_teacher-btn {
+        width: fit-content;
+    }
+
+    .add_teacher-wrap {
+        padding: 16px;
+    }
+
+    .add_teacher-section {
+        padding: 20px 18px 0;
+        min-height: calc(100vh - 32px);
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .form-actions {
+        justify-content: stretch;
+    }
+
+    .cancel-btn,
+    .submit-teacher-btn {
+        flex: 1;
+    }
+}
+
+/* ========================================
+   TEACHER LIST
+======================================== */
+
+.teacher-list-section {
+    margin-top: 25px;
+}
+
+.teacher-list-header {
+    margin-bottom: 20px;
+}
+
+.teacher-list-header h2 {
+    margin: 0;
+}
+
+.teacher-list-header p {
+    margin-top: 5px;
+    color: #777;
+}
+
+.teacher-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.teacher-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    table-layout: fixed;
+    border-radius: 15px 15px 0 0;
+}
+
+.teacher-table th,
+.teacher-table td {
+    padding: 14px 16px;
+    border-bottom: 1px solid #e5e5e5;
+    text-align: left;
+    vertical-align: middle;
+}
+
+.teacher-table th {
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+/* FIXED COLUMNS */
+
+.teacher-table th:nth-child(1),
+.teacher-table td:nth-child(1) {
+    width: 130px;
+}
+
+.teacher-table th:nth-child(2),
+.teacher-table td:nth-child(2) {
+    width: auto;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+.teacher-table th:nth-child(3),
+.teacher-table td:nth-child(3) {
+    width: 160px;
+}
+
+.teacher-table th:nth-child(4),
+.teacher-table td:nth-child(4) {
+    width: 220px;
+}
+
+.teacher-table th:nth-child(5),
+.teacher-table td:nth-child(5) {
+    width: 200px;
+}
+
+.teacher-table tbody tr:hover {
+    background: #fafafa;
+}
+
+
+/* ========================================
+   ACTION BUTTONS
+======================================== */
+
+.teacher-actions {
+    white-space: nowrap;
+}
+
+.teacher-actions button {
+    border: none;
+    padding: 7px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 5px;
+}
+
+.info-btn {
+    background: #eee;
+}
+
+.edit-btn {
+    background: #8a9a5b;
+    color: white;
+}
+
+.delete-btn {
+    background: #d9534f;
+    color: white;
+}

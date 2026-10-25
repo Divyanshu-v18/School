@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Manage exam schedules and record exam results.">
+
+    <title>Exams</title>
+
+    <!-- COMMON CSS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../css/style.css">
+
+    <!-- EXAM CSS -->
+    <link rel="stylesheet" href="../css/exam.css">
+</head>
+
+<body>
+
+    <div class="page-layout">
+
+        <!-- ========================================
+             SIDEBAR
+        ========================================= -->
+<!-- ========================================
+             MAIN CONTENT
+        ========================================= -->
+        <main class="main-content">
+
+            <!-- NAVBAR -->
+            <header class="topbar">
+
+                <h1>ABC Public School</h1>
+
+                <div class="topbar-actions">
+
+                    <button
+                        class="notification-btn"
+                        id="notificationBtn"
+                        title="Notifications">
+                        ♧
+                        <span class="notification-dot"></span>
+                    </button>
+
+                    <div class="top-profile">
+                        <div class="profile-avatar">AS</div>
+
+                        <div class="top-profile-info">
+                            <strong>Admin</strong>
+                            <span>Administrator</span>
+                        </div>
+                    </div>
+
+                </div>
+
+            </header>
+
+
+            <!-- EXAM CONTENT -->
+            <section class="exam-content">
+
+                <!-- HEADER -->
+                <div class="exam-header">
+                    <div class="page-title">
+                        <h2>Examinations & Results</h2>
+                        <p>Manage test schedules, enter marks, and publish student report grades.</p>
+                    </div>
+
+                    <button class="add-exam-btn" id="openScheduleExamBtn">
+                        + Schedule Exam
+                    </button>
+                </div>
+
+                <!-- TOOLBAR -->
+                <div class="exam-toolbar">
+                    <div class="exam-search">
+                        <span class="search-icon">🔍</span>
+                        <input type="text" id="examSearchInput" placeholder="Search by exam name or subject...">
+                    </div>
+
+                    <div class="exam-filter">
+                        <label for="examClassFilter">Filter by Class:</label>
+                        <select id="examClassFilter">
+                            <option value="">All Classes</option>
+                            <option value="12">Class 12</option>
+                            <option value="11">Class 11</option>
+                            <option value="10">Class 10</option>
+                            <option value="9">Class 9</option>
+                            <option value="8">Class 8</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- EXAMS TABLE -->
+                <div class="exam-table-wrap">
+                    <table class="exam-table">
+                        <thead>
+                            <tr>
+                                <th>Exam Name</th>
+                                <th>Class</th>
+                                <th>Subject</th>
+                                <th>Exam Date</th>
+                                <th>Max Marks</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="examTableBody">
+                            <tr>
+                                <td colspan="6" class="table-loading">Loading scheduled exams...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- MODAL: SCHEDULE EXAM -->
+                <div class="modal-overlay" id="scheduleExamModal" style="display: none;">
+                    <div class="modal-card">
+                        <div class="modal-header">
+                            <h3>Schedule New Exam</h3>
+                            <button class="modal-close-btn" id="closeScheduleExamBtn">&times;</button>
+                        </div>
+                        <form id="scheduleExamForm">
+                            <div class="form-group">
+                                <label for="examName">Exam Title *</label>
+                                <input type="text" id="examName" required placeholder="e.g. Mid-Term Examination 2026">
+                            </div>
+                            <div class="form-group">
+                                <label for="examClass">Class *</label>
+                                <select id="examClass" required>
+                                    <option value="12">Class 12</option>
+                                    <option value="11">Class 11</option>
+                                    <option value="10">Class 10</option>
+                                    <option value="9">Class 9</option>
+                                    <option value="8">Class 8</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="examSubject">Subject *</label>
+                                <input type="text" id="examSubject" required placeholder="e.g. Mathematics">
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group flex-1">
+                                    <label for="examDate">Exam Date *</label>
+                                    <input type="date" id="examDate" required>
+                                </div>
+                                <div class="form-group flex-1">
+                                    <label for="examMaxMarks">Max Marks *</label>
+                                    <input type="number" id="examMaxMarks" required value="100">
+                                </div>
+                            </div>
+                            <div class="modal-actions">
+                                <button type="button" class="btn-cancel" id="cancelScheduleExamBtn">Cancel</button>
+                                <button type="submit" class="btn-save">Schedule Exam</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- MODAL: EXAM RESULTS -->
+                <div class="modal-overlay" id="examResultsModal" style="display: none;">
+                    <div class="modal-card large">
+                        <div class="modal-header">
+                            <div>
+                                <h3 id="resultsModalTitle">Exam Results</h3>
+                                <p id="resultsModalSub" style="margin: 4px 0 0; font-size: 13px; color: #777;">Class and subject</p>
+                            </div>
+                            <button class="modal-close-btn" id="closeResultsModalBtn">&times;</button>
+                        </div>
+
+                        <!-- Add single result inline -->
+                        <form id="addResultForm" class="add-result-inline">
+                            <input type="hidden" id="currentExamId">
+                            <input type="number" id="resStudentId" required placeholder="Student ID" style="width: 100px;">
+                            <input type="text" id="resStudentName" required placeholder="Student Name" style="flex: 1;">
+                            <input type="number" id="resMarks" required placeholder="Marks" style="width: 90px;">
+                            <input type="text" id="resGrade" placeholder="Grade" style="width: 80px;">
+                            <button type="submit" class="btn-add-result">+ Add Mark</button>
+                        </form>
+
+                        <div class="results-table-wrap">
+                            <table class="results-table">
+                                <thead>
+                                    <tr>
+                                        <th>Student ID</th>
+                                        <th>Student Name</th>
+                                        <th>Marks Obtained</th>
+                                        <th>Grade</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="resultsTableBody">
+                                    <tr>
+                                        <td colspan="4" class="table-loading">No results recorded yet.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+    <!-- COMMON JS -->
+    <script src="../js/sidebar.js"></script>
+    <script src="../js/feature-toggle.js"></script>
+
+    <script src="../js/api.js"></script>
+    <script src="../js/script.js"></script>
+
+    <!-- EXAM JS -->
+    <script src="../js/exam.js"></script>
+
+</body>
+</html>

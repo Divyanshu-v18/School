@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Manage all teacher records – view, add, edit, and remove staff.">
+
+
+    <title>Teachers</title>
+
+    <!-- COMMON CSS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../css/style.css">
+
+    <!-- TEACHER PAGE CSS -->
+    <link rel="stylesheet" href="../css/teacher.css">
+</head>
+
+<body>
+
+    <div class="page-layout">
+
+        <!-- ================= SIDEBAR ================= -->
+<!-- ================= MAIN CONTENT ================= -->
+
+        <main class="main-content">
+
+            <!-- ================= NAVBAR ================= -->
+
+            <header class="topbar">
+
+                <h1>ABC Public School</h1>
+
+                <div class="topbar-actions">
+
+                    <button
+                        class="notification-btn"
+                        id="notificationBtn"
+                        title="Notifications"
+                    >
+                        ♧
+                        <span class="notification-dot"></span>
+                    </button>
+
+                    <div class="top-profile">
+
+                        <div class="profile-avatar">AS</div>
+
+                        <div class="top-profile-info">
+                            <strong>Admin</strong>
+                            <span>Administrator</span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </header>
+
+
+            <!-- ================= TEACHER CONTENT ================= -->
+
+            <div class="teacher-content">
+
+                <!-- Teacher Header -->
+
+                <div class="teacher-header">
+
+                    <div class="page-title">
+                        <h2>Teachers</h2>
+                        <p>Manage all teachers in the school</p>
+                    </div>
+
+                    <button
+                        class="add_teacher-btn"
+                        id="addTeacherBtn"
+                    >
+                        + Add Teacher
+                    </button>
+
+                </div>
+
+
+                <!-- Search -->
+
+                <div class="teacher-toolbar">
+
+                    <div class="teacher-search">
+
+                        <span class="search-icon">
+                            ⌕
+                        </span>
+
+                        <input
+                            type="text"
+                            id="teacherSearch"
+                            placeholder="Search teachers..."
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- ================= TEACHER LIST ================= -->
+
+                <section class="teacher-list-section">
+
+                    <div class="teacher-list-header">
+                        <div>
+                            <h2>Teachers</h2>
+                            <p>Manage all teachers</p>
+                        </div>
+                    </div>
+
+
+                    <div class="teacher-table-wrapper">
+
+                        <table class="teacher-table">
+
+                            <thead>
+                                <tr>
+                                    <th>Teacher ID</th>
+                                    <th>Name</th>
+                                    <th>Phone</th>
+                                    <th>Post</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+
+                            <tbody id="teacherTableBody">
+                                <tr>
+                                    <td colspan="5">Loading teachers...</td>
+                                </tr>
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </section>
+
+            </div>
+
+        </main>
+
+    </div>
+
+
+    <!-- ================= JAVASCRIPT ================= -->
+
+    <script src="../js/sidebar.js"></script>
+    <script src="../js/feature-toggle.js"></script>
+
+    <script src="../js/api.js"></script>
+    <script src="../js/script.js"></script>
+    <script src="../js/teacher.js"></script>
+
+</body>
+
+</html>

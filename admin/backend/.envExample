@@ -1,0 +1,15 @@
+DB_HOST=localhost
+DB_PORT=3306
+DB_USER=school_app
+DB_PASSWORD=Your_database_password
+DB_NAME=Your_database_name
+
+ADMIN_USERNAME=admin_username
+ADMIN_PASSWORD=admin_password
+
+SESSION_COOKIE_SECURE=false
+
+CORS_ALLOWED_ORIGINS=http://localhost:5500,http://127.0.0.1:5500
+
+DOCS_USERNAME=username
+DOCS_PASSWORD=password

@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="View students and data for a specific class section.">
+  <title>Section Details</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/section_details.css" />
+</head>
+<body>
+  <div class="page-layout">
+    <!-- Sidebar injected by sidebar.js -->
+
+      <!-- MAIN CONTENT -->
+    <main class="main-content">
+      <header class="topbar">
+        <h1>ABC Public School</h1>
+        <div class="topbar-actions">
+          <button class="notification-btn" id="notificationBtn" title="Notifications">♧<span class="notification-dot"></span></button>
+          <div class="top-profile">
+            <div class="profile-avatar">AS</div>
+            <div class="top-profile-info"><strong>Admin</strong><span>Administrator</span></div>
+          </div>
+        </div>
+      </header>
+
+      <section class="section-details-content">
+
+        <!-- BREADCRUMB -->
+        <div class="breadcrumb">
+          <a href="class.html">Classes</a>
+          <span aria-hidden="true">/</span>
+          <a id="breadcrumbClass" href="#">Class</a>
+          <span aria-hidden="true">/</span>
+          <span id="breadcrumbSection">Section</span>
+        </div>
+
+        <!-- HEADING -->
+        <div class="detail-heading">
+          <div class="detail-title-group">
+            <p class="eyebrow">SECTION OVERVIEW</p>
+            <h2 id="sectionTitle">Section</h2>
+            <p id="sectionSubtitle" class="section-subtitle">
+              Students and attendance for this section
+            </p>
+          </div>
+          <div class="heading-actions">
+            <button class="btn-save-attendance" id="saveAttendanceBtn" style="display: none;">
+              Save Attendance
+            </button>
+            <a class="back-button" id="backToClassBtn" href="class.html">
+              ← <span>Back to Class</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- STUDENTS PANEL -->
+        <section class="detail-panel section-students-panel">
+          <div class="panel-heading">
+            <div>
+              <h3>Students</h3>
+              <p id="rosterSubtitle">Students enrolled in this section</p>
+            </div>
+            <div class="panel-meta">
+              <span class="panel-count" id="studentCountBadge">0 Students</span>
+            </div>
+          </div>
+
+          <div class="section-table-wrap">
+            <table class="section-students-table">
+              <thead>
+                <tr>
+                  <th style="width: 130px;">Student ID</th>
+                  <th>Name</th>
+                  <th style="width: 110px;">Roll No.</th>
+                  <th style="width: 100px;">Action</th>
+                  <th style="width: 250px; text-align: right;">Attendance Status</th>
+                </tr>
+              </thead>
+              <tbody id="sectionStudentsBody">
+                <tr>
+                  <td colspan="5" class="table-loading">Loading students...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+      </section>
+    </main>
+  </div>
+  <script src="../js/sidebar.js"></script>
+  <script src="../js/feature-toggle.js"></script>
+
+  <script src="../js/api.js"></script>
+    <script src="../js/script.js"></script>
+  <script src="../js/section_details.js"></script>
+</body>
+</html>

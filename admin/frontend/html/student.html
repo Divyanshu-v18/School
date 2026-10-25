@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Manage all student records – add, search, edit, and remove students.">
+
+
+    <title>Students</title>
+
+    <!-- COMMON CSS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../css/style.css">
+
+    <!-- STUDENT PAGE CSS -->
+    <link rel="stylesheet" href="../css/student.css">
+
+</head>
+
+
+<body>
+
+    <div class="page-layout">
+
+        <!-- ================= SIDEBAR ================= -->
+<!-- ================= MAIN CONTENT ================= -->
+
+        <main class="main-content">
+
+
+            <!-- ================= NAVBAR ================= -->
+
+            <header class="topbar">
+
+                <h1>ABC Public School</h1>
+
+
+                <div class="topbar-actions">
+
+                    <button
+                        class="notification-btn"
+                        id="notificationBtn"
+                        title="Notifications"
+                    >
+                        ♧
+
+                        <span class="notification-dot"></span>
+
+                    </button>
+
+
+                    <div class="top-profile">
+
+                        <div class="profile-avatar">
+                            AS
+                        </div>
+
+                        <div class="top-profile-info">
+
+                            <strong>Admin</strong>
+                            <span>Administrator</span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </header>
+
+
+            <!-- ================= STUDENT CONTENT ================= -->
+
+            <div class="student-content">
+
+
+                <!-- Student Header -->
+
+                <div class="student-header">
+
+                    <div class="page-title">
+
+                        <h2>Students</h2>
+
+                        <p>
+                            Manage all students in the school
+                        </p>
+
+                    </div>
+
+
+                    <button
+                        class="add-student-btn"
+                        id="addStudentBtn"
+                    >
+                        + Add Student
+                    </button>
+
+                </div>
+
+
+                <!-- Search -->
+
+                <div class="student-toolbar">
+
+                    <div class="student-search">
+
+                        <span class="search-icon">
+                            ⌕
+                        </span>
+
+                        <input
+                            type="text"
+                            id="studentSearch"
+                            placeholder="Search students..."
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- ================= STUDENT LIST ================= -->
+
+                <section class="student-list-section">
+                
+                    <div class="student-list-header">
+                    
+                        <div>
+                            <h2>Students</h2>
+                            <p>Manage all students</p>
+                        </div>
+                    
+                    </div>
+                
+                
+                    <div class="student-table-wrapper">
+                    
+                        <table class="student-table">
+                        
+                            <thead>
+                            
+                                <tr>
+                                    <th>Student ID</th>
+                                    <th>Name</th>
+                                    <th>Class</th>
+                                    <th>Section</th>
+                                    <th>Action</th>
+                                </tr>
+                            
+                            </thead>
+                            <tbody id="studentTableBody">
+                            
+                                <tr>
+                                    <td colspan="5">Loading students...</td>
+                                </tr>
+                            
+                            </tbody>
+                        
+                        </table>
+                    
+                    </div>
+                
+                </section>
+
+            </div>
+
+        </main>
+
+    </div>
+
+
+    <!-- ================= JAVASCRIPT ================= -->
+
+    <script src="../js/sidebar.js"></script>
+    <script src="../js/feature-toggle.js"></script>
+
+    <script src="../js/api.js"></script>
+    <script src="../js/script.js"></script>
+    <script src="../js/student.js"></script>
+
+</body>
+
+</html>

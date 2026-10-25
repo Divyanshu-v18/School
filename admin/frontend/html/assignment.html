@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Manage homework and assignment records for classes.">
+
+    <title>Assignments</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/assignment.css">
+</head>
+
+<body>
+
+    <div class="page-layout">
+
+        <!-- ========================================
+             SIDEBAR
+        ========================================= -->
+<!-- ========================================
+             MAIN CONTENT
+        ========================================= -->
+        <main class="main-content">
+
+            <!-- NAVBAR -->
+            <header class="topbar">
+
+                <h1>ABC Public School</h1>
+
+                <div class="topbar-actions">
+
+                    <button
+                        class="notification-btn"
+                        id="notificationBtn"
+                        title="Notifications">
+                        ♧
+                        <span class="notification-dot"></span>
+                    </button>
+
+                    <div class="top-profile">
+                        <div class="profile-avatar">AS</div>
+
+                        <div class="top-profile-info">
+                            <strong>Admin</strong>
+                            <span>Administrator</span>
+                        </div>
+                    </div>
+
+                </div>
+
+            </header>
+
+
+            <!-- Assignment CONTENT -->
+            <section class="assignment-content">
+
+                <!-- HEADER -->
+                <div class="assignment-header">
+                    <div class="page-title">
+                        <h2>Assignments & Homework</h2>
+                        <p>Track class homework tasks, submission deadlines, and student grading.</p>
+                    </div>
+
+                    <button class="add-assignment-btn" id="openAddAssignmentBtn">
+                        + Create Assignment
+                    </button>
+                </div>
+
+                <!-- ASSIGNMENTS GRID -->
+                <div class="assignments-grid" id="assignmentsList">
+                    <div class="assignment-card">
+                        <div class="assignment-top">
+                            <span class="assignment-class">Class 10 - Mathematics</span>
+                            <span class="assignment-due">Due: Oct 22, 2026</span>
+                        </div>
+                        <h3 class="assignment-title">Trigonometric Identities & Applications</h3>
+                        <p class="assignment-desc">Complete Exercise 8.3 questions 1 to 10 in the coursework notebook. Show full derivation steps for each proof.</p>
+                        <div class="assignment-footer">
+                            <span class="submissions-badge">42 / 68 Submitted</span>
+                            <span class="status-active">Active</span>
+                        </div>
+                    </div>
+
+                    <div class="assignment-card">
+                        <div class="assignment-top">
+                            <span class="assignment-class">Class 10 - Science</span>
+                            <span class="assignment-due">Due: Oct 24, 2026</span>
+                        </div>
+                        <h3 class="assignment-title">Chemical Reactions & Equations Lab Report</h3>
+                        <p class="assignment-desc">Submit written observations from yesterday's acid-base titration lab, including balanced chemical formulas and graph charts.</p>
+                        <div class="assignment-footer">
+                            <span class="submissions-badge">55 / 68 Submitted</span>
+                            <span class="status-active">Active</span>
+                        </div>
+                    </div>
+
+                    <div class="assignment-card">
+                        <div class="assignment-top">
+                            <span class="assignment-class">Class 11 - Physics</span>
+                            <span class="assignment-due">Due: Oct 28, 2026</span>
+                        </div>
+                        <h3 class="assignment-title">Projectile Motion Numerical Problems</h3>
+                        <p class="assignment-desc">Solve problem set #4 on two-dimensional kinematics and trajectory equations. Calculator permitted.</p>
+                        <div class="assignment-footer">
+                            <span class="submissions-badge">18 / 25 Submitted</span>
+                            <span class="status-active">Active</span>
+                        </div>
+                    </div>
+
+                    <div class="assignment-card">
+                        <div class="assignment-top">
+                            <span class="assignment-class">Class 9 - English</span>
+                            <span class="assignment-due">Due: Oct 20, 2026</span>
+                        </div>
+                        <h3 class="assignment-title">Essay on Environmental Sustainability</h3>
+                        <p class="assignment-desc">Write an analytical essay (400-500 words) on practical conservation techniques for modern urban areas.</p>
+                        <div class="assignment-footer">
+                            <span class="submissions-badge">60 / 68 Submitted</span>
+                            <span class="status-active">Active</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MODAL: CREATE ASSIGNMENT -->
+                <div class="modal-overlay" id="addAssignmentModal" style="display: none;">
+                    <div class="modal-card">
+                        <div class="modal-header">
+                            <h3>Create New Assignment</h3>
+                            <button class="modal-close-btn" id="closeAddAssignmentBtn">&times;</button>
+                        </div>
+                        <form id="addAssignmentForm">
+                            <div class="form-group">
+                                <label for="asgTitle">Assignment Title *</label>
+                                <input type="text" id="asgTitle" required placeholder="e.g. Chapter 4 Practice Set">
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group flex-1">
+                                    <label for="asgClass">Class *</label>
+                                    <select id="asgClass" required>
+                                        <option value="10">Class 10</option>
+                                        <option value="11">Class 11</option>
+                                        <option value="12">Class 12</option>
+                                        <option value="9">Class 9</option>
+                                        <option value="8">Class 8</option>
+                                    </select>
+                                </div>
+                                <div class="form-group flex-1">
+                                    <label for="asgSubject">Subject *</label>
+                                    <input type="text" id="asgSubject" required placeholder="e.g. Mathematics">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="asgDueDate">Due Date *</label>
+                                <input type="date" id="asgDueDate" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="asgInstructions">Instructions / Notes</label>
+                                <textarea id="asgInstructions" rows="3" placeholder="Provide guidelines for students..."></textarea>
+                            </div>
+                            <div class="modal-actions">
+                                <button type="button" class="btn-cancel" id="cancelAddAssignmentBtn">Cancel</button>
+                                <button type="submit" class="btn-save">Publish Assignment</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+    <script src="../js/sidebar.js"></script>
+    <script src="../js/feature-toggle.js"></script>
+
+    <script src="../js/api.js"></script>
+    <script src="../js/script.js"></script>
+    <script src="../js/assignment.js"></script>
+
+</body>
+</html>

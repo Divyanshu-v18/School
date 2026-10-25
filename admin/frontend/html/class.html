@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="View and manage all classes and sections in the school.">
+  <title>Classes</title>
+
+  <!-- COMMON CSS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../css/style.css" />
+
+  <!-- CLASS CSS -->
+  <link rel="stylesheet" href="../css/class.css" />
+</head>
+<body>
+  <div class="page-layout">
+    <!-- Sidebar injected by sidebar.js -->
+
+      <!-- MAIN CONTENT -->
+    <main class="main-content">
+      <!-- NAVBAR: keep only one -->
+      <header class="topbar">
+        <h1>ABC Public School</h1>
+        <div class="topbar-actions">
+          <button class="notification-btn" id="notificationBtn" title="Notifications">
+            ♧
+            <span class="notification-dot"></span>
+          </button>
+          <div class="top-profile">
+            <div class="profile-avatar">AS</div>
+            <div class="top-profile-info">
+              <strong>Admin</strong>
+              <span>Administrator</span>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- CLASS CONTENT: one table, no old class-card grid -->
+      <section class="class-content">
+        <div class="page-header">
+          <div>
+            <h2>Classes</h2>
+            <p>Manage all classes in the school</p>
+          </div>
+        </div>
+
+        <div class="class-table-container">
+          <table class="class-table">
+            <thead>
+              <tr>
+                <th scope="col">Class</th>
+                <th scope="col">Sections</th>
+                <th scope="col">Total Students</th>
+                <th scope="col">No. of Subjects</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <a href="class_details.html?class=Kids%20Care" class="class-name-link">
+                    <span class="class-icon">K</span>
+                    <span class="class-info">
+                      <strong>Kids Care</strong>
+                      <small>Kids Care</small>
+                    </span>
+                  </a>
+                </td>
+                <td><span class="table-value">—</span></td>
+                <td><span class="table-value">—</span></td>
+                <td><span class="table-value">—</span></td>
+              </tr>
+              <tr>
+                <td>
+                  <a href="class_details.html?class=Nursery" class="class-name-link">
+                    <span class="class-icon">N</span>
+                    <span class="class-info">
+                      <strong>Nursery</strong>
+                      <small>Nursery Class</small>
+                    </span>
+                  </a>
+                </td>
+                <td><span class="table-value">—</span></td>
+                <td><span class="table-value">—</span></td>
+                <td><span class="table-value">—</span></td>
+              </tr>
+              <tr>
+                <td>
+                  <a href="class_details.html?class=LKG" class="class-name-link">
+                    <span class="class-icon">L</span>
+                    <span class="class-info">
+                      <strong>LKG</strong>
+                      <small>Lower Kindergarten</small>
+                    </span>
+                  </a>
+                </td>
+                <td><span class="table-value">—</span></td>
+                <td><span class="table-value">—</span></td>
+                <td><span class="table-value">—</span></td>
+              </tr>
+              <tr>
+                <td>
+                  <a href="class_details.html?class=UKG" class="class-name-link">
+                    <span class="class-icon">U</span>
+                    <span class="class-info">
+                      <strong>UKG</strong>
+                      <small>Upper Kindergarten</small>
+                    </span>
+                  </a>
+                </td>
+                <td><span class="table-value">—</span></td>
+                <td><span class="table-value">—</span></td>
+                <td><span class="table-value">—</span></td>
+              </tr>
+              <tr>
+                <td>
+                  <a href="class_details.html?class=Class%201" class="class-name-link">
+                    <span class="class-icon">1</span>
+                    <span class="class-info">
+                      <strong>Class 1</strong>
+                      <small>Primary</small>
+                    </span>
+                  </a>
+                </td>
+                <td><span class="table-value">—</span></td>
+                <td><span class="table-value">—</span></td>
+                <td><span class="table-value">—</span></td>
+              </tr>
+              <tr>
+                <td>
+                  <a href="class_details.html?class=Class%202" class="class-name-link">
+                    <span class="class-icon">2</span>
+                    <span class="class-info">
+                      <strong>Class 2</strong>
+                      <small>Primary</small>
+                    </span>
+                  </a>
+                </td>
+                <td><span class="table-value">—</span></td>
+                <td><span class="table-value">—</span></td>
+                <td><span class="table-value">—</span></td>
+              </tr>
+              <tr>
+                <td>
+                  <a href="class_details.html?class=Class%203" class="class-name-link">
+                    <span class="class-icon">3</span>
+                    <span class="class-info">
+                      <strong>Class 3</strong>
+                      <small>Primary</small>
+                    </span>
+                  </a>
+                </td>
+                <td><span class="table-value">—</span></td>
+                <td><span class="table-value">—</span></td>
+                <td><span class="table-value">—</span></td>
+              </tr>
+              <tr>
+                <td>
+                  <a href="class_details.html?class=Class%204" class="class-name-link">
+                    <span class="class-icon">4</span>
+                    <span class="class-info">
+                      <strong>Class 4</strong>
+                      <small>Primary</small>
+                    </span>
+                  </a>
+                </td>
+                <td><span class="table-value">—</span></td>
+                <td><span class="table-value">—</span></td>
+                <td><span class="table-value">—</span></td>
+              </tr>
+              <tr>
+                <td>
+                  <a href="class_details.html?class=Class%205" class="class-name-link">
+                    <span class="class-icon">5</span>
+                    <span class="class-info">
+                      <strong>Class 5</strong>
+                      <small>Primary</small>
+                    </span>
+                  </a>
+                </td>
+                <td><span class="table-value">—</span></td>
+                <td><span class="table-value">—</span></td>
+                <td><span class="table-value">—</span></td>
+              </tr>
+              <tr>
+                <td>
+                  <a href="class_details.html?class=Class%206" class="class-name-link">
+                    <span class="class-icon">6</span>
+                    <span class="class-info">
+                      <strong>Class 6</strong>
+                      <small>Middle School</small>
+                    </span>
+                  </a>
+                </td>
+                <td><span class="table-value">—</span></td>
+                <td><span class="table-value">—</span></td>
+                <td><span class="table-value">—</span></td>
+              </tr>
+              <tr>
+                <td>
+                  <a href="class_details.html?class=Class%207" class="class-name-link">
+                    <span class="class-icon">7</span>
+                    <span class="class-info">
+                      <strong>Class 7</strong>
+                      <small>Middle School</small>
+                    </span>
+                  </a>
+                </td>
+                <td><span class="table-value">—</span></td>
+                <td><span class="table-value">—</span></td>
+                <td><span class="table-value">—</span></td>
+              </tr>
+              <tr>
+                <td>
+                  <a href="class_details.html?class=Class%208" class="class-name-link">
+                    <span class="class-icon">8</span>
+                    <span class="class-info">
+                      <strong>Class 8</strong>
+                      <small>Middle School</small>
+                    </span>
+                  </a>
+                </td>
+                <td><span class="table-value">—</span></td>
+                <td><span class="table-value">—</span></td>
+                <td><span class="table-value">—</span></td>
+              </tr>
+              <tr>
+                <td>
+                  <a href="class_details.html?class=Class%209" class="class-name-link">
+                    <span class="class-icon">9</span>
+                    <span class="class-info">
+                      <strong>Class 9</strong>
+                      <small>Secondary</small>
+                    </span>
+                  </a>
+                </td>
+                <td><span class="table-value">—</span></td>
+                <td><span class="table-value">—</span></td>
+                <td><span class="table-value">—</span></td>
+              </tr>
+              <tr>
+                <td>
+                  <a href="class_details.html?class=Class%2010" class="class-name-link">
+                    <span class="class-icon">10</span>
+                    <span class="class-info">
+                      <strong>Class 10</strong>
+                      <small>Secondary</small>
+                    </span>
+                  </a>
+                </td>
+                <td><span class="table-value">—</span></td>
+                <td><span class="table-value">—</span></td>
+                <td><span class="table-value">—</span></td>
+              </tr>
+              <tr>
+                <td>
+                  <a href="class_details.html?class=Class%2011" class="class-name-link">
+                    <span class="class-icon">11</span>
+                    <span class="class-info">
+                      <strong>Class 11</strong>
+                      <small>Secondary</small>
+                    </span>
+                  </a>
+                </td>
+                <td><span class="table-value">—</span></td>
+                <td><span class="table-value">—</span></td>
+                <td><span class="table-value">—</span></td>
+              </tr>
+              <tr>
+                <td>
+                  <a href="class_details.html?class=Class%2012" class="class-name-link">
+                    <span class="class-icon">12</span>
+                    <span class="class-info">
+                      <strong>Class 12</strong>
+                      <small>Secondary</small>
+                    </span>
+                  </a>
+                </td>
+                <td><span class="table-value">—</span></td>
+                <td><span class="table-value">—</span></td>
+                <td><span class="table-value">—</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- COMMON JS -->
+  <script src="../js/sidebar.js"></script>
+  <script src="../js/feature-toggle.js"></script>
+
+  <script src="../js/api.js"></script>
+    <script src="../js/script.js"></script>
+
+  <!-- CLASS JS -->
+  <script src="../js/class.js"></script>
+</body>
+</html>

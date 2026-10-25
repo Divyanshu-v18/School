@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="View and manage the academic calendar and school events.">
+
+    <title>Calendar</title>
+
+    <!-- COMMON CSS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../css/style.css">
+
+    <!-- CALENDAR CSS -->
+    <link rel="stylesheet" href="../css/calendar.css">
+</head>
+
+<body>
+
+    <div class="page-layout">
+
+        <!-- ========================================
+             SIDEBAR
+        ========================================= -->
+<!-- ========================================
+             MAIN CONTENT
+        ========================================= -->
+        <main class="main-content">
+
+            <!-- ========================================
+                 NAVBAR
+            ========================================= -->
+            <header class="topbar">
+
+                <h1>ABC Public School</h1>
+
+                <div class="topbar-actions">
+
+                    <button
+                        class="notification-btn"
+                        id="notificationBtn"
+                        title="Notifications">
+                        ♧
+                        <span class="notification-dot"></span>
+                    </button>
+
+                    <div class="top-profile">
+                        <div class="profile-avatar">AS</div>
+
+                        <div class="top-profile-info">
+                            <strong>Admin</strong>
+                            <span>Administrator</span>
+                        </div>
+                    </div>
+
+                </div>
+
+            </header>
+
+
+            <!-- ========================================
+                 CALENDAR CONTENT
+            ========================================= -->
+            <section class="calendar-content">
+
+                <!-- HEADER -->
+                <div class="calendar-header">
+                    <div class="page-title">
+                        <h2>Academic Calendar & Events</h2>
+                        <p>Track school holidays, academic milestones, and upcoming institutional events.</p>
+                    </div>
+
+                    <button class="add-event-btn" id="openAddEventBtn">
+                        + Add Calendar Event
+                    </button>
+                </div>
+
+                <!-- CALENDAR WRAPPER (Interactive Month Grid + Event List) -->
+                <div class="calendar-layout">
+                    <!-- LEFT: INTERACTIVE MONTH VIEW -->
+                    <div class="calendar-box">
+                        <div class="calendar-nav">
+                            <button class="cal-nav-btn" id="prevMonthBtn">‹</button>
+                            <h3 id="currentMonthYear">October 2026</h3>
+                            <button class="cal-nav-btn" id="nextMonthBtn">›</button>
+                        </div>
+                        <div class="weekdays-grid">
+                            <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
+                        </div>
+                        <div class="days-grid" id="daysGrid">
+                            <!-- Populated dynamically via JS -->
+                        </div>
+                    </div>
+
+                    <!-- RIGHT: EVENTS LIST -->
+                    <div class="events-box">
+                        <div class="events-box-header">
+                            <h3>Upcoming Events</h3>
+                            <span class="events-badge" id="eventCountBadge">0 Events</span>
+                        </div>
+                        <div class="events-scroll-list" id="calendarEventsList">
+                            <p class="muted-loading">Loading events...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MODAL: ADD EVENT -->
+                <div class="modal-overlay" id="addEventModal" style="display: none;">
+                    <div class="modal-card">
+                        <div class="modal-header">
+                            <h3>Add Academic Event</h3>
+                            <button class="modal-close-btn" id="closeAddEventBtn">&times;</button>
+                        </div>
+                        <form id="addEventForm">
+                            <div class="form-group">
+                                <label for="evtTitle">Event Title *</label>
+                                <input type="text" id="evtTitle" required placeholder="e.g. Annual Sports Day">
+                            </div>
+                            <div class="form-group">
+                                <label for="evtType">Event Type *</label>
+                                <select id="evtType" required>
+                                    <option value="Event">School Event</option>
+                                    <option value="Holiday">Holiday</option>
+                                    <option value="Exam">Exam Window</option>
+                                    <option value="Meeting">Meeting / PTM</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group flex-1">
+                                    <label for="evtDate">Start Date *</label>
+                                    <input type="date" id="evtDate" required>
+                                </div>
+                                <div class="form-group flex-1">
+                                    <label for="evtEndDate">End Date</label>
+                                    <input type="date" id="evtEndDate">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="evtDesc">Description</label>
+                                <textarea id="evtDesc" rows="3" placeholder="Brief event notes..."></textarea>
+                            </div>
+                            <div class="modal-actions">
+                                <button type="button" class="btn-cancel" id="cancelAddEventBtn">Cancel</button>
+                                <button type="submit" class="btn-save">Save Event</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+
+    <!-- COMMON JS -->
+    <script src="../js/sidebar.js"></script>
+    <script src="../js/feature-toggle.js"></script>
+
+    <script src="../js/api.js"></script>
+    <script src="../js/script.js"></script>
+
+    <!-- CALENDAR JS -->
+    <script src="../js/calendar.js"></script>
+
+</body>
+</html>

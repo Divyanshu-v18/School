@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="View complete details for a teacher including professional and personal information.">
+
+    <title>Teacher Details</title>
+
+    <!-- COMMON CSS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/teacher_details.css">
+</head>
+
+<!-- ================= TEACHER DETAILS ================= -->
+
+<body>
+
+    <div class="teacher-details-page">
+        <div class="teacher-details-wrap">
+
+            <div class="details-header">
+                <div>
+                    <h1>Teacher Details</h1>
+                    <p>Complete information about the teacher</p>
+                </div>
+
+                <div class="header-actions">
+                    <button type="button" id="printTeacherBtn" class="action-btn print-btn">
+                        Print
+                    </button>
+                    <button type="button" id="editTeacherBtn" class="action-btn edit-btn">
+                        Edit
+                    </button>
+                    <button type="button" id="deleteTeacherBtn" class="action-btn delete-btn">
+                        Delete
+                    </button>
+                    <button type="button" id="backToTeachers" class="back-btn">
+                        ← Back to Teachers
+                    </button>
+                </div>
+            </div>
+
+            <!-- ================= BASIC DETAILS ================= -->
+
+            <section class="details-section">
+                <h2>Basic Details</h2>
+
+                <div class="details-grid">
+                    <div class="details-group">
+                        <span>Teacher ID</span>
+                        <strong id="teacherId">-</strong>
+                    </div>
+                    <div class="details-group">
+                        <span>Full Name</span>
+                        <strong id="fullName">-</strong>
+                    </div>
+                    <div class="details-group">
+                        <span>Date of Birth</span>
+                        <strong id="dateOfBirth">-</strong>
+                    </div>
+                    <div class="details-group">
+                        <span>Gender</span>
+                        <strong id="gender">-</strong>
+                    </div>
+                    <div class="details-group">
+                        <span>Category</span>
+                        <strong id="category">-</strong>
+                    </div>
+                    <div class="details-group">
+                        <span>Blood Group</span>
+                        <strong id="bloodGroup">-</strong>
+                    </div>
+                    <div class="details-group">
+                        <span>Phone</span>
+                        <strong id="phone">-</strong>
+                    </div>
+                    <div class="details-group">
+                        <span>Email</span>
+                        <strong id="email">-</strong>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= ADDRESS DETAILS ================= -->
+
+            <section class="details-section">
+                <h2>Address Details</h2>
+
+                <div class="details-grid">
+                    <div class="details-group">
+                        <span>House No.</span>
+                        <strong id="houseNo">-</strong>
+                    </div>
+                    <div class="details-group">
+                        <span>Street</span>
+                        <strong id="street">-</strong>
+                    </div>
+                    <div class="details-group">
+                        <span>City</span>
+                        <strong id="city">-</strong>
+                    </div>
+                    <div class="details-group">
+                        <span>State</span>
+                        <strong id="state">-</strong>
+                    </div>
+                    <div class="details-group">
+                        <span>Pincode</span>
+                        <strong id="pincode">-</strong>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= PROFESSIONAL DETAILS ================= -->
+
+            <section class="details-section">
+                <h2>Professional Details</h2>
+
+                <div class="details-grid">
+                    <div class="details-group">
+                        <span>Date of Joining</span>
+                        <strong id="dateOfJoining">-</strong>
+                    </div>
+                    <div class="details-group">
+                        <span>Joining No.</span>
+                        <strong id="joiningNo">-</strong>
+                    </div>
+                    <div class="details-group">
+                        <span>Aadhar No.</span>
+                        <strong id="aadharNo">-</strong>
+                    </div>
+                    <div class="details-group">
+                        <span>Qualification</span>
+                        <strong id="qualification">-</strong>
+                    </div>
+                    <div class="details-group">
+                        <span>Post</span>
+                        <strong id="post">-</strong>
+                    </div>
+                    <div class="details-group">
+                        <span>CL</span>
+                        <strong id="cl">-</strong>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="../js/sidebar.js"></script>
+    <script src="../js/feature-toggle.js"></script>
+
+    <script src="../js/api.js"></script>
+    <script src="../js/script.js"></script>
+    <script src="../js/teacher_details.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,309 @@
+/* ========================================
+   ATTENDANCE PAGE
+======================================== */
+
+.attendance-content {
+    width: 100%;
+    min-height: calc(100vh - 88px);
+    padding: 28px 32px 50px;
+    box-sizing: border-box;
+    background: #f6f6f2;
+}
+
+.attendance-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 24px;
+}
+
+.attendance-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.btn-mark-all {
+    padding: 11px 18px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    border: 1px solid var(--olive);
+    background: #fff;
+    color: var(--olive);
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-mark-all:hover {
+    background: #eef2ea;
+}
+
+.save-attendance-btn {
+    padding: 11px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    border: none;
+    background: var(--olive);
+    color: #fff;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.save-attendance-btn:hover {
+    opacity: 0.92;
+}
+
+/* ========================================
+   FILTER CONTROLS
+======================================== */
+
+.attendance-filter-bar {
+    display: flex;
+    align-items: flex-end;
+    gap: 14px;
+    background: #fff;
+    padding: 16px 20px;
+    border-radius: 12px;
+    border: 1px solid #e5e5e5;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.filter-group.flex-1 {
+    flex: 1;
+}
+
+.filter-group label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+}
+
+.filter-group input,
+.filter-group select {
+    height: 40px;
+    padding: 0 12px;
+    border: 1px solid #d8d8d8;
+    border-radius: 7px;
+    font-size: 14px;
+    background: #fafaf8;
+    color: var(--text-dark);
+    outline: none;
+}
+
+.filter-group input:focus,
+.filter-group select:focus {
+    border-color: var(--olive);
+    background: #fff;
+}
+
+.btn-load {
+    height: 40px;
+    padding: 0 18px;
+    border: none;
+    background: var(--olive-dark);
+    color: #fff;
+    border-radius: 7px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.btn-load:hover {
+    opacity: 0.9;
+}
+
+/* ========================================
+   KPI CARDS
+======================================== */
+
+.attendance-kpis {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 14px;
+    margin-bottom: 24px;
+}
+
+.kpi-card {
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    border-radius: 10px;
+    padding: 14px 16px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.target-type-card {
+    background: #fafaf8;
+    border-color: #e0e0dc;
+}
+
+.target-toggle-group {
+    display: flex;
+    background: #e9e9e2;
+    border-radius: 8px;
+    padding: 3px;
+    gap: 3px;
+    width: 100%;
+    margin-top: 4px;
+}
+
+.target-toggle-btn {
+    flex: 1;
+    border: none;
+    background: transparent;
+    padding: 6px 10px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-dark);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all .2s ease;
+}
+
+.target-toggle-btn.active {
+    background: #fff;
+    color: var(--olive);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.kpi-label {
+    display: block;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+}
+
+.kpi-val {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text-dark);
+}
+
+.kpi-card.present { border-color: #bbf7d0; background: #f0fdf4; }
+.kpi-card.present .kpi-val { color: #166534; }
+
+.kpi-card.absent { border-color: #fecaca; background: #fef2f2; }
+.kpi-card.absent .kpi-val { color: #991b1b; }
+
+.kpi-card.rate { border-color: #bfdbfe; background: #eff6ff; }
+.kpi-card.rate .kpi-val { color: #1e40af; }
+
+/* ========================================
+   TABLE
+======================================== */
+
+.attendance-table-wrap {
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    border-radius: 12px;
+    overflow-x: auto;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+}
+
+.attendance-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.attendance-table th,
+.attendance-table td {
+    padding: 13px 18px;
+    border-bottom: 1px solid #e5e5e5;
+    font-size: 14px;
+    vertical-align: middle;
+    text-align: left;
+}
+
+.attendance-table th {
+    background: #fafaf8;
+    font-weight: 600;
+    color: var(--text-dark);
+    text-align: left;
+}
+
+.attendance-table tbody tr:hover {
+    background: #fafafa;
+}
+
+/* Time Input for Teachers */
+.time-input {
+    padding: 6px 10px;
+    border: 1px solid #d8d8d8;
+    border-radius: 6px;
+    font-size: 13px;
+    background: #fff;
+    color: var(--text-dark);
+    font-family: inherit;
+    outline: none;
+    transition: border-color .15s ease;
+}
+.time-input:focus {
+    border-color: var(--olive);
+}
+
+/* Status Radio Pill Options */
+.status-pill-group {
+    display: flex;
+    gap: 8px;
+}
+
+.status-pill {
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: 1px solid #d0d0d0;
+    font-size: 13px;
+    font-weight: 500;
+    background: #fff;
+    transition: all 0.15s ease;
+}
+
+.status-pill input {
+    margin: 0;
+    display: none;
+}
+
+.status-pill.selected-present {
+    background: #dcfce7;
+    border-color: #22c55e;
+    color: #15803d;
+    font-weight: 600;
+}
+
+.status-pill.selected-absent {
+    background: #fee2e2;
+    border-color: #ef4444;
+    color: #b91c1c;
+    font-weight: 600;
+}
+
+.table-loading {
+    text-align: center;
+    color: var(--text-muted);
+    padding: 30px !important;
+}
+
+@media (max-width: 900px) {
+    .attendance-filter-bar {
+        flex-wrap: wrap;
+    }
+    .attendance-kpis {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}

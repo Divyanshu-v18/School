@@ -1,0 +1,821 @@
+/* ========================================
+   COMMON VARIABLES
+======================================== */
+
+:root {
+
+    /* Primary */
+    --olive: #59644A;
+    --olive-dark: #30382A;
+    --olive-light: #6B7659;
+
+    /* Secondary */
+    --off-white: #F7F8F2;
+
+    /* Supporting */
+    --white: #FFFFFF;
+
+    /* Text */
+    --text-dark: #20251F;
+    --text-muted: #70776C;
+
+    /* Border */
+    --border: #D7DDD2;
+    --border-color: var(--border); /* alias for backward compatibility */
+
+    /* Notification */
+    --danger: #9A4D45;
+
+    /* Text alias for backward compatibility */
+    --text-light: var(--text-muted);
+
+    /* Font */
+    --font-main:
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Helvetica,
+        Arial,
+        sans-serif;
+}
+
+
+/* ========================================
+   COMMON RESET
+======================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100%;
+    min-height: 100%;
+}
+
+body {
+    font-family: var(--font-main);
+    background: var(--off-white);
+    color: var(--text-dark);
+
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+button {
+    font-family: inherit;
+    cursor: pointer;
+}
+
+
+/* ========================================
+   COMMON PAGE LAYOUT
+======================================== */
+
+.page-layout {
+    display: flex;
+
+    width: 100%;
+    height: 100vh;
+    min-height: 100vh;
+
+    overflow: hidden;
+}
+
+
+/* ========================================
+   SIDEBAR
+======================================== */
+
+.sidebar {
+    width: 250px;
+    height: 100vh;
+
+    min-height: 0;
+
+    flex-shrink: 0;
+
+    background: var(--olive);
+
+    display: flex;
+    flex-direction: column;
+
+    padding: 24px 16px;
+
+    color: var(--white);
+
+    overflow: hidden;
+
+    position: relative;
+}
+
+
+/* Sidebar separator */
+
+.sidebar::after {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    right: 0;
+
+    top: 86px;
+
+    height: 2px;
+
+    background: var(--off-white);
+}
+
+
+/* ========================================
+   SIDEBAR BRAND
+======================================== */
+
+.admin-brand {
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 0 10px;
+
+    margin-bottom: 36px;
+
+    flex-shrink: 0;
+}
+
+.brand-icon {
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: var(--off-white);
+    color: var(--olive);
+
+    border-radius: 11px;
+
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.brand-info h2 {
+    color: var(--white);
+
+    font-size: 17px;
+    font-weight: 650;
+
+    letter-spacing: -0.2px;
+}
+
+
+/* ========================================
+   SIDEBAR NAVIGATION
+======================================== */
+
+.navigation {
+    display: flex;
+    flex-direction: column;
+
+    gap: 4px;
+
+    flex: 1;
+    min-height: 0;
+
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    padding-right: 4px;
+}
+
+
+/* Sidebar scrollbar */
+
+.navigation::-webkit-scrollbar {
+    width: 5px;
+}
+
+.navigation::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.navigation::-webkit-scrollbar-thumb {
+    background: rgba(247, 248, 242, 0.35);
+
+    border-radius: 10px;
+}
+
+.navigation::-webkit-scrollbar-thumb:hover {
+    background: rgba(247, 248, 242, 0.55);
+}
+
+
+/* Navigation item */
+
+.nav-item {
+    display: flex;
+    align-items: center;
+
+    gap: 13px;
+
+    height: 46px;
+    min-height: 46px;
+
+    padding: 0 13px;
+
+    border-radius: 10px;
+
+    color: rgba(255, 255, 255, 0.78);
+
+    font-size: 14px;
+    font-weight: 500;
+
+    letter-spacing: -0.1px;
+
+    flex-shrink: 0;
+
+    white-space: nowrap;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease;
+}
+
+.nav-item:hover {
+    background: rgba(255, 255, 255, 0.10);
+
+    color: var(--white);
+}
+
+.nav-item.active {
+    background: var(--off-white);
+
+    color: var(--olive-dark);
+
+    font-weight: 650;
+}
+
+.nav-icon {
+    width: 22px;
+    min-width: 22px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 16px;
+
+    opacity: 0.9;
+
+    flex-shrink: 0;
+}
+
+
+/* ========================================
+   SIDEBAR BOTTOM
+======================================== */
+
+.sidebar-bottom {
+    margin-top: 12px;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 4px;
+
+    flex-shrink: 0;
+
+    background: var(--olive);
+}
+
+
+/* ========================================
+   SIDEBAR PROFILE
+======================================== */
+
+.sidebar-profile {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 15px 8px 4px;
+
+    margin-top: 10px;
+
+    border-top: 1px solid rgba(247, 248, 242, 0.35);
+}
+
+.profile-avatar {
+    width: 36px;
+    height: 36px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: var(--off-white);
+
+    color: var(--olive);
+
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.profile-info {
+    display: flex;
+    flex-direction: column;
+
+    gap: 3px;
+
+    flex: 1;
+}
+
+.profile-info strong {
+    color: var(--white);
+
+    font-size: 12px;
+    font-weight: 650;
+}
+
+.profile-info span {
+    color: rgba(255, 255, 255, 0.68);
+
+    font-size: 10px;
+}
+
+.logout-btn {
+    border: none;
+
+    background: transparent;
+
+    color: rgba(255, 255, 255, 0.80);
+
+    font-size: 18px;
+
+    padding: 5px;
+}
+
+.logout-btn:hover {
+    color: var(--white);
+}
+
+
+/* ========================================
+   COMMON MAIN CONTENT AREA
+======================================== */
+
+.main-content {
+    flex: 1;
+    width: 0;
+    height: 100vh;
+    min-width: 0;
+
+    background: var(--off-white);
+
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+
+/* ========================================
+   NAVBAR
+======================================== */
+
+.topbar {
+    height: 88px;
+ 
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    
+    background: var(--olive);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 40px;
+
+    border-bottom: 2px solid var(--off-white);
+    border-left: 2px solid var(--off-white);
+}
+
+
+/* School name */
+
+.topbar h1 {
+    color: var(--white);
+
+    font-size: 21px;
+    font-weight: 650;
+
+    letter-spacing: -0.35px;
+
+    line-height: 1.2;
+}
+
+
+/* ========================================
+   NAVBAR ACTIONS
+======================================== */
+
+.topbar-actions {
+    display: flex;
+    align-items: center;
+
+    gap: 18px;
+}
+
+
+/* ========================================
+   NOTIFICATION
+======================================== */
+
+.notification-btn {
+    width: 40px;
+    height: 40px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background: var(--off-white);
+
+    color: var(--olive);
+
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 16px;
+
+    transition: 0.2s ease;
+}
+
+.notification-btn:hover {
+    background: var(--white);
+}
+
+.notification-dot {
+    position: absolute;
+
+    width: 6px;
+    height: 6px;
+
+    background: var(--danger);
+
+    border-radius: 50%;
+
+    top: 7px;
+    right: 8px;
+}
+
+
+/* ========================================
+   NAVBAR PROFILE
+======================================== */
+
+.top-profile {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+}
+
+.top-profile .profile-avatar {
+    background: var(--off-white);
+
+    color: var(--olive);
+}
+
+.top-profile-info {
+    display: flex;
+    flex-direction: column;
+
+    gap: 3px;
+}
+
+.top-profile-info strong {
+    color: var(--white);
+
+    font-size: 13px;
+    font-weight: 650;
+
+    line-height: 1.2;
+}
+
+.top-profile-info span {
+    color: rgba(255, 255, 255, 0.68);
+
+    font-size: 10px;
+}
+
+
+/* ========================================
+   COMMON RESPONSIVE
+======================================== */
+
+@media (max-width: 800px) {
+
+    .sidebar {
+        width: 70px;
+
+        padding: 20px 10px;
+    }
+
+    .admin-brand {
+        justify-content: center;
+
+        padding: 0;
+    }
+
+    .brand-info {
+        display: none;
+    }
+
+    .nav-item {
+        justify-content: center;
+    }
+
+    .nav-item span:last-child {
+        display: none;
+    }
+
+    .profile-info,
+    .logout-btn {
+        display: none;
+    }
+
+    .sidebar-profile {
+        justify-content: center;
+    }
+
+    .topbar {
+        padding: 0 20px;
+    }
+
+    .top-profile-info {
+        display: none;
+    }
+}
+
+
+@media (max-width: 500px) {
+
+    .topbar {
+        height: 70px;
+
+        padding: 0 15px;
+    }
+
+    .topbar h1 {
+        font-size: 17px;
+    }
+}
+
+
+/* ========================================
+   COMMON DELETE CONFIRMATION MODAL
+======================================== */
+
+.delete-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+.delete-modal {
+    width: 420px;
+    max-width: 90%;
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 28px;
+    text-align: center;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+}
+
+.delete-modal h3 {
+    margin: 0 0 10px;
+    font-size: 22px;
+}
+
+.delete-modal p {
+    margin: 0;
+    color: #666;
+}
+
+.delete-countdown {
+    width: 60px;
+    height: 60px;
+    margin: 20px auto;
+    border-radius: 50%;
+    background: #f1f1f1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.delete-actions {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.delete-cancel-btn,
+.delete-confirm-btn {
+    border: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.delete-cancel-btn {
+    background: #eeeeee;
+    color: #333;
+}
+
+.delete-confirm-btn {
+    background: #ddd;
+    color: #888;
+    cursor: not-allowed;
+}
+
+.delete-confirm-btn.active {
+    background: #b33a3a;
+    color: white;
+    cursor: pointer;
+}
+
+.delete-confirm-btn.active:hover {
+    background: #962f2f;
+}
+
+/* ========================================
+   TOPBAR LOGOUT BUTTON & PROFILE INTEGRATION
+======================================== */
+.top-logout-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255, 255, 255, 0.15);
+    color: var(--white);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 550;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+}
+
+.top-logout-btn:hover {
+    background: rgba(217, 83, 79, 0.9);
+    border-color: rgba(217, 83, 79, 1);
+    color: var(--white);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(217, 83, 79, 0.3);
+}
+
+.top-logout-icon {
+    font-size: 14px;
+    line-height: 1;
+}
+
+.logout-btn {
+    cursor: pointer;
+    transition: transform 0.15s ease, color 0.15s ease;
+}
+
+.logout-btn:hover {
+    transform: scale(1.15);
+    color: #ff9b9b;
+}
+
+/* ========================================
+   STANDARDIZED LOGOUT CONFIRMATION MODAL
+======================================== */
+.logout-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.7);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 99999;
+    animation: modalFadeIn 0.2s ease;
+}
+
+.logout-modal-card {
+    background: var(--white);
+    border-radius: 16px;
+    width: 90%;
+    max-width: 420px;
+    padding: 28px 24px 24px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+    text-align: center;
+    animation: modalSlideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.logout-modal-icon {
+    width: 56px;
+    height: 56px;
+    margin: 0 auto 16px;
+    border-radius: 50%;
+    background: #fee2e2;
+    color: #ef4444;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+}
+
+.logout-modal-card h3 {
+    margin: 0 0 8px;
+    font-size: 19px;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.logout-modal-card p {
+    margin: 0 0 24px;
+    font-size: 14px;
+    color: #64748b;
+    line-height: 1.5;
+}
+
+.logout-modal-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+}
+
+.logout-modal-btn {
+    flex: 1;
+    padding: 11px 18px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: all 0.18s ease;
+}
+
+.logout-btn-cancel {
+    background: #f1f5f9;
+    color: #475569;
+}
+
+.logout-btn-cancel:hover {
+    background: #e2e8f0;
+    color: #1e293b;
+}
+
+.logout-btn-confirm {
+    background: #ef4444;
+    color: var(--white);
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+.logout-btn-confirm:hover {
+    background: #dc2626;
+    transform: translateY(-1px);
+}
+
+@keyframes modalFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes modalSlideUp {
+    from { transform: translateY(16px) scale(0.97); opacity: 0; }
+    to { transform: translateY(0) scale(1); opacity: 1; }
+}
