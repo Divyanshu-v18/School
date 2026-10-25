@@ -37,8 +37,8 @@ __pycache__/
 /reports/
 /docs/
 /files/
-/backend/tests/
-/frontend/tests/
+/admin/backend/tests/
+/admin/frontend/tests/
 
 # Logs and archives
 *.log
