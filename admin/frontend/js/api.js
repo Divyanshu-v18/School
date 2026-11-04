@@ -158,16 +158,17 @@
         if (!options || typeof options !== "object") {
             throw new Error("Invalid request options.");
         }
-    
+
         const session = getAdminSession();
-    
-        if (!session) {
+
+        if (!session || !session.token) {
             redirectToLogin();
-            throw new Error("Session missing. Please log in again.");
+            throw new Error("Session token missing. Please log in again.");
         }
-    
+        
         const headers = new Headers(options.headers || {});
-    
+        headers.set("Authorization", `Bearer ${session.token}`);
+
         if (
             typeof options.body === "string" &&
             !headers.has("Content-Type") &&
