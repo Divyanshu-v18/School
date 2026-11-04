@@ -151,9 +151,10 @@
     /* ========================================
        AUTHENTICATED FETCH
     ======================================== */
+    
     async function authenticatedFetch(endpoint, options = {}) {
         const url = resolveApiUrl(endpoint);
-
+    
         if (!options || typeof options !== "object") {
             throw new Error("Invalid request options.");
         }
@@ -175,28 +176,29 @@
         ) {
             headers.set("Content-Type", "application/json");
         }
-
+    
         const response = await fetch(url, {
             ...options,
             headers,
             credentials: "include"
         });
-
+    
         if (response.status === 401) {
             redirectToLogin();
             throw new Error(
                 "Admin session expired or invalid. Please log in again."
             );
         }
-
+    
         if (response.status === 403) {
             throw new Error(
                 "Access forbidden. Your role is not permitted to perform this action."
             );
         }
-
+    
         return response;
     }
+
 
     async function logout() {
         try {
