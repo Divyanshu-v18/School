@@ -8,19 +8,19 @@
     "use strict";
 
     const SESSION_STORAGE_KEY = "abc_school_session";
-
+    
     function getDefaultApiBaseUrl() {
         const { hostname, protocol } = window.location;
-
-        // Keep local frontend/API hostnames identical so SameSite=Lax cookies
-        // work in development. Production must configure API_BASE_URL
-        // explicitly before this script loads.
+    
+        // Local development
         if (hostname === "localhost" || hostname === "127.0.0.1") {
             return `${protocol}//${hostname}:8000`;
         }
-
-        return null;
+    
+        // Production backend on Render
+        return "https://school-backend-99n7.onrender.com";
     }
+
 
     /*
      * Configure window.API_BASE_URL before this script loads when deploying.
