@@ -46,15 +46,22 @@ DB_USER = os.environ["DB_USER"]
 DB_PASSWORD = os.environ["DB_PASSWORD"]
 DB_NAME = os.environ["DB_NAME"]
 
+DB_SSL_CA = os.getenv(
+    "DB_SSL_CA",
+    "/etc/ssl/certs/ca-certificates.crt"
+).strip()
 
 def _create_connection(database_name: str = DB_NAME):
-    """Create a MySQL connection using the configured credentials."""
+    """Create a verified TLS connection to the database."""
     return mysql.connector.connect(
         host=DB_HOST,
         port=DB_PORT,
         user=DB_USER,
         password=DB_PASSWORD,
         database=database_name,
+        ssl_ca=DB_SSL_CA,
+        ssl_verify_cert=True,
+        ssl_verify_identity=True,
     )
 
 
