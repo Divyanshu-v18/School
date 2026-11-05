@@ -197,8 +197,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     );
                 }
 
-                const apiEndpoint =
-                    `${baseUrl.href.replace(/\/+$/, "")}/api/auth/login`;
+                const apiEndpoint = 
+                    `${window.API_BASE_URL}/api/auth/login`;
 
                 const response = await fetch(apiEndpoint, {
                     method: "POST",
