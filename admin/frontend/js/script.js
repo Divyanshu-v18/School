@@ -90,9 +90,27 @@ if (notificationBtn) {
                 loginTime: new Date().toISOString()
             })
         );
-    } catch (error) {
-        sessionStorage.removeItem("abc_school_session");
-        window.location.replace("login.html");
+        } catch (error) {
+
+        // A cancelled request does not mean the session has expired.
+        if (error?.name === "AbortError") {
+            return;
+        }
+
+        // HTTP 401 is already handled by authenticatedFetch().
+        if (error?.status === 401) {
+            return;
+        }
+
+        // Network errors and temporary connection failures
+        // must not destroy the user's session.
+        console.error(
+            "Authentication verification could not complete:",
+            error
+        );
+
+        // Keep the session metadata intact.
+        // The backend remains responsible for protecting API access.
     }
 })();
 
