@@ -183,16 +183,23 @@
         });
     
         if (response.status === 401) {
-            redirectToLogin();
-            throw new Error(
-                "Admin session expired or invalid. Please log in again."
+            
+        redirectToLogin();    const error = new Error(
+            "Admin session expired or invalid. Please log in again."
+                    
             );
+        
+            error.status = 401;
+            throw error;
         }
     
         if (response.status === 403) {
-            throw new Error(
+            const error = new Error(
                 "Access forbidden. Your role is not permitted to perform this action."
             );
+        
+            error.status = 403;
+            throw error;
         }
     
         return response;
