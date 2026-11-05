@@ -2,9 +2,11 @@
 {
   "$schema": "https://developers.cloudflare.com/workers/wrangler/config-schema.json",
   "name": "school-shivaji",
+  "main": "../worker.js",
   "compatibility_date": "2026-10-29",
   "assets": {
     "directory": ".",
+    "binding": "ASSETS",
     "not_found_handling": "404-page"
   }
 }

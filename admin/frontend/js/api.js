@@ -10,15 +10,15 @@
     const SESSION_STORAGE_KEY = "abc_school_session";
     
     function getDefaultApiBaseUrl() {
-        const { hostname, protocol } = window.location;
-    
-        // Local development
+        const { hostname, protocol, origin } = window.location;
+
+        // Local development: communicate directly with local FastAPI.
         if (hostname === "localhost" || hostname === "127.0.0.1") {
             return `${protocol}//${hostname}:8000`;
         }
-    
-        // Production backend on Render
-        return "https://school-backend-99n7.onrender.com";
+
+        // Production: use the same-origin Cloudflare Worker API proxy.
+        return origin;
     }
 
 
