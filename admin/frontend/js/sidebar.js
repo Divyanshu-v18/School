@@ -24,13 +24,37 @@
         { href: "settings.html", icon: "⚙", label: "Settings" },
         { href: "help.html", icon: "?", label: "Help" }
     ];
+
     const PAGE_ROLES = {
-        "dashboard.html": ["admin"], "student.html": ["admin", "teacher", "staff"],
-        "teacher.html": ["admin", "teacher", "staff"], "subject.html": ["admin", "teacher", "staff"],
-        "attendance.html": ["admin", "teacher"], "fees.html": ["admin", "staff"],
-        "exam.html": ["admin", "teacher"], "notice.html": ["admin", "teacher", "staff"],
-        "timetable.html": ["admin", "teacher", "staff"], "transport.html": ["admin", "staff"],
-        "calendar.html": ["admin", "teacher", "staff"], "settings.html": ["admin"]
+        "dashboard.html": ["admin"],
+        "student.html": ["admin", "teacher", "staff"],
+        "teacher.html": ["admin", "teacher", "staff"],
+        "subject.html": ["admin", "teacher", "staff"],
+        "attendance.html": ["admin", "teacher"],
+        "fees.html": ["admin", "staff"],
+        "exam.html": ["admin", "teacher"],
+        "notice.html": ["admin", "teacher", "staff"],
+        "timetable.html": ["admin", "teacher", "staff"],
+        "transport.html": ["admin", "staff"],
+        "calendar.html": ["admin", "teacher", "staff"],
+        "settings.html": ["admin"]
+    };
+
+    // Maps pages to their backend feature names.
+    const PAGE_FEATURES = {
+        "student.html": "students",
+        "teacher.html": "teachers",
+        "class.html": "classes",
+        "subject.html": "subjects",
+        "attendance.html": "attendance",
+        "fees.html": "fees",
+        "exam.html": "exams",
+        "assignment.html": "assignments",
+        "notice.html": "notices",
+        "timetable.html": "timetable",
+        "library.html": "library",
+        "transport.html": "transport",
+        "calendar.html": "calendar"
     };
 
     const SUB_PAGE_MAP = {
@@ -62,6 +86,7 @@
 
         try {
             const rawSession = sessionStorage.getItem("abc_school_session");
+
             if (!rawSession) return fallback;
 
             const sessionData = JSON.parse(rawSession);
@@ -98,6 +123,7 @@
                     : initials || "AS";
 
             return { name, role, avatar };
+
         } catch {
             return fallback;
         }
@@ -107,34 +133,103 @@
         const element = document.createElement(tag);
 
         if (className) element.className = className;
-        if (text !== undefined) element.textContent = String(text);
+
+        if (text !== undefined) {
+            element.textContent = String(text);
+        }
 
         return element;
     }
 
-    function buildSidebar() {
+    // Fetch feature configuration from the backend.
+    async function getFeatureConfiguration() {
+        try {
+            if (!window.api || typeof window.api.get !== "function") {
+                throw new Error("Authenticated API client is not available.");
+            }
+
+            const response = await window.api.get("/api/features");
+
+            if (!response.ok) {
+                throw new Error("Unable to load feature configuration.");
+            }
+
+            const payload = await response.json();
+
+            if (
+                !payload ||
+                !payload.features ||
+                typeof payload.features !== "object" ||
+                Array.isArray(payload.features)
+            ) {
+                throw new Error("Invalid feature configuration response.");
+            }
+
+            return payload.features;
+
+        } catch (error) {
+            console.error(
+                "Unable to load feature configuration:",
+                error
+            );
+
+            return null;
+        }
+    }
+
+    function buildSidebar(features) {
         const activePage = getActivePage();
         const session = getSessionDisplay();
 
         const aside = createElement("aside", "sidebar");
 
         const brand = createElement("div", "admin-brand");
-        brand.appendChild(createElement("div", "brand-icon", "A"));
+
+        brand.appendChild(
+            createElement("div", "brand-icon", "A")
+        );
 
         const brandInfo = createElement("div", "brand-info");
-        brandInfo.appendChild(createElement("h2", "", "Admin"));
+
+        brandInfo.appendChild(
+            createElement("h2", "", "Admin")
+        );
+
         brand.appendChild(brandInfo);
         aside.appendChild(brand);
 
         const navigation = createElement("nav", "navigation");
 
         const currentRole = session.role.toLowerCase();
+
         NAV_LINKS.forEach(link => {
-            if (!(PAGE_ROLES[link.href] || ["admin"]).includes(currentRole)) return;
+
+            // Check role permissions.
+            if (
+                !(PAGE_ROLES[link.href] || ["admin"])
+                    .includes(currentRole)
+            ) {
+                return;
+            }
+
+            // Check backend feature configuration.
+            const featureName = PAGE_FEATURES[link.href];
+
+            if (
+                featureName &&
+                features &&
+                features[featureName] === false
+            ) {
+                return;
+            }
+
             const anchor = document.createElement("a");
+
             anchor.href = link.href;
+
             anchor.className =
-                "nav-item" + (link.href === activePage ? " active" : "");
+                "nav-item" +
+                (link.href === activePage ? " active" : "");
 
             if (link.href === activePage) {
                 anchor.setAttribute("aria-current", "page");
@@ -143,6 +238,7 @@
             anchor.appendChild(
                 createElement("span", "nav-icon", link.icon)
             );
+
             anchor.appendChild(
                 createElement("span", "", link.label)
             );
@@ -152,7 +248,9 @@
 
         aside.appendChild(navigation);
 
+        // Profile and logout section.
         const bottom = createElement("div", "sidebar-bottom");
+
         const profile = createElement("div", "sidebar-profile");
 
         profile.appendChild(
@@ -160,40 +258,63 @@
         );
 
         const profileInfo = createElement("div", "profile-info");
+
         profileInfo.appendChild(
             createElement("strong", "", session.name)
         );
+
         profileInfo.appendChild(
             createElement("span", "", session.role)
         );
 
         profile.appendChild(profileInfo);
 
-        const logoutButton = createElement("button", "logout-btn", "↪");
+        const logoutButton = createElement(
+            "button",
+            "logout-btn",
+            "↪"
+        );
+
         logoutButton.type = "button";
         logoutButton.id = "logoutBtn";
         logoutButton.title = "Logout from portal";
-        logoutButton.setAttribute("aria-label", "Logout");
+
+        logoutButton.setAttribute(
+            "aria-label",
+            "Logout"
+        );
 
         profile.appendChild(logoutButton);
+
         bottom.appendChild(profile);
         aside.appendChild(bottom);
 
         return aside;
     }
 
-    function injectSidebar() {
+    // Insert sidebar after feature configuration is loaded.
+    async function injectSidebar() {
         const layout = document.querySelector(".page-layout");
-        if (!layout || layout.querySelector("aside.sidebar")) return;
 
-        layout.prepend(buildSidebar());
+        if (!layout || layout.querySelector("aside.sidebar")) {
+            return;
+        }
+
+        const features = await getFeatureConfiguration();
+
+        if (!layout.querySelector("aside.sidebar")) {
+            layout.prepend(buildSidebar(features));
+        }
     }
 
     if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", injectSidebar, {
-            once: true
-        });
+        document.addEventListener(
+            "DOMContentLoaded",
+            injectSidebar,
+            { once: true }
+        );
     } else {
         injectSidebar();
     }
+
 })();

@@ -10,6 +10,7 @@ ROLES = {"admin", "teacher", "staff"}
 # but does not match /students/details.
 ROLE_PERMISSIONS = {
     "teacher": {
+        ("GET", "/api/features"),
         ("GET", "/students"),
         ("GET", "/subjects"),
         ("GET", "/teachers"),
@@ -23,6 +24,7 @@ ROLE_PERMISSIONS = {
         ("GET", "/notices"),
     },
     "staff": {
+        ("GET", "/api/features"),
         ("GET", "/students"),
         ("GET", "/teachers"),
         ("GET", "/subjects"),
