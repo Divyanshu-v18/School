@@ -10,7 +10,6 @@ ROLES = {"admin", "teacher", "staff"}
 # but does not match /students/details.
 ROLE_PERMISSIONS = {
     "teacher": {
-        ("GET", "/api/features"),
         ("GET", "/students"),
         ("GET", "/subjects"),
         ("GET", "/teachers"),
@@ -24,7 +23,6 @@ ROLE_PERMISSIONS = {
         ("GET", "/notices"),
     },
     "staff": {
-        ("GET", "/api/features"),
         ("GET", "/students"),
         ("GET", "/teachers"),
         ("GET", "/subjects"),
@@ -82,7 +80,7 @@ def is_allowed(role: str, method: str, path: str) -> bool:
 
 
 def require_permission(role: str, method: str, path: str) -> None:
-    """Raise 403 when the authenticated role lacks permission."""
+    """Raise 403 when a role lacks permission."""
     if not is_allowed(role, method, path):
         raise HTTPException(
             status_code=403,
