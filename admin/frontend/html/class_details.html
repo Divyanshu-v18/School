@@ -1,27 +1,30 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="View the details, roster, and statistics for a specific class.">
   <title>Class Details</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="../css/style.css" />
   <link rel="stylesheet" href="../css/class_details.css" />
 </head>
+
 <body>
   <div class="page-layout">
     <!-- Sidebar injected by sidebar.js -->
 
-      <!-- MAIN CONTENT -->
+    <!-- MAIN CONTENT -->
     <main class="main-content">
       <header class="topbar">
         <h1>ABC Public School</h1>
         <div class="topbar-actions">
-          <button class="notification-btn" id="notificationBtn" title="Notifications">♧<span class="notification-dot"></span></button>
+          <button class="notification-btn" id="notificationBtn" title="Notifications">♧<span
+              class="notification-dot"></span></button>
           <div class="top-profile">
             <div class="profile-avatar">AS</div>
             <div class="top-profile-info"><strong>Admin</strong><span>Administrator</span></div>
@@ -44,7 +47,7 @@
               </p>
             </div>
           </div>
-        
+
           <a class="back-button" href="class.html">
             ← <span>Back to Classes</span>
           </a>
@@ -57,7 +60,7 @@
             <strong class="stat-number">—</strong>
             <span class="stat-note">Students enrolled in this class</span>
           </article>
-          
+
           <article class="stat-card subjects-stat-card" id="subjectsStatCard">
             <span class="stat-label">Subjects</span>
             <strong class="stat-number" id="subjectsCount">—</strong>
@@ -90,7 +93,10 @@
         <div class="detail-panels">
           <section class="detail-panel sections-table-panel">
             <div class="panel-heading">
-              <div><h3>Sections</h3><p>Sections configured under this class</p></div>
+              <div>
+                <h3>Sections</h3>
+                <p>Sections configured under this class</p>
+              </div>
             </div>
             <div class="section-table-wrap">
               <table class="section-table">
@@ -117,7 +123,7 @@
           </section>
         </div>
 
-        
+
         <section class="detail-panel students-panel">
           <div class="panel-heading">
             <div>
@@ -128,7 +134,7 @@
               Go to Students →
             </a>
           </div>
-        
+
           <div class="section-table-wrap">
             <table class="section-table">
               <thead>
@@ -151,11 +157,13 @@
       </section>
     </main>
   </div>
-  <script src="../js/sidebar.js"></script>
-  <script src="../js/feature-toggle.js"></script>
 
   <script src="../js/api.js"></script>
-    <script src="../js/script.js"></script>
+  <script src="../js/sidebar.js"></script>
+
+  <script src="../js/script.js"></script>
   <script src="../js/class_details.js"></script>
+
 </body>
+
 </html>

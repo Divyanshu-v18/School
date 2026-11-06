@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -25,7 +26,7 @@
         <!-- ========================================
              SIDEBAR
         ========================================= -->
-<!-- ========================================
+        <!-- ========================================
              MAIN CONTENT
         ========================================= -->
         <main class="main-content">
@@ -37,10 +38,7 @@
 
                 <div class="topbar-actions">
 
-                    <button
-                        class="notification-btn"
-                        id="notificationBtn"
-                        title="Notifications">
+                    <button class="notification-btn" id="notificationBtn" title="Notifications">
                         ♧
                         <span class="notification-dot"></span>
                     </button>
@@ -165,7 +163,8 @@
                         <div class="modal-header">
                             <div>
                                 <h3 id="resultsModalTitle">Exam Results</h3>
-                                <p id="resultsModalSub" style="margin: 4px 0 0; font-size: 13px; color: #777;">Class and subject</p>
+                                <p id="resultsModalSub" style="margin: 4px 0 0; font-size: 13px; color: #777;">Class and
+                                    subject</p>
                             </div>
                             <button class="modal-close-btn" id="closeResultsModalBtn">&times;</button>
                         </div>
@@ -173,7 +172,8 @@
                         <!-- Add single result inline -->
                         <form id="addResultForm" class="add-result-inline">
                             <input type="hidden" id="currentExamId">
-                            <input type="number" id="resStudentId" required placeholder="Student ID" style="width: 100px;">
+                            <input type="number" id="resStudentId" required placeholder="Student ID"
+                                style="width: 100px;">
                             <input type="text" id="resStudentName" required placeholder="Student Name" style="flex: 1;">
                             <input type="number" id="resMarks" required placeholder="Marks" style="width: 90px;">
                             <input type="text" id="resGrade" placeholder="Grade" style="width: 80px;">
@@ -206,15 +206,12 @@
 
     </div>
 
-    <!-- COMMON JS -->
-    <script src="../js/sidebar.js"></script>
-    <script src="../js/feature-toggle.js"></script>
-
     <script src="../js/api.js"></script>
-    <script src="../js/script.js"></script>
+    <script src="../js/sidebar.js"></script>
 
-    <!-- EXAM JS -->
+    <script src="../js/script.js"></script>
     <script src="../js/exam.js"></script>
 
 </body>
+
 </html>

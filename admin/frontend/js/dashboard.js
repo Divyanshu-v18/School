@@ -297,17 +297,4 @@ document.addEventListener("DOMContentLoaded", () => {
 
     loadDashboardStats();
 
-    /* ========================================
-       NOTIFICATION
-    ======================================== */
-
-    const notificationBtn = document.getElementById("notificationBtn");
-
-    if (notificationBtn) {
-        notificationBtn.addEventListener("click", () => {
-            alert(
-                "Latest updates and announcements are loaded on the notice board."
-            );
-        });
-    }
 });

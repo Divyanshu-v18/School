@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -39,10 +40,7 @@
 
                 <div class="topbar-actions">
 
-                    <button
-                        class="notification-btn"
-                        id="notificationBtn"
-                        title="Notifications">
+                    <button class="notification-btn" id="notificationBtn" title="Notifications">
                         ♧
                         <span class="notification-dot"></span>
                     </button>
@@ -117,7 +115,8 @@
                     <div class="panel-toolbar">
                         <div class="search-box">
                             <span class="search-icon">🔍</span>
-                            <input type="text" id="studentSearchInput" placeholder="Search by name, student ID, stop, or route...">
+                            <input type="text" id="studentSearchInput"
+                                placeholder="Search by name, student ID, stop, or route...">
                         </div>
                         <div class="filter-controls">
                             <select id="studentClassFilter">
@@ -173,7 +172,8 @@
                     <div class="panel-toolbar">
                         <div class="search-box">
                             <span class="search-icon">🔍</span>
-                            <input type="text" id="driverSearchInput" placeholder="Search by driver name, phone, license, or route...">
+                            <input type="text" id="driverSearchInput"
+                                placeholder="Search by driver name, phone, license, or route...">
                         </div>
                         <div class="filter-controls">
                             <select id="driverStatusFilter">
@@ -213,7 +213,8 @@
                     <div class="panel-toolbar">
                         <div class="search-box">
                             <span class="search-icon">🔍</span>
-                            <input type="text" id="vehicleSearchInput" placeholder="Search by vehicle no., model, driver, or route...">
+                            <input type="text" id="vehicleSearchInput"
+                                placeholder="Search by vehicle no., model, driver, or route...">
                         </div>
                         <div class="filter-controls">
                             <select id="vehicleTypeFilter">
@@ -258,7 +259,8 @@
 
                         <!-- Form Type Switcher inside Modal -->
                         <div class="modal-type-switcher">
-                            <button type="button" class="type-btn active" id="modalTypeStudentBtn">Student Enrollment</button>
+                            <button type="button" class="type-btn active" id="modalTypeStudentBtn">Student
+                                Enrollment</button>
                             <button type="button" class="type-btn" id="modalTypeDriverBtn">Add Driver</button>
                             <button type="button" class="type-btn" id="modalTypeVehicleBtn">Add Vehicle</button>
                         </div>
@@ -356,13 +358,15 @@
                                 </div>
                                 <div class="form-group flex-1">
                                     <label for="vehicleCapacity">Total Capacity (Seats) *</label>
-                                    <input type="number" id="vehicleCapacity" min="1" max="100" placeholder="50" required>
+                                    <input type="number" id="vehicleCapacity" min="1" max="100" placeholder="50"
+                                        required>
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="form-group flex-1">
                                     <label for="vehicleRoute">Assigned Route *</label>
-                                    <input type="text" id="vehicleRoute" placeholder="e.g. Route 01 - Green Line" required>
+                                    <input type="text" id="vehicleRoute" placeholder="e.g. Route 01 - Green Line"
+                                        required>
                                 </div>
                                 <div class="form-group flex-1">
                                     <label for="vehicleFitness">Fitness / Insurance Valid Till</label>
@@ -384,15 +388,12 @@
     </div>
 
 
-    <!-- COMMON JS -->
-    <script src="../js/sidebar.js"></script>
-    <script src="../js/feature-toggle.js"></script>
-
     <script src="../js/api.js"></script>
-    <script src="../js/script.js"></script>
+    <script src="../js/sidebar.js"></script>
 
-    <!-- TRANSPORT JS -->
+    <script src="../js/script.js"></script>
     <script src="../js/transport.js"></script>
 
 </body>
+
 </html>
