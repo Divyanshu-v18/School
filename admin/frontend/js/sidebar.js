@@ -244,8 +244,6 @@
     function injectSidebar() {
         const layout = document.querySelector(".page-layout");
 
-        if (!layout || layout.querySelector("aside.sidebar")) return;
-
         if (!layout || layout.querySelector("aside.sidebar")) {
             return;
         }
