@@ -70,18 +70,24 @@
         };
 
         try {
-            const rawSession = sessionStorage.getItem("abc_school_session");
+            const rawSession = sessionStorage.getItem(
+                "abc_school_session"
+            );
+
             if (!rawSession) return fallback;
 
             const sessionData = JSON.parse(rawSession);
             const user = sessionData?.user;
 
-            if (!user || typeof user !== "object") return fallback;
+            if (!user || typeof user !== "object") {
+                return fallback;
+            }
 
             const name =
                 typeof user.name === "string" && user.name.trim()
                     ? user.name.trim()
-                    : typeof user.username === "string" && user.username.trim()
+                    : typeof user.username === "string" &&
+                      user.username.trim()
                         ? user.username.trim()
                         : "Admin";
 
@@ -107,6 +113,7 @@
                     : initials || "AS";
 
             return { name, role, avatar };
+
         } catch {
             return fallback;
         }
@@ -115,8 +122,13 @@
     function createElement(tag, className, text) {
         const element = document.createElement(tag);
 
-        if (className) element.className = className;
-        if (text !== undefined) element.textContent = String(text);
+        if (className) {
+            element.className = className;
+        }
+
+        if (text !== undefined) {
+            element.textContent = String(text);
+        }
 
         return element;
     }
@@ -127,14 +139,23 @@
 
         const aside = createElement("aside", "sidebar");
 
+        // Brand
         const brand = createElement("div", "admin-brand");
-        brand.appendChild(createElement("div", "brand-icon", "A"));
+
+        brand.appendChild(
+            createElement("div", "brand-icon", "A")
+        );
 
         const brandInfo = createElement("div", "brand-info");
-        brandInfo.appendChild(createElement("h2", "", "Admin"));
+
+        brandInfo.appendChild(
+            createElement("h2", "", "Admin")
+        );
+
         brand.appendChild(brandInfo);
         aside.appendChild(brand);
 
+        // Navigation
         const navigation = createElement("nav", "navigation");
 
         const currentRole = session.role.toLowerCase();
@@ -142,11 +163,21 @@
         NAV_LINKS.forEach(link => {
             if (!(PAGE_ROLES[link.href] || ["admin"]).includes(currentRole)) return;
 
+            // Preserve role-based navigation permissions.
+            if (
+                !(PAGE_ROLES[link.href] || ["admin"])
+                    .includes(currentRole)
+            ) {
+                return;
+            }
+
             const anchor = document.createElement("a");
+
             anchor.href = link.href;
 
             anchor.className =
-                "nav-item" + (link.href === activePage ? " active" : "");
+                "nav-item" +
+                (link.href === activePage ? " active" : "");
 
             if (link.href === activePage) {
                 anchor.setAttribute("aria-current", "page");
@@ -165,7 +196,9 @@
 
         aside.appendChild(navigation);
 
+        // Profile and logout section
         const bottom = createElement("div", "sidebar-bottom");
+
         const profile = createElement("div", "sidebar-profile");
 
         profile.appendChild(
@@ -184,32 +217,53 @@
 
         profile.appendChild(profileInfo);
 
-        const logoutButton = createElement("button", "logout-btn", "↪");
+        const logoutButton = createElement(
+            "button",
+            "logout-btn",
+            "↪"
+        );
+
         logoutButton.type = "button";
         logoutButton.id = "logoutBtn";
         logoutButton.title = "Logout from portal";
-        logoutButton.setAttribute("aria-label", "Logout");
+
+        logoutButton.setAttribute(
+            "aria-label",
+            "Logout"
+        );
 
         profile.appendChild(logoutButton);
+
         bottom.appendChild(profile);
         aside.appendChild(bottom);
 
         return aside;
     }
 
+    // Insert sidebar immediately without making API requests.
     function injectSidebar() {
         const layout = document.querySelector(".page-layout");
 
         if (!layout || layout.querySelector("aside.sidebar")) return;
 
-        layout.prepend(buildSidebar());
+        if (!layout || layout.querySelector("aside.sidebar")) {
+            return;
+        }
+
+        const sidebar = buildSidebar();
+
+        layout.prepend(sidebar);
     }
 
+    // Initialize sidebar.
     if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", injectSidebar, {
-            once: true
-        });
+        document.addEventListener(
+            "DOMContentLoaded",
+            injectSidebar,
+            { once: true }
+        );
     } else {
         injectSidebar();
     }
+
 })();

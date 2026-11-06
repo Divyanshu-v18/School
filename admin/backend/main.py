@@ -1,3 +1,4 @@
+
 """
 Main FastAPI Application Entrypoint.
 Initializes FastAPI, mounts CORS middleware, and includes all modular feature routers.
@@ -12,6 +13,9 @@ logger = logging.getLogger(__name__)
 
 from contextlib import asynccontextmanager
 from collections.abc import AsyncIterator
+from pathlib import Path
+
+from dotenv import load_dotenv
 from starlette.concurrency import run_in_threadpool
 
 from fastapi import FastAPI, Depends, Request, HTTPException
@@ -20,6 +24,7 @@ from fastapi.responses import JSONResponse
 
 from database import get_db_connection
 from security import get_allowed_origins
+
 from routers.dashboard import router as dashboard_router
 from routers.teachers import router as teachers_router
 from routers.students import router as students_router
@@ -32,6 +37,7 @@ from routers.timetable import router as timetable_router
 from routers.calendar import router as calendar_router
 from routers.settings import router as settings_router
 from routers.transport import router as transport_router
+
 from routers.auth import router as auth_router
 from routers.auth import (
     SESSION_COOKIE_NAME,
@@ -39,14 +45,16 @@ from routers.auth import (
     require_admin_session,
     provision_configured_admin,
 )
+
 from rbac import require_permission
 
-from pathlib import Path
-from dotenv import load_dotenv
 
+# Load environment variables.
 _ENV_FILE = Path(__file__).resolve().parent / ".env"
+
 if _ENV_FILE.is_file():
     load_dotenv(dotenv_path=_ENV_FILE)
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncIterator[None]:
@@ -62,8 +70,9 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
-# Cookie sessions require credentialed CORS. Origins remain explicitly validated
-# by get_allowed_origins(); wildcard origins must never be used here.
+
+# Cookie sessions require credentialed CORS.
+# Origins remain explicitly validated by get_allowed_origins().
 app.add_middleware(
     CORSMiddleware,
     allow_origins=get_allowed_origins(),
@@ -72,10 +81,6 @@ app.add_middleware(
     allow_headers=["Content-Type", "Authorization"],
 )
 
-# @app.on_event("startup")
-# def provision_database_admin() -> None:
-#     """Fail startup rather than serving an API without database-backed authentication."""
-#     provision_configured_admin()
 
 DOCS_PATHS = {
     "/docs",
@@ -90,24 +95,33 @@ DOCS_PATHS = {
 
 def _verify_docs_credentials(auth_header: str | None) -> bool:
     """Verify HTTP Basic credentials for documentation endpoints."""
+
     docs_user = os.getenv("DOCS_USERNAME", "").strip()
     docs_pass = os.getenv("DOCS_PASSWORD", "")
+
     if not docs_user or not docs_pass:
         return False
+
     if not auth_header:
         return False
+
     scheme, _, param = auth_header.partition(" ")
+
     if scheme.lower() != "basic" or not param.strip():
         return False
+
     try:
         decoded = base64.b64decode(param.strip()).decode("utf-8")
         username, sep, password = decoded.partition(":")
+
         if not sep:
             return False
+
         return (
             secrets.compare_digest(username, docs_user)
             and secrets.compare_digest(password, docs_pass)
         )
+
     except Exception:
         return False
 
@@ -115,36 +129,63 @@ def _verify_docs_credentials(auth_header: str | None) -> bool:
 @app.middleware("http")
 async def enforce_api_rbac(request: Request, call_next):
     """Authenticate, authorize, and apply origin-based CSRF protection."""
+
     path = request.url.path
     normalized_path = path.rstrip("/") if path != "/" else "/"
 
-    # Cookie authentication is ambient browser credential material. Require a
-    # configured frontend Origin for its unsafe requests. Login permits no
-    # Origin only for non-browser clients, but rejects a browser Origin that is
-    # not explicitly configured; this prevents login CSRF without trusting Host.
+    # Cookie authentication is ambient browser credential material.
+    # Require a configured frontend Origin for unsafe requests.
     origin = request.headers.get("origin")
     trusted_origins = set(get_allowed_origins())
-    is_unsafe_method = request.method not in {"GET", "HEAD", "OPTIONS"}
-    has_session_cookie = bool(request.cookies.get(SESSION_COOKIE_NAME))
+
+    is_unsafe_method = request.method not in {
+        "GET", "HEAD", "OPTIONS"
+    }
+
+    has_session_cookie = bool(
+        request.cookies.get(SESSION_COOKIE_NAME)
+    )
+
     if is_unsafe_method and path == "/api/auth/login":
+
         if origin is not None and origin not in trusted_origins:
-            return JSONResponse({"detail": "Untrusted request origin."}, status_code=403)
-    elif is_unsafe_method and has_session_cookie:
-        if origin not in trusted_origins:
             return JSONResponse(
-                {"detail": "A trusted Origin is required for cookie-authenticated changes."},
+                {"detail": "Untrusted request origin."},
                 status_code=403,
             )
 
-    if normalized_path in DOCS_PATHS:
-        if not _verify_docs_credentials(request.headers.get("Authorization")):
+    elif is_unsafe_method and has_session_cookie:
+
+        if origin not in trusted_origins:
             return JSONResponse(
-                {"detail": "Invalid or missing documentation credentials."},
+                {
+                    "detail": (
+                        "A trusted Origin is required for "
+                        "cookie-authenticated changes."
+                    )
+                },
+                status_code=403,
+            )
+
+    # Protect API documentation with HTTP Basic authentication.
+    if normalized_path in DOCS_PATHS:
+
+        if not _verify_docs_credentials(
+            request.headers.get("Authorization")
+        ):
+            return JSONResponse(
+                {
+                    "detail": (
+                        "Invalid or missing documentation credentials."
+                    )
+                },
                 status_code=401,
                 headers={"WWW-Authenticate": "Basic"},
             )
+
         return await call_next(request)
 
+    # Public endpoints.
     if (
         path in {
             "/",
@@ -155,49 +196,100 @@ async def enforce_api_rbac(request: Request, call_next):
         or request.method == "OPTIONS"
     ):
         return await call_next(request)
+
     try:
+        # Authenticate the user.
         user = get_authenticated_user(
             request.headers.get("Authorization"),
             request.cookies.get(SESSION_COOKIE_NAME),
         )
-        require_permission(user["role"], request.method, path)
+
+        # Enforce role-based permissions.
+        # Admin, teacher and staff permissions remain controlled by rbac.py.
+        require_permission(
+            user["role"],
+            request.method,
+            path,
+        )
+
         request.state.user = user
+
     except HTTPException as exc:
-        return JSONResponse({"detail": exc.detail}, status_code=exc.status_code, headers=exc.headers or {})
+
+        return JSONResponse(
+            {"detail": exc.detail},
+            status_code=exc.status_code,
+            headers=exc.headers or {},
+        )
+
     return await call_next(request)
+
 
 @app.middleware("http")
 async def add_security_headers(request: Request, call_next):
     """Add baseline security headers to every API response."""
+
     response = await call_next(request)
 
-    response.headers.setdefault("X-Content-Type-Options", "nosniff")
-    response.headers.setdefault("X-Frame-Options", "DENY")
-    response.headers.setdefault("Referrer-Policy", "no-referrer")
-    response.headers.setdefault("Cache-Control", "no-store")
+    response.headers.setdefault(
+        "X-Content-Type-Options", "nosniff"
+    )
+
+    response.headers.setdefault(
+        "X-Frame-Options", "DENY"
+    )
+
+    response.headers.setdefault(
+        "Referrer-Policy", "no-referrer"
+    )
+
+    response.headers.setdefault(
+        "Cache-Control", "no-store"
+    )
 
     return response
 
 
 @app.get("/")
 def home():
-    """Health check endpoint confirming backend server availability."""
-    return {"message": "School Management Backend is running"}
+    """Health check endpoint confirming backend availability."""
+
+    return {
+        "message": "School Management Backend is running"
+    }
 
 
 @app.get("/test-db", dependencies=[Depends(require_admin_session)])
 def test_database():
     """Diagnostic endpoint checking MySQL database connectivity."""
+
     connection = None
+
     try:
         connection = get_db_connection()
+
         if connection.is_connected():
-            return {"message": "MySQL connection successful"}
-        return {"message": "MySQL connection failed"}
+            return {
+                "message": "MySQL connection successful"
+            }
+
+        return {
+            "message": "MySQL connection failed"
+        }
+
     except Exception as exc:
-        logger.error("Database connectivity test failed: %s", exc)
-        return {"message": "MySQL connection failed"}
+
+        logger.error(
+            "Database connectivity test failed: %s",
+            exc,
+        )
+
+        return {
+            "message": "MySQL connection failed"
+        }
+
     finally:
+
         if connection is not None:
             try:
                 connection.close()
@@ -205,11 +297,14 @@ def test_database():
                 pass
 
 
-# Mount all modular feature routers
-# Public authentication endpoints
+# Mount all modular feature routers.
+
+# Public authentication endpoints.
 app.include_router(auth_router)
 
-# Protected management endpoints — enforced by the RBAC middleware above.
+
+# Protected management endpoints.
+# Access is enforced by the RBAC middleware above.
 admin_routers = [
     dashboard_router,
     teachers_router,
@@ -225,11 +320,17 @@ admin_routers = [
     transport_router,
 ]
 
+
 for router in admin_routers:
     app.include_router(router)
 
 
-
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run("main:app", host="127.0.0.1", port=8000, reload=True)
+
+    uvicorn.run(
+        "main:app",
+        host="127.0.0.1",
+        port=8000,
+        reload=True,
+    )
