@@ -8,6 +8,7 @@
 
     const NAV_LINKS = [
         { href: "dashboard.html", icon: "⌂", label: "Dashboard" },
+        { href: "registration.html", icon: "＋", label: "Registration" },
         { href: "student.html", icon: "♙", label: "Students" },
         { href: "teacher.html", icon: "♟", label: "Teachers" },
         { href: "class.html", icon: "▤", label: "Classes" },
@@ -27,6 +28,7 @@
 
     const PAGE_ROLES = {
         "dashboard.html": ["admin"],
+        "registration.html": ["admin", "staff"],
         "student.html": ["admin", "teacher", "staff"],
         "teacher.html": ["admin", "teacher", "staff"],
         "subject.html": ["admin", "teacher", "staff"],
@@ -159,6 +161,7 @@
         const currentRole = session.role.toLowerCase();
 
         NAV_LINKS.forEach(link => {
+            if (!(PAGE_ROLES[link.href] || ["admin"]).includes(currentRole)) return;
 
             // Preserve role-based navigation permissions.
             if (
