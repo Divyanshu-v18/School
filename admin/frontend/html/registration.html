@@ -1,0 +1,252 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Student and teacher registration portal.">
+
+    <title>Registration | ABC Public School</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="../css/style.css">
+
+    <style>
+        .registration-main {
+            flex: 1;
+            min-width: 0;
+            min-height: 100vh;
+            background: #f6f7f3;
+        }
+
+        .registration-header {
+            background: #59664d;
+            color: white;
+            min-height: 78px;
+            padding: 18px 38px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-sizing: border-box;
+        }
+
+        .registration-header h2 {
+            margin: 0;
+            font-size: 21px;
+            font-weight: 700;
+        }
+
+        .registration-content {
+            padding: 36px;
+        }
+
+        .registration-heading {
+            margin-bottom: 32px;
+        }
+
+        .registration-heading h1 {
+            margin: 0 0 9px;
+            color: #20291f;
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        .registration-heading p {
+            margin: 0;
+            color: #788174;
+            font-size: 14px;
+        }
+
+        .registration-section-title {
+            color: #263126;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 18px;
+        }
+
+        .registration-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 24px;
+        }
+
+        .registration-card {
+            background: #ffffff;
+            border: 1px solid #e8ebe4;
+            border-radius: 13px;
+            padding: 27px;
+            box-shadow: 0 3px 12px rgba(30, 45, 25, 0.04);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .registration-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 22px rgba(30, 45, 25, 0.08);
+        }
+
+        .registration-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 12px;
+            background: #edf1e8;
+            color: #59664d;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 25px;
+            margin-bottom: 21px;
+        }
+
+        .registration-card h3 {
+            margin: 0 0 10px;
+            font-size: 19px;
+            color: #263126;
+        }
+
+        .registration-card p {
+            color: #7b8477;
+            font-size: 14px;
+            line-height: 1.7;
+            margin: 0 0 24px;
+        }
+
+        .registration-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            background: #59664d;
+            color: white;
+            text-decoration: none;
+            padding: 12px 19px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            transition: background 0.2s ease;
+        }
+
+        .registration-button:hover {
+            background: #46533d;
+        }
+
+        .registration-note {
+            margin-top: 30px;
+            padding: 17px 20px;
+            border-left: 4px solid #849473;
+            background: #edf1e8;
+            border-radius: 5px;
+            color: #58644e;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 800px) {
+            .registration-content {
+                padding: 24px 18px;
+            }
+
+            .registration-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .registration-header {
+                padding: 18px;
+            }
+        }
+    </style>
+</head>
+
+<body class="registration-page">
+
+    <div class="page-layout">
+
+        <!-- SIDEBAR IS INJECTED BY sidebar.js -->
+
+        <main class="registration-main">
+
+            <header class="registration-header">
+                <h2>ABC Public School</h2>
+            </header>
+
+            <section class="registration-content">
+
+                <div class="registration-heading">
+                    <h1>Registration</h1>
+                    <p>Register new students and teachers in the school management system.</p>
+                </div>
+
+                <h2 class="registration-section-title">
+                    Choose Registration Type
+                </h2>
+
+                <div class="registration-grid">
+
+                    <!-- STUDENT REGISTRATION -->
+
+                    <article class="registration-card">
+
+                        <div class="registration-icon">
+                            ♙
+                        </div>
+
+                        <h3>Student Registration</h3>
+
+                        <p>
+                            Add a new student to ABC Public School.
+                            Enter personal details, admission information,
+                            parent details and address information.
+                        </p>
+
+                        <a href="add_student.html" class="registration-button">
+                            + Add Student
+                        </a>
+
+                    </article>
+
+
+                    <!-- TEACHER REGISTRATION -->
+
+                    <article class="registration-card">
+
+                        <div class="registration-icon">
+                            ♟
+                        </div>
+
+                        <h3>Teacher Registration</h3>
+
+                        <p>
+                            Register a new teacher or staff member.
+                            Enter personal information, contact details
+                            and professional information.
+                        </p>
+
+                        <a href="add_teacher.html" class="registration-button">
+                            + Add Teacher
+                        </a>
+
+                    </article>
+
+                </div>
+
+                <div class="registration-note">
+                    <strong>Note:</strong>
+                    Please verify all details before submitting a new
+                    student or teacher registration.
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+    <script src="../js/sidebar.js"></script>
+    <script src="../js/feature-toggle.js"></script>
+
+</body>
+</html>

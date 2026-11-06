@@ -8,6 +8,7 @@
 
     const NAV_LINKS = [
         { href: "dashboard.html", icon: "⌂", label: "Dashboard" },
+        { href: "registration.html", icon: "＋", label: "Registration" },
         { href: "student.html", icon: "♙", label: "Students" },
         { href: "teacher.html", icon: "♟", label: "Teachers" },
         { href: "class.html", icon: "▤", label: "Classes" },
@@ -24,13 +25,21 @@
         { href: "settings.html", icon: "⚙", label: "Settings" },
         { href: "help.html", icon: "?", label: "Help" }
     ];
+
     const PAGE_ROLES = {
-        "dashboard.html": ["admin"], "student.html": ["admin", "teacher", "staff"],
-        "teacher.html": ["admin", "teacher", "staff"], "subject.html": ["admin", "teacher", "staff"],
-        "attendance.html": ["admin", "teacher"], "fees.html": ["admin", "staff"],
-        "exam.html": ["admin", "teacher"], "notice.html": ["admin", "teacher", "staff"],
-        "timetable.html": ["admin", "teacher", "staff"], "transport.html": ["admin", "staff"],
-        "calendar.html": ["admin", "teacher", "staff"], "settings.html": ["admin"]
+        "dashboard.html": ["admin"],
+        "registration.html": ["admin", "staff"],
+        "student.html": ["admin", "teacher", "staff"],
+        "teacher.html": ["admin", "teacher", "staff"],
+        "subject.html": ["admin", "teacher", "staff"],
+        "attendance.html": ["admin", "teacher"],
+        "fees.html": ["admin", "staff"],
+        "exam.html": ["admin", "teacher"],
+        "notice.html": ["admin", "teacher", "staff"],
+        "timetable.html": ["admin", "teacher", "staff"],
+        "transport.html": ["admin", "staff"],
+        "calendar.html": ["admin", "teacher", "staff"],
+        "settings.html": ["admin"]
     };
 
     const SUB_PAGE_MAP = {
@@ -129,10 +138,13 @@
         const navigation = createElement("nav", "navigation");
 
         const currentRole = session.role.toLowerCase();
+
         NAV_LINKS.forEach(link => {
             if (!(PAGE_ROLES[link.href] || ["admin"]).includes(currentRole)) return;
+
             const anchor = document.createElement("a");
             anchor.href = link.href;
+
             anchor.className =
                 "nav-item" + (link.href === activePage ? " active" : "");
 
@@ -143,6 +155,7 @@
             anchor.appendChild(
                 createElement("span", "nav-icon", link.icon)
             );
+
             anchor.appendChild(
                 createElement("span", "", link.label)
             );
@@ -160,9 +173,11 @@
         );
 
         const profileInfo = createElement("div", "profile-info");
+
         profileInfo.appendChild(
             createElement("strong", "", session.name)
         );
+
         profileInfo.appendChild(
             createElement("span", "", session.role)
         );
@@ -184,6 +199,7 @@
 
     function injectSidebar() {
         const layout = document.querySelector(".page-layout");
+
         if (!layout || layout.querySelector("aside.sidebar")) return;
 
         layout.prepend(buildSidebar());
