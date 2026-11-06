@@ -54,4 +54,8 @@ def get_feature_for_path(path: str) -> str | None:
                 return feature_name
 
     return None
+
+def get_enabled_features() -> dict[str, bool]:
+    """Return a copy of the complete feature configuration."""
+    return FEATURES.copy()
  
