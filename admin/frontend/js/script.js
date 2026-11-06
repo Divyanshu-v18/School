@@ -64,8 +64,11 @@ if (notificationBtn) {
             "attendance.html": ["admin", "teacher"], "student.html": ["admin", "teacher", "staff"],
             "teacher.html": ["admin", "teacher", "staff"], "subject.html": ["admin", "teacher", "staff"],
             "timetable.html": ["admin", "teacher", "staff"], "calendar.html": ["admin", "teacher", "staff"],
-            "notice.html": ["admin", "teacher", "staff"], "exam.html": ["admin", "teacher"]
-            ,"help.html": ["admin", "teacher", "staff"]
+            "notice.html": ["admin", "teacher", "staff"], "exam.html": ["admin", "teacher"],
+            "help.html": ["admin", "teacher", "staff"], "class.html": ["admin"],
+            "class_details.html": ["admin"], "section_details.html": ["admin"],
+            "student_details.html": ["admin"], "teacher_details.html": ["admin"],
+            "assignment.html": ["admin"], "library.html": ["admin"]
         };
         const allowedRoles = pageRoles[file] || ["admin"];
 
