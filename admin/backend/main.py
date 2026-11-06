@@ -40,6 +40,11 @@ from routers.auth import (
     provision_configured_admin,
 )
 from rbac import require_permission
+from feature_config import (
+    get_enabled_features,
+    get_feature_for_path,
+    is_feature_enabled,
+)
 
 from pathlib import Path
 from dotenv import load_dotenv
@@ -160,7 +165,21 @@ async def enforce_api_rbac(request: Request, call_next):
             request.headers.get("Authorization"),
             request.cookies.get(SESSION_COOKIE_NAME),
         )
-        require_permission(user["role"], request.method, path)
+
+        # Enforce centrally configured feature availability for every role,
+        # including admins. Disabled modules cannot be accessed through the API.
+        feature_name = get_feature_for_path(path)
+        if feature_name is not None and not is_feature_enabled(feature_name):
+            return JSONResponse(
+                {"detail": "This feature is currently disabled."},
+                status_code=404,
+            )
+
+        # The feature list is safe for all authenticated roles to read.
+        # Other endpoints continue through the normal deny-by-default RBAC checks.
+        if not (request.method == "GET" and normalized_path == "/api/features"):
+            require_permission(user["role"], request.method, path)
+
         request.state.user = user
     except HTTPException as exc:
         return JSONResponse({"detail": exc.detail}, status_code=exc.status_code, headers=exc.headers or {})
@@ -183,6 +202,12 @@ async def add_security_headers(request: Request, call_next):
 def home():
     """Health check endpoint confirming backend server availability."""
     return {"message": "School Management Backend is running"}
+
+
+@app.get("/api/features")
+def get_features():
+    """Return feature availability to authenticated frontend clients."""
+    return {"features": get_enabled_features()}
 
 
 @app.get("/test-db", dependencies=[Depends(require_admin_session)])
