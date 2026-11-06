@@ -40,23 +40,6 @@
         "settings.html": ["admin"]
     };
 
-    // Maps pages to their backend feature names.
-    const PAGE_FEATURES = {
-        "student.html": "students",
-        "teacher.html": "teachers",
-        "class.html": "classes",
-        "subject.html": "subjects",
-        "attendance.html": "attendance",
-        "fees.html": "fees",
-        "exam.html": "exams",
-        "assignment.html": "assignments",
-        "notice.html": "notices",
-        "timetable.html": "timetable",
-        "library.html": "library",
-        "transport.html": "transport",
-        "calendar.html": "calendar"
-    };
-
     const SUB_PAGE_MAP = {
         "add_student.html": "student.html",
         "edit_student.html": "student.html",
@@ -85,19 +68,24 @@
         };
 
         try {
-            const rawSession = sessionStorage.getItem("abc_school_session");
+            const rawSession = sessionStorage.getItem(
+                "abc_school_session"
+            );
 
             if (!rawSession) return fallback;
 
             const sessionData = JSON.parse(rawSession);
             const user = sessionData?.user;
 
-            if (!user || typeof user !== "object") return fallback;
+            if (!user || typeof user !== "object") {
+                return fallback;
+            }
 
             const name =
                 typeof user.name === "string" && user.name.trim()
                     ? user.name.trim()
-                    : typeof user.username === "string" && user.username.trim()
+                    : typeof user.username === "string" &&
+                      user.username.trim()
                         ? user.username.trim()
                         : "Admin";
 
@@ -132,7 +120,9 @@
     function createElement(tag, className, text) {
         const element = document.createElement(tag);
 
-        if (className) element.className = className;
+        if (className) {
+            element.className = className;
+        }
 
         if (text !== undefined) {
             element.textContent = String(text);
@@ -141,48 +131,13 @@
         return element;
     }
 
-    // Fetch feature configuration from the backend.
-    async function getFeatureConfiguration() {
-        try {
-            if (!window.api || typeof window.api.get !== "function") {
-                throw new Error("Authenticated API client is not available.");
-            }
-
-            const response = await window.api.get("/api/features");
-
-            if (!response.ok) {
-                throw new Error("Unable to load feature configuration.");
-            }
-
-            const payload = await response.json();
-
-            if (
-                !payload ||
-                !payload.features ||
-                typeof payload.features !== "object" ||
-                Array.isArray(payload.features)
-            ) {
-                throw new Error("Invalid feature configuration response.");
-            }
-
-            return payload.features;
-
-        } catch (error) {
-            console.error(
-                "Unable to load feature configuration:",
-                error
-            );
-
-            return null;
-        }
-    }
-
-    function buildSidebar(features) {
+    function buildSidebar() {
         const activePage = getActivePage();
         const session = getSessionDisplay();
 
         const aside = createElement("aside", "sidebar");
 
+        // Brand
         const brand = createElement("div", "admin-brand");
 
         brand.appendChild(
@@ -198,27 +153,17 @@
         brand.appendChild(brandInfo);
         aside.appendChild(brand);
 
+        // Navigation
         const navigation = createElement("nav", "navigation");
 
         const currentRole = session.role.toLowerCase();
 
         NAV_LINKS.forEach(link => {
 
-            // Check role permissions.
+            // Preserve role-based navigation permissions.
             if (
                 !(PAGE_ROLES[link.href] || ["admin"])
                     .includes(currentRole)
-            ) {
-                return;
-            }
-
-            // Check backend feature configuration.
-            const featureName = PAGE_FEATURES[link.href];
-
-            if (
-                featureName &&
-                features &&
-                features[featureName] === false
             ) {
                 return;
             }
@@ -248,7 +193,7 @@
 
         aside.appendChild(navigation);
 
-        // Profile and logout section.
+        // Profile and logout section
         const bottom = createElement("div", "sidebar-bottom");
 
         const profile = createElement("div", "sidebar-profile");
@@ -291,36 +236,8 @@
 
         return aside;
     }
-    
-    // Apply backend feature configuration before showing navigation.
-    function applyFeatureConfiguration(features, navigation) {
-        const links = navigation.querySelectorAll("a.nav-item");
 
-        links.forEach(link => {
-            const filename = link.getAttribute("href")
-                ?.split("/")
-                .pop()
-                .toLowerCase();
-
-            const featureName = PAGE_FEATURES[filename];
-
-            // Fail closed: if configuration is unavailable,
-            // remove feature-specific navigation links.
-            if (
-                featureName &&
-                (!features || features[featureName] !== true)
-            ) {
-                link.remove();
-            }
-        });
-
-        // Reveal navigation only after filtering is complete.
-        navigation.style.visibility = "visible";
-        navigation.removeAttribute("aria-busy");
-    }
-
-    // Insert sidebar immediately, but keep navigation hidden
-    // until the backend configuration has been applied.
+    // Insert sidebar immediately without making API requests.
     function injectSidebar() {
         const layout = document.querySelector(".page-layout");
 
@@ -328,40 +245,12 @@
             return;
         }
 
-        // Build sidebar without waiting for the API.
-        const sidebar = buildSidebar(null);
+        const sidebar = buildSidebar();
 
-        const navigation = sidebar.querySelector(".navigation");
-
-        if (navigation) {
-            navigation.style.visibility = "hidden";
-            navigation.setAttribute("aria-busy", "true");
-        }
-
-        // Display the sidebar immediately.
         layout.prepend(sidebar);
-
-        // Load configuration in the background.
-        getFeatureConfiguration()
-            .then(features => {
-                if (navigation) {
-                    applyFeatureConfiguration(features, navigation);
-                }
-            })
-            .catch(error => {
-                console.error(
-                    "Feature configuration failed:",
-                    error
-                );
-
-                if (navigation) {
-                    applyFeatureConfiguration(null, navigation);
-                }
-            });
     }
 
-    
-
+    // Initialize sidebar.
     if (document.readyState === "loading") {
         document.addEventListener(
             "DOMContentLoaded",
