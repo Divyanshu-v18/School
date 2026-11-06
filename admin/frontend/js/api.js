@@ -192,7 +192,7 @@
             error.status = 401;
             throw error;
         }
-
+    
         if (response.status === 403) {
             const error = new Error(
                 "Access forbidden. Your role is not permitted to perform this action."
