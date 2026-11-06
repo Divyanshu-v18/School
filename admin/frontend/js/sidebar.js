@@ -291,50 +291,75 @@
 
         return aside;
     }
+    
+    // Apply backend feature configuration before showing navigation.
+    function applyFeatureConfiguration(features, navigation) {
+        const links = navigation.querySelectorAll("a.nav-item");
 
-    // Insert sidebar after feature configuration is loaded.
-    
-    // Apply backend feature configuration to the existing sidebar.
-    function applyFeatureConfiguration(features) {
-        if (!features) return;
-    
-        const links = document.querySelectorAll(
-            ".navigation a.nav-item"
-        );
-    
         links.forEach(link => {
             const filename = link.getAttribute("href")
                 ?.split("/")
                 .pop()
                 .toLowerCase();
-        
+
             const featureName = PAGE_FEATURES[filename];
-        
+
+            // Fail closed: if configuration is unavailable,
+            // remove feature-specific navigation links.
             if (
                 featureName &&
-                features[featureName] === false
+                (!features || features[featureName] !== true)
             ) {
                 link.remove();
             }
         });
+
+        // Reveal navigation only after filtering is complete.
+        navigation.style.visibility = "visible";
+        navigation.removeAttribute("aria-busy");
     }
-    
-    // Insert sidebar immediately, then load feature settings.
+
+    // Insert sidebar immediately, but keep navigation hidden
+    // until the backend configuration has been applied.
     function injectSidebar() {
         const layout = document.querySelector(".page-layout");
-    
+
         if (!layout || layout.querySelector("aside.sidebar")) {
             return;
         }
-    
-        // Show sidebar immediately.
-        layout.prepend(buildSidebar(null));
-    
-        // Fetch feature configuration in the background.
-        getFeatureConfiguration().then(features => {
-            applyFeatureConfiguration(features);
-        });
+
+        // Build sidebar without waiting for the API.
+        const sidebar = buildSidebar(null);
+
+        const navigation = sidebar.querySelector(".navigation");
+
+        if (navigation) {
+            navigation.style.visibility = "hidden";
+            navigation.setAttribute("aria-busy", "true");
+        }
+
+        // Display the sidebar immediately.
+        layout.prepend(sidebar);
+
+        // Load configuration in the background.
+        getFeatureConfiguration()
+            .then(features => {
+                if (navigation) {
+                    applyFeatureConfiguration(features, navigation);
+                }
+            })
+            .catch(error => {
+                console.error(
+                    "Feature configuration failed:",
+                    error
+                );
+
+                if (navigation) {
+                    applyFeatureConfiguration(null, navigation);
+                }
+            });
     }
+
     
 
     if (document.readyState === "loading") {
