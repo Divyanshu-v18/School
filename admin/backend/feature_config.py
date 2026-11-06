@@ -11,13 +11,13 @@ FEATURES = {
     "classes": True,
     "subjects": True,
     "attendance": True,
-    "fees": False,
+    "fees": True,
     "assignments": True,
     "notices": True,
-    "timetable": True,
+    "timetable": False,
     "library": False,
     "transport": True,
-    "calendar": True,
+    "calendar": False,
 }
 
 # API path prefixes belonging to each feature. Prefix matching is performed
