@@ -1,0 +1,253 @@
+
+/* ========================================
+   REGISTRATION MAIN AREA
+======================================== */
+
+.registration-main {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    min-width: 0;
+    background: var(--off-white);
+}
+
+
+/* ========================================
+   REGISTRATION HEADER
+======================================== */
+
+.registration-header {
+    min-height: 88px;
+    flex-shrink: 0;
+
+    background: var(--olive);
+    color: var(--white);
+
+    padding: 0 40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    border-bottom: 2px solid var(--off-white);
+    border-left: 2px solid var(--off-white);
+    box-sizing: border-box;
+}
+
+.registration-header h2 {
+    margin: 0;
+    font-size: 21px;
+    font-weight: 650;
+    letter-spacing: -0.35px;
+}
+
+
+/* ========================================
+   REGISTRATION CONTENT
+======================================== */
+
+.registration-content {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 36px 40px 45px;
+    box-sizing: border-box;
+}
+
+.registration-heading {
+    margin-bottom: 32px;
+}
+
+.registration-heading h1 {
+    margin: 0 0 9px;
+    color: var(--text-dark);
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.registration-heading p {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+
+/* ========================================
+   SECTION TITLE
+======================================== */
+
+.registration-section-title {
+    color: var(--text-dark);
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 18px;
+}
+
+
+/* ========================================
+   REGISTRATION GRID
+======================================== */
+
+.registration-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+}
+
+
+/* ========================================
+   REGISTRATION CARDS
+======================================== */
+
+.registration-card {
+    min-width: 0;
+    background: var(--white);
+
+    border: 1px solid var(--border);
+    border-radius: 13px;
+
+    padding: 27px;
+
+    box-shadow: 0 3px 12px rgba(30, 45, 25, 0.04);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.registration-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 22px rgba(30, 45, 25, 0.08);
+}
+
+
+/* ========================================
+   REGISTRATION ICON
+======================================== */
+
+.registration-icon {
+    width: 52px;
+    height: 52px;
+
+    border-radius: 12px;
+
+    background: #edf1e8;
+    color: var(--olive);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 25px;
+    margin-bottom: 21px;
+}
+
+
+/* ========================================
+   CARD TEXT
+======================================== */
+
+.registration-card h3 {
+    margin: 0 0 10px;
+    font-size: 19px;
+    color: var(--text-dark);
+    font-weight: 650;
+}
+
+.registration-card p {
+    color: var(--text-muted);
+    font-size: 14px;
+    line-height: 1.7;
+    margin: 0 0 24px;
+}
+
+
+/* ========================================
+   REGISTRATION BUTTON
+======================================== */
+
+.registration-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+
+    background: var(--olive);
+    color: var(--white);
+
+    text-decoration: none;
+
+    padding: 12px 19px;
+    border-radius: 8px;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    transition: background 0.2s ease;
+}
+
+.registration-button:hover {
+    background: var(--olive-dark);
+}
+
+
+/* ========================================
+   REGISTRATION NOTE
+======================================== */
+
+.registration-note {
+    margin-top: 30px;
+
+    padding: 17px 20px;
+
+    border-left: 4px solid #849473;
+    background: #edf1e8;
+
+    border-radius: 5px;
+
+    color: #58644e;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+
+/* ========================================
+   RESPONSIVE DESIGN
+======================================== */
+
+@media (max-width: 800px) {
+
+    .registration-content {
+        padding: 24px 22px;
+    }
+
+    .registration-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .registration-header {
+        min-height: 78px;
+        padding: 0 22px;
+    }
+
+    .registration-header h2 {
+        font-size: 19px;
+    }
+}
+
+
+@media (max-width: 500px) {
+
+    .registration-content {
+        padding: 20px 15px;
+    }
+
+    .registration-heading h1 {
+        font-size: 24px;
+    }
+
+    .registration-card {
+        padding: 22px;
+    }
+}
