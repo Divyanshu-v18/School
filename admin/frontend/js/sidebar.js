@@ -293,19 +293,49 @@
     }
 
     // Insert sidebar after feature configuration is loaded.
-    async function injectSidebar() {
+    
+    // Apply backend feature configuration to the existing sidebar.
+    function applyFeatureConfiguration(features) {
+        if (!features) return;
+    
+        const links = document.querySelectorAll(
+            ".navigation a.nav-item"
+        );
+    
+        links.forEach(link => {
+            const filename = link.getAttribute("href")
+                ?.split("/")
+                .pop()
+                .toLowerCase();
+        
+            const featureName = PAGE_FEATURES[filename];
+        
+            if (
+                featureName &&
+                features[featureName] === false
+            ) {
+                link.remove();
+            }
+        });
+    }
+    
+    // Insert sidebar immediately, then load feature settings.
+    function injectSidebar() {
         const layout = document.querySelector(".page-layout");
-
+    
         if (!layout || layout.querySelector("aside.sidebar")) {
             return;
         }
-
-        const features = await getFeatureConfiguration();
-
-        if (!layout.querySelector("aside.sidebar")) {
-            layout.prepend(buildSidebar(features));
-        }
+    
+        // Show sidebar immediately.
+        layout.prepend(buildSidebar(null));
+    
+        // Fetch feature configuration in the background.
+        getFeatureConfiguration().then(features => {
+            applyFeatureConfiguration(features);
+        });
     }
+    
 
     if (document.readyState === "loading") {
         document.addEventListener(
