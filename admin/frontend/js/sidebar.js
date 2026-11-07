@@ -161,6 +161,7 @@
         const currentRole = session.role.toLowerCase();
 
         NAV_LINKS.forEach(link => {
+            if (!(PAGE_ROLES[link.href] || ["admin"]).includes(currentRole)) return;
 
             // Preserve role-based navigation permissions.
             if (
