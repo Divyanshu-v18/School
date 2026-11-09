@@ -42,39 +42,6 @@ if (notificationBtn) {
     // Login page must remain accessible without an existing session.
     if (isLoginPage) return;
 
-    const VERIFY_TTL_MS = 5 * 60 * 1000; // re-verify with the server every 5 minutes
-
-    // Live URLs have no ".html" (e.g. /html/dashboard), so add it before the lookup.
-    let file = pathname.split("/").pop();
-    if (file && !file.endsWith(".html")) file += ".html";
-
-    const pageRoles = {
-        "dashboard.html": ["admin"], "settings.html": ["admin"],
-        "add_student.html": ["admin"], "edit_student.html": ["admin"],
-        "add_teacher.html": ["admin"], "edit_teacher.html": ["admin"],
-        "fees.html": ["admin", "staff"], "transport.html": ["admin", "staff"],
-        "attendance.html": ["admin", "teacher"], "student.html": ["admin", "teacher", "staff"],
-        "teacher.html": ["admin", "teacher", "staff"], "subject.html": ["admin", "teacher", "staff"],
-        "timetable.html": ["admin", "teacher", "staff"], "calendar.html": ["admin", "teacher", "staff"],
-        "notice.html": ["admin", "teacher", "staff"], "exam.html": ["admin", "teacher"],
-        "help.html": ["admin", "teacher", "staff"], "class.html": ["admin"],
-        "class_details.html": ["admin"], "section_details.html": ["admin"],
-        "student_details.html": ["admin"], "teacher_details.html": ["admin"],
-        "assignment.html": ["admin"], "library.html": ["admin"]
-    };
-    const allowedRoles = pageRoles[file] || ["admin"];
-
-    // Fast path: verified recently, so skip the network call.
-    try {
-        const cached = JSON.parse(sessionStorage.getItem("abc_school_session") || "null");
-        const fresh = cached?.verifiedAt && Date.now() - cached.verifiedAt < VERIFY_TTL_MS;
-
-        if (fresh && cached.user && allowedRoles.includes(cached.user.role)) {
-            return; // the server still checks every API call
-        }
-    } catch {}
-
-    // Slow path: ask the server.
     try {
         if (typeof window.authenticatedFetch !== "function") {
             throw new Error("Authenticated API client is unavailable.");
@@ -88,6 +55,22 @@ if (notificationBtn) {
         const payload = await response.json();
         const user = payload?.user;
         const role = user?.role;
+        const file = pathname.split("/").pop();
+        const pageRoles = {
+            "dashboard.html": ["admin"], "settings.html": ["admin"],
+            "add_student.html": ["admin"], "edit_student.html": ["admin"],
+            "add_teacher.html": ["admin"], "edit_teacher.html": ["admin"],
+            "fees.html": ["admin", "staff"], "transport.html": ["admin", "staff"],
+            "attendance.html": ["admin", "teacher"], "student.html": ["admin", "teacher", "staff"],
+            "teacher.html": ["admin", "teacher", "staff"], "subject.html": ["admin", "teacher", "staff"],
+            "timetable.html": ["admin", "teacher", "staff"], "calendar.html": ["admin", "teacher", "staff"],
+            "notice.html": ["admin", "teacher", "staff"], "exam.html": ["admin", "teacher"],
+            "help.html": ["admin", "teacher", "staff"], "class.html": ["admin"],
+            "class_details.html": ["admin"], "section_details.html": ["admin"],
+            "student_details.html": ["admin"], "teacher_details.html": ["admin"],
+            "assignment.html": ["admin"], "library.html": ["admin"]
+        };
+        const allowedRoles = pageRoles[file] || ["admin"];
 
         if (
             payload?.valid !== true ||
@@ -100,22 +83,40 @@ if (notificationBtn) {
             return;
         }
 
+        // This data drives only UI display. The server-side cookie/session is
+        // authoritative for authentication, expiry, and authorization.
         sessionStorage.setItem(
             "abc_school_session",
             JSON.stringify({
                 authenticated: true,
                 user,
-                loginTime: new Date().toISOString(),
-                verifiedAt: Date.now()
+                loginTime: new Date().toISOString()
             })
         );
-    } catch (error) {
-        if (error?.name === "AbortError") return;
-        if (error?.status === 401) return;
+        } catch (error) {
 
-        console.error("Authentication verification could not complete:", error);
+        // A cancelled request does not mean the session has expired.
+        if (error?.name === "AbortError") {
+            return;
+        }
+
+        // HTTP 401 is already handled by authenticatedFetch().
+        if (error?.status === 401) {
+            return;
+        }
+
+        // Network errors and temporary connection failures
+        // must not destroy the user's session.
+        console.error(
+            "Authentication verification could not complete:",
+            error
+        );
+
+        // Keep the session metadata intact.
+        // The backend remains responsible for protecting API access.
     }
 })();
+
 
 /* ========================================
    GLOBAL LOGOUT FUNCTION

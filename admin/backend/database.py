@@ -6,15 +6,11 @@ Database credentials must be supplied through environment variables or .env.
 
 import logging
 import os
-import threading
-import time
 from contextlib import contextmanager
 from pathlib import Path
 
 import mysql.connector
 from dotenv import load_dotenv
-
-from mysql.connector import pooling
 
 logger = logging.getLogger(__name__)
 
@@ -50,90 +46,23 @@ DB_USER = os.environ["DB_USER"]
 DB_PASSWORD = os.environ["DB_PASSWORD"]
 DB_NAME = os.environ["DB_NAME"]
 
-def _resolve_ssl_ca() -> str:
-    """Find a usable CA bundle: env var, then certifi, then system paths."""
-    explicit = os.getenv("DB_SSL_CA", "").strip()
-    if explicit and os.path.isfile(explicit):
-        return explicit
-
-    try:
-        import certifi
-        return certifi.where()
-    except ImportError:
-        pass
-
-    for path in ("/etc/ssl/certs/ca-certificates.crt", "/etc/ssl/cert.pem"):
-        if os.path.isfile(path):
-            return path
-
-    raise RuntimeError(
-        "No CA certificate bundle found. Set DB_SSL_CA to a valid file path."
-    )
-
-
-_LOCAL_HOSTS = {"localhost", "127.0.0.1", "::1"}
-
-# TLS is skipped ONLY when the database is on this same machine.
-USE_SSL = DB_HOST.strip().lower() not in _LOCAL_HOSTS
-
-if not USE_SSL and os.getenv("RENDER"):
-    # Render sets RENDER automatically. Never run production without TLS.
-    raise RuntimeError("Refusing to start: TLS is required for a hosted deployment.")
-
-if not USE_SSL:
-    logger.warning("Database TLS is OFF because DB_HOST is local. Development only.")
-
-DB_SSL_CA = _resolve_ssl_ca() if USE_SSL else None
-
-_POOL = None
-_POOL_LOCK = threading.Lock()
-
-
-def _get_pool():
-    """Create the connection pool once, safely across threads."""
-    global _POOL
-    if _POOL is None:
-        with _POOL_LOCK:
-            if _POOL is None:
-                config = {
-                    "pool_name": "school_pool",
-                    "pool_size": 10,
-                    "pool_reset_session": True,
-                    "host": DB_HOST,
-                    "port": DB_PORT,
-                    "user": DB_USER,
-                    "password": DB_PASSWORD,
-                    "database": DB_NAME,
-                }
-                if USE_SSL:
-                    config.update(
-                        ssl_ca=DB_SSL_CA,
-                        ssl_verify_cert=True,
-                        ssl_verify_identity=True,
-                    )
-                _POOL = pooling.MySQLConnectionPool(**config)
-    return _POOL
-
+DB_SSL_CA = os.getenv(
+    "DB_SSL_CA",
+    "/etc/ssl/certs/ca-certificates.crt"
+).strip()
 
 def _create_connection(database_name: str = DB_NAME):
-    """Borrow a connection from the pool (TLS-verified unless the DB is local)."""
-    pool = _get_pool()
-    deadline = time.monotonic() + 10
-
-    while True:
-        try:
-            conn = pool.get_connection()
-            break
-        except pooling.PoolError:
-            # All connections are busy; wait briefly instead of failing.
-            if time.monotonic() > deadline:
-                raise
-            time.sleep(0.05)
-
-    conn.ping(reconnect=True, attempts=2, delay=0)  # revive if the server dropped it
-    return conn
-
-
+    """Create a verified TLS connection to the database."""
+    return mysql.connector.connect(
+        host=DB_HOST,
+        port=DB_PORT,
+        user=DB_USER,
+        password=DB_PASSWORD,
+        database=database_name,
+        ssl_ca=DB_SSL_CA,
+        ssl_verify_cert=True,
+        ssl_verify_identity=True,
+    )
 
 
 def get_db_connection():
