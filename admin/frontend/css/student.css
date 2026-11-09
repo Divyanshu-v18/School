@@ -420,15 +420,18 @@ body.add_student-page {
 
 .student-table-wrapper {
     width: 100%;
+    max-width: 100%;
     overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
 .student-table {
     width: 100%;
+    min-width: 700px;
     border-collapse: collapse;
     background: #fff;
     table-layout: fixed;
-    border-radius: 15px 15px 0px 0px;
+    border-radius: 15px 15px 0 0;
 }
 
 .student-table th,

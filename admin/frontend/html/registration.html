@@ -1,0 +1,113 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Student and teacher registration portal.">
+
+    <title>Registration | ABC Public School</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Common stylesheet -->
+    <link rel="stylesheet" href="../css/style.css">
+
+    <!-- Registration stylesheet -->
+    <link rel="stylesheet" href="../css/registration.css">
+</head>
+
+<body class="registration-page">
+
+    <div class="page-layout">
+
+        <!-- SIDEBAR IS INJECTED BY sidebar.js -->
+
+        <main class="main-content registration-main">
+
+            <header class="registration-header">
+                <h2>ABC Public School</h2>
+            </header>
+
+            <section class="registration-content">
+
+                <div class="registration-heading">
+                    <h1>Registration</h1>
+                    <p>
+                        Register new students and teachers in the school management system.
+                    </p>
+                </div>
+
+                <h2 class="registration-section-title">
+                    Choose Registration Type
+                </h2>
+
+                <div class="registration-grid">
+
+                    <!-- STUDENT REGISTRATION -->
+
+                    <article class="registration-card">
+
+                        <div class="registration-icon">
+                            ♙
+                        </div>
+
+                        <h3>Student Registration</h3>
+
+                        <p>
+                            Add a new student to ABC Public School.
+                            Enter personal details, admission information,
+                            parent details and address information.
+                        </p>
+
+                        <a href="add_student.html" class="registration-button">
+                            + Add Student
+                        </a>
+
+                    </article>
+
+                    <!-- TEACHER REGISTRATION -->
+
+                    <article class="registration-card">
+
+                        <div class="registration-icon">
+                            ♟
+                        </div>
+
+                        <h3>Teacher Registration</h3>
+
+                        <p>
+                            Register a new teacher or staff member.
+                            Enter personal information, contact details
+                            and professional information.
+                        </p>
+
+                        <a href="add_teacher.html" class="registration-button">
+                            + Add Teacher
+                        </a>
+
+                    </article>
+
+                </div>
+
+                <div class="registration-note">
+                    <strong>Note:</strong>
+                    Please verify all details before submitting a new
+                    student or teacher registration.
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+    <script src="../js/sidebar.js"></script>
+    <script src="../js/feature-toggle.js"></script>
+
+</body>
+</html>
