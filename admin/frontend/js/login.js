@@ -282,7 +282,8 @@ document.addEventListener("DOMContentLoaded", () => {
                         JSON.stringify({
                             authenticated: true,
                             user: data.user,
-                            loginTime: new Date().toISOString()
+                            loginTime: new Date().toISOString(),
+                            verifiedAt: Date.now()
                         })
                     );
                 } catch (storageError) {
