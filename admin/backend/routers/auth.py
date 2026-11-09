@@ -31,6 +31,22 @@ router = APIRouter(prefix="/api/auth", tags=["Authentication"])
 SESSION_EXPIRATION_SECONDS = 8 * 60 * 60
 SESSION_COOKIE_NAME = "abc_school_session"
 
+_SESSION_CACHE: dict[str, tuple[float, dict]] = {}
+_SESSION_CACHE_TTL = 60  # seconds
+_SESSION_CACHE_MAX = 1000
+
+def _cache_get(key: str):
+    entry = _SESSION_CACHE.get(key)
+    if entry and entry[0] > time.monotonic():
+        return dict(entry[1])
+    _SESSION_CACHE.pop(key, None)
+    return None
+
+def _cache_put(key: str, user: dict) -> None:
+    if len(_SESSION_CACHE) >= _SESSION_CACHE_MAX:
+        _SESSION_CACHE.clear()
+    _SESSION_CACHE[key] = (time.monotonic() + _SESSION_CACHE_TTL, dict(user))
+
 
 def _get_boolean_env(name: str, default: bool) -> bool:
     """Read a strictly validated boolean environment setting."""
@@ -124,12 +140,19 @@ def get_authenticated_user(
     """Resolve a user from a cookie session or a legacy bearer client token."""
     token = session_cookie.strip() if session_cookie and session_cookie.strip() else _get_token(authorization)
     if not token: raise HTTPException(401, "Authentication required.", {"WWW-Authenticate": "Bearer"})
+    key = _token_hash(token)
+    cached = _cache_get(key)
+    if cached:
+        return cached
     try:
         with db_cursor(database="school_management", dictionary=True) as (cur, _):
             cur.execute("SELECT u.user_id,u.username,u.role,u.display_name FROM app_sessions s JOIN app_users u ON u.user_id=s.user_id WHERE s.token_hash=%s AND s.expires_at>UTC_TIMESTAMP() AND u.is_active=TRUE", (_token_hash(token),))
             account = cur.fetchone()
         if account:
-            return {"id": account["user_id"], "username": account["username"], "role": account["role"], "name": account["display_name"], "avatar": account["display_name"][:2].upper()}
+            user = {"id": account["user_id"], "username": account["username"], "role": account["role"],
+                    "name": account["display_name"], "avatar": account["display_name"][:2].upper()}
+            _cache_put(key, user)
+            return user
     except Exception as exc:
         logger.exception("Database error while verifying session")
         raise HTTPException(503, "Authentication service is temporarily unavailable.") from exc
@@ -171,11 +194,13 @@ def login(req: LoginRequest, request: Request, response: Response):
 def logout(request: Request, response: Response, authorization: Optional[str] = Header(None)):
     token = request.cookies.get(SESSION_COOKIE_NAME) or _get_token(authorization)
     if token:
+        _SESSION_CACHE.pop(_token_hash(token), None)
         try:
             with db_cursor(database="school_management") as (cur, _): cur.execute("DELETE FROM app_sessions WHERE token_hash=%s", (_token_hash(token),))
         except Exception as exc:
             logger.exception("Database error during logout")
             raise HTTPException(503, "Authentication service is temporarily unavailable.") from exc
+            
     response.delete_cookie(
         key=SESSION_COOKIE_NAME,
         path="/",
