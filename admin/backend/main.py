@@ -199,7 +199,8 @@ async def enforce_api_rbac(request: Request, call_next):
 
     try:
         # Authenticate the user.
-        user = get_authenticated_user(
+        user = await run_in_threadpool(
+            get_authenticated_user,
             request.headers.get("Authorization"),
             request.cookies.get(SESSION_COOKIE_NAME),
         )
