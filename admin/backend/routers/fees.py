@@ -86,20 +86,35 @@ def delete_fee_structure(fee_id: int):
 
 
 @router.get("/fees/payments")
-def get_fee_payments(class_name: Optional[str] = None):
-    """Retrieve fee payment records, optionally filtered by class."""
+def get_fee_payments(
+    class_name: Optional[str] = None,
+    student_id: Optional[int] = None
+):
+    """Retrieve fee payments filtered by class or student."""
     try:
         with db_cursor(database="school_management", dictionary=True) as (cur, _):
+
+            conditions = []
+            params = []
+
+            if student_id:
+                conditions.append("student_id = %s")
+                params.append(student_id)
+
             if class_name:
-                cur.execute(
-                    "SELECT * FROM fee_payments WHERE class_name = %s ORDER BY payment_id DESC",
-                    (class_name,),
-                )
-            else:
-                cur.execute("SELECT * FROM fee_payments ORDER BY payment_id DESC")
+                conditions.append("class_name = %s")
+                params.append(class_name)
+
+            sql = "SELECT * FROM fee_payments"
+
+            if conditions:
+                sql += " WHERE " + " AND ".join(conditions)
+
+            sql += " ORDER BY payment_date DESC, payment_id DESC"
+
+            cur.execute(sql, tuple(params))
             return cur.fetchall()
-    except HTTPException:
-        raise
+
     except Exception:
         logger.exception("An internal error occurred")
         raise HTTPException(

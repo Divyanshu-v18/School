@@ -1,209 +1,100 @@
 <!doctype html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="View complete details for a student including personal and academic information.">
-
-    <title>Student Details</title>
-
-    <!-- COMMON CSS -->
+    <meta name="description" content="Student profile, attendance, fees and academic results.">
+    <title>Student Profile</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../css/student_details.css">
 </head>
-
-<!-- ================= STUDENT DETAILS ================= -->
-
 <body>
-
-    <div class="student-details-page">
-        <div class="student-details-wrap">
-
-            <div class="details-header">
-                <div>
-                    <h1>Student Details</h1>
-                    <p>Complete information about the student</p>
-                </div>
-
-                <div class="header-actions">
-                    <button type="button" id="printStudentBtn" class="action-btn print-btn">
-                        Print
-                    </button>
-                    <button type="button" id="editStudentBtn" class="action-btn edit-btn">
-                        Edit
-                    </button>
-                    <button type="button" id="deleteStudentBtn" class="action-btn delete-btn">
-                        Delete
-                    </button>
-                    <button type="button" id="backToStudents" class="back-btn">
-                        ← Back to Students
-                    </button>
+<div class="page-layout">
+    <!-- sidebar.js injects the same sidebar used by the other dashboard pages -->
+    <main class="main-content">
+        <header class="topbar">
+            <h1>ABC Public School</h1>
+            <div class="topbar-actions">
+                <button class="notification-btn" id="notificationBtn" title="Notifications" type="button">♧<span class="notification-dot"></span></button>
+                <div class="top-profile">
+                    <div class="profile-avatar">AS</div>
+                    <div class="top-profile-info"><strong>Admin</strong><span>Administrator</span></div>
                 </div>
             </div>
+        </header>
 
-            <!-- ================= BASIC DETAILS ================= -->
+        <div class="student-profile-page">
+            <div class="student-profile-wrap">
 
-            <section class="details-section">
-                <h2>Basic Details</h2>
+                <section class="student-hero">
+                    <div class="student-avatar" id="studentAvatar">S</div>
+                    <div class="student-hero-info">
+                        <h1 id="profileName">Loading student...</h1>
+                        <p id="profileClassLine">Class - | Section - | Roll No. -</p>
+                        <span class="profile-status" id="profileStatus">Student Profile</span>
+                    </div>
+                    <div class="profile-actions">
+                        <button type="button" id="printStudentBtn" class="action-btn print-btn">Print</button>
+                        <button type="button" id="editStudentBtn" class="action-btn edit-btn">Edit Profile</button>
+                        <button type="button" id="deleteStudentBtn" class="action-btn delete-btn">Delete</button>
+                        <button type="button" id="backToStudents" class="back-btn">← Back</button>
+                    </div>
+                </section>
 
-                <div class="details-grid">
-                    <div class="details-group">
-                        <span>Student ID</span>
-                        <strong id="studentId">-</strong>
-                    </div>
-                    <div class="details-group">
-                        <span>Full Name</span>
-                        <strong id="fullName">-</strong>
-                    </div>
-                    <div class="details-group">
-                        <span>Date of Birth</span>
-                        <strong id="dateOfBirth">-</strong>
-                    </div>
-                    <div class="details-group">
-                        <span>Gender</span>
-                        <strong id="gender">-</strong>
-                    </div>
-                    <div class="details-group">
-                        <span>Category</span>
-                        <strong id="category">-</strong>
-                    </div>
-                    <div class="details-group">
-                        <span>Blood Group</span>
-                        <strong id="bloodGroup">-</strong>
-                    </div>
-                </div>
-            </section>
+                <section class="profile-panel">
+                    <nav class="profile-tabs" role="tablist" aria-label="Student information">
+                        <button type="button" class="profile-tab active" role="tab" aria-selected="true" aria-controls="panel-overview" data-tab="overview">Overview</button>
+                        <button type="button" class="profile-tab" role="tab" aria-selected="false" aria-controls="panel-attendance" data-tab="attendance">Attendance</button>
+                        <button type="button" class="profile-tab" role="tab" aria-selected="false" aria-controls="panel-fees" data-tab="fees">Fees</button>
+                        <button type="button" class="profile-tab" role="tab" aria-selected="false" aria-controls="panel-marks" data-tab="marks">Marks</button>
+                    </nav>
 
-            <!-- ================= ADDRESS DETAILS ================= -->
+                    <div class="profile-tab-panel" id="panel-overview" role="tabpanel">
+                        <div class="overview-grid">
+                            <section class="overview-card"><h2>Personal Information</h2><dl class="profile-details-grid">
+                                <div><dt>Student ID</dt><dd id="studentId">-</dd></div><div><dt>Date of Birth</dt><dd id="dateOfBirth">-</dd></div><div><dt>Gender</dt><dd id="gender">-</dd></div><div><dt>Category</dt><dd id="category">-</dd></div><div><dt>Blood Group</dt><dd id="bloodGroup">-</dd></div><div><dt>BPL</dt><dd id="bpl">-</dd></div>
+                            </dl></section>
+                            <section class="overview-card"><h2>Parent Information</h2><dl class="profile-details-grid">
+                                <div><dt>Father's Name</dt><dd id="fatherName">-</dd></div><div><dt>Father's Phone</dt><dd id="fatherPhone">-</dd></div><div><dt>Mother's Name</dt><dd id="motherName">-</dd></div><div><dt>Mother's Phone</dt><dd id="motherPhone">-</dd></div>
+                            </dl></section>
+                            <section class="overview-card"><h2>Admission & School Information</h2><dl class="profile-details-grid">
+                                <div><dt>Admission Date</dt><dd id="admissionDate">-</dd></div><div><dt>Admission Number</dt><dd id="admissionNo">-</dd></div><div><dt>Class</dt><dd id="className">-</dd></div><div><dt>Section</dt><dd id="section">-</dd></div><div><dt>APAAR Number</dt><dd id="apaarNo">-</dd></div><div><dt>PEN Number</dt><dd id="penNo">-</dd></div><div><dt>Aadhaar (last 4)</dt><dd id="aadharLastFour">-</dd></div>
+                            </dl></section>
+                            <section class="overview-card"><h2>Address Information</h2><dl class="profile-details-grid">
+                                <div><dt>House Number</dt><dd id="houseNo">-</dd></div><div><dt>Street</dt><dd id="street">-</dd></div><div><dt>City</dt><dd id="city">-</dd></div><div><dt>State</dt><dd id="state">-</dd></div><div><dt>Pincode</dt><dd id="pincode">-</dd></div>
+                            </dl></section>
+                            <section class="overview-card"><h2>Parent Identification</h2><dl class="profile-details-grid">
+                                <div><dt>Father's Aadhaar (last 4)</dt><dd id="fatherAadhar">-</dd></div><div><dt>Mother's Aadhaar (last 4)</dt><dd id="motherAadhar">-</dd></div>
+                            </dl></section>
+                        </div>
+                    </div>
 
-            <section class="details-section">
-                <h2>Address Details</h2>
-
-                <div class="details-grid">
-                    <div class="details-group">
-                        <span>House No.</span>
-                        <strong id="houseNo">-</strong>
+                    <div class="profile-tab-panel" id="panel-attendance" role="tabpanel" hidden>
+                        <div class="records-heading"><div><h2>Attendance Records</h2><p>Attendance history for this student</p></div><button class="refresh-records-btn" type="button" data-refresh="attendance">Refresh</button></div>
+                        <div class="summary-cards" id="attendanceSummary"></div>
+                        <div class="records-table-wrap"><table class="records-table"><thead id="attendanceHead"></thead><tbody id="attendanceBody"><tr><td>Open Attendance to load records.</td></tr></tbody></table></div>
                     </div>
-                    <div class="details-group">
-                        <span>Street</span>
-                        <strong id="street">-</strong>
+                    <div class="profile-tab-panel" id="panel-fees" role="tabpanel" hidden>
+                        <div class="records-heading"><div><h2>Fee Details</h2><p>Fee dues and payment history for this student</p></div><button class="refresh-records-btn" type="button" data-refresh="fees">Refresh</button></div>
+                        <div class="summary-cards" id="feesSummary"></div>
+                        <div class="records-table-wrap"><table class="records-table"><thead id="feesHead"></thead><tbody id="feesBody"><tr><td>Open Fees to load records.</td></tr></tbody></table></div>
                     </div>
-                    <div class="details-group">
-                        <span>City</span>
-                        <strong id="city">-</strong>
+                    <div class="profile-tab-panel" id="panel-marks" role="tabpanel" hidden>
+                        <div class="records-heading"><div><h2>Academic Performance</h2><p>Exam-wise and subject-wise marks for this student</p></div><button class="refresh-records-btn" type="button" data-refresh="marks">Refresh</button></div>
+                        <div class="summary-cards" id="marksSummary"></div>
+                        <div class="records-table-wrap"><table class="records-table"><thead id="marksHead"></thead><tbody id="marksBody"><tr><td>Open Marks to load records.</td></tr></tbody></table></div>
                     </div>
-                    <div class="details-group">
-                        <span>State</span>
-                        <strong id="state">-</strong>
-                    </div>
-                    <div class="details-group">
-                        <span>Pincode</span>
-                        <strong id="pincode">-</strong>
-                    </div>
-                </div>
-            </section>
-
-            <!-- ================= ADMISSION & SCHOOL DETAILS ================= -->
-
-            <section class="details-section">
-                <h2>Admission & School Details</h2>
-
-                <div class="details-grid">
-                    <div class="details-group">
-                        <span>Admission Date</span>
-                        <strong id="admissionDate">-</strong>
-                    </div>
-                    <div class="details-group">
-                        <span>Admission No.</span>
-                        <strong id="admissionNo">-</strong>
-                    </div>
-                    <div class="details-group">
-                        <span>Aadhaar Last 4</span>
-                        <strong id="aadharLastFour">-</strong>
-                    </div>
-                    <div class="details-group">
-                        <span>APAAR No.</span>
-                        <strong id="apaarNo">-</strong>
-                    </div>
-                    <div class="details-group">
-                        <span>PEN No.</span>
-                        <strong id="penNo">-</strong>
-                    </div>
-                    <div class="details-group">
-                        <span>BPL</span>
-                        <strong id="bpl">-</strong>
-                    </div>
-                    <div class="details-group">
-                        <span>Class</span>
-                        <strong id="className">-</strong>
-                    </div>
-                    <div class="details-group">
-                        <span>Section</span>
-                        <strong id="section">-</strong>
-                    </div>
-                    <div class="details-group">
-                        <span>Transportation</span>
-                        <strong id="transport">-</strong>
-                    </div>
-                </div>
-            </section>
-
-            <!-- ================= FATHER DETAILS ================= -->
-
-            <section class="details-section">
-                <h2>Father Details</h2>
-
-                <div class="details-grid">
-                    <div class="details-group">
-                        <span>Father's Name</span>
-                        <strong id="fatherName">-</strong>
-                    </div>
-                    <div class="details-group">
-                        <span>Aadhaar Last 4</span>
-                        <strong id="fatherAadhar">-</strong>
-                    </div>
-                    <div class="details-group">
-                        <span>Phone</span>
-                        <strong id="fatherPhone">-</strong>
-                    </div>
-                </div>
-            </section>
-
-            <!-- ================= MOTHER DETAILS ================= -->
-
-            <section class="details-section">
-                <h2>Mother Details</h2>
-
-                <div class="details-grid">
-                    <div class="details-group">
-                        <span>Mother's Name</span>
-                        <strong id="motherName">-</strong>
-                    </div>
-                    <div class="details-group">
-                        <span>Aadhaar Last 4</span>
-                        <strong id="motherAadhar">-</strong>
-                    </div>
-                    <div class="details-group">
-                        <span>Phone</span>
-                        <strong id="motherPhone">-</strong>
-                    </div>
-                </div>
-            </section>
-
+                </section>
+            </div>
         </div>
-    </div>
-
-    <script src="../js/api.js"></script>
-    <script src="../js/sidebar.js"></script>
-
-    <script src="../js/script.js"></script>
-    <script src="../js/student_details.js"></script>
-
+    </main>
+</div>
+<script src="../js/api.js"></script>
+<script src="../js/sidebar.js"></script>
+<script src="../js/script.js"></script>
+<script src="../js/student_details.js"></script>
 </body>
-
 </html>

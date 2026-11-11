@@ -40,7 +40,8 @@
    ADD TEACHER BUTTON
 ======================================== */
 
-.add_teacher-btn {
+.add_teacher-btn,
+.add-teacher-btn {
     border: none;
     padding: 11px 18px;
     border-radius: 8px;
@@ -53,7 +54,8 @@
     color: #ffffff;
 }
 
-.add_teacher-btn:hover {
+.add_teacher-btn:hover,
+.add-teacher-btn:hover {
     opacity: 0.9;
 }
 
@@ -497,4 +499,33 @@ body.add_teacher-page {
 .delete-btn {
     background: #d9534f;
     color: white;
+}
+
+/* Additive styles for the updated teacher directory. Existing teacher.css remains intact. */
+.teacher-toolbar-filters {
+    display: flex;
+    align-items: end;
+    flex-wrap: wrap;
+    gap: 14px;
+}
+.teacher-toolbar-filters .teacher-search { flex: 1 1 260px; }
+.teacher-filter { display: flex; flex-direction: column; gap: 6px; min-width: 145px; }
+.teacher-filter span { color: var(--text-light); font-size: 12px; font-weight: 600; }
+.teacher-filter select {
+    height: 42px; min-width: 145px; padding: 0 34px 0 12px;
+    border: 1px solid #d8d8d8; border-radius: 8px;
+    background: #fff; color: var(--text-dark); font: inherit; font-size: 14px;
+}
+.teacher-filter select:focus { outline: none; border-color: var(--olive); }
+.clear-filters-btn {
+    height: 42px; padding: 0 14px; border: 1px solid #d8d8d8;
+    border-radius: 8px; background: #fff; color: var(--text-dark);
+    cursor: pointer; font: inherit; font-size: 13px;
+}
+.clear-filters-btn:hover { background: #f1f1f1; }
+.teacher-result-count { margin: 12px 2px 0; color: var(--text-light); font-size: 12px; }
+@media (max-width: 600px) {
+    .teacher-toolbar-filters { align-items: stretch; }
+    .teacher-toolbar-filters .teacher-search, .teacher-filter, .teacher-filter select { width: 100%; }
+    .clear-filters-btn { align-self: flex-start; }
 }

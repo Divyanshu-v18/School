@@ -20,31 +20,46 @@ def get_attendance(
     date_val: Optional[date] = None,
     class_name: Optional[str] = None,
     section: Optional[str] = None,
+    student_id: Optional[int] = None,
 ):
-    """Retrieve student attendance filtered by date, class, and section."""
-    query_date = date_val or date.today()
+    """Retrieve attendance filtered by date, class, section, or student."""
     try:
         with db_cursor(database="school_management", dictionary=True) as (cur, _):
-            conditions = ["date = %s"]
-            params = [query_date]
+            conditions = []
+            params = []
+
+            if student_id:
+                conditions.append("student_id = %s")
+                params.append(student_id)
+
+            if date_val:
+                conditions.append("date = %s")
+                params.append(date_val)
+
             if class_name:
                 conditions.append("class_name = %s")
                 params.append(class_name)
+
             if section:
                 conditions.append("section = %s")
                 params.append(section)
-            sql = f"SELECT * FROM attendance WHERE {' AND '.join(conditions)} ORDER BY student_name"
+
+            sql = "SELECT * FROM attendance"
+
+            if conditions:
+                sql += " WHERE " + " AND ".join(conditions)
+
+            sql += " ORDER BY date DESC"
+
             cur.execute(sql, tuple(params))
             return cur.fetchall()
-    except HTTPException:
-        raise
+
     except Exception:
         logger.exception("An internal error occurred")
         raise HTTPException(
             status_code=500,
             detail="An internal server error occurred."
         )
-
 
 @router.post("/attendance")
 def save_attendance(records: List[Attendance]):
@@ -72,15 +87,34 @@ def save_attendance(records: List[Attendance]):
 
 
 @router.get("/teacher-attendance")
-def get_teacher_attendance(date_val: Optional[date] = None):
-    """Retrieve teacher attendance for a given date."""
-    query_date = date_val or date.today()
+def get_teacher_attendance(
+    date_val: Optional[date] = None,
+    teacher_id: Optional[int] = None,
+):
+    """Retrieve teacher attendance filtered by date or teacher."""
     try:
         with db_cursor(database="school_management", dictionary=True) as (cur, _):
-            cur.execute(
-                "SELECT * FROM teacher_attendance WHERE date = %s ORDER BY teacher_name",
-                (query_date,),
-            )
+            conditions = []
+            params = []
+
+            if teacher_id is not None:
+                conditions.append("teacher_id = %s")
+                params.append(teacher_id)
+
+            if date_val is not None:
+                conditions.append("date = %s")
+                params.append(date_val)
+            elif teacher_id is None:
+                # Default to today's date when no teacher_id is specified
+                conditions.append("date = %s")
+                params.append(date.today())
+
+            sql = "SELECT * FROM teacher_attendance"
+            if conditions:
+                sql += " WHERE " + " AND ".join(conditions)
+            sql += " ORDER BY date DESC, teacher_name"
+
+            cur.execute(sql, tuple(params))
             return cur.fetchall()
     except HTTPException:
         raise
