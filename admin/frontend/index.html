@@ -4,11 +4,363 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="refresh" content="0; url=html/login.html">
-    <title>School Management System</title>
+
+    <title>Shivaji Kids Care Academy</title>
+    <meta name="description" content="Shivaji Kids Care Academy - A nurturing environment for learning, creativity and growth.">
+    <meta name="theme-color" content="#10251c">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+
+    <!-- CORRECT CSS LOCATION -->
+    <link rel="stylesheet" href="css/index.css">
 </head>
+
 <body>
-    <p>Redirecting to login...</p>
-    <a href="html/login.html">Click here if you are not redirected.</a>
+<div class="public-site">
+
+    <header class="site-header" id="siteHeader">
+        <nav class="navbar container">
+
+            <a href="#home" class="brand">
+                <div class="brand-logo">✦<small>SK</small></div>
+                <div class="brand-text">
+                    <strong>SHIVAJI</strong>
+                    <small>KIDS CARE ACADEMY</small>
+                </div>
+            </a>
+
+            <button class="menu-toggle" id="menuToggle"
+                    aria-label="Open navigation"
+                    aria-expanded="false"
+                    aria-controls="navMenu">
+                <span></span><span></span><span></span>
+            </button>
+
+            <div class="nav-menu" id="navMenu">
+                <a href="#home" class="nav-link active">Home</a>
+                <a href="#about" class="nav-link">About</a>
+                <a href="#academics" class="nav-link">Academics</a>
+                <a href="#facilities" class="nav-link">Facilities</a>
+                <a href="#gallery" class="nav-link">Gallery</a>
+                <a href="#contact" class="nav-link">Contact</a>
+                <a href="html/login.html" class="nav-login">Login ↗</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+
+        <!-- HERO -->
+        <section class="hero" id="home">
+            <div class="hero-image"></div>
+            <div class="hero-shade"></div>
+
+            <div class="container hero-inner">
+                <div class="hero-content reveal">
+                    <span class="eyebrow">WELCOME TO OUR SCHOOL</span>
+
+                    <h1>
+                        Little Minds.<br>
+                        <span>Limitless</span> Possibilities.
+                    </h1>
+
+                    <p>
+                        A nurturing environment where curiosity is encouraged,
+                        confidence is built and every child gets the opportunity
+                        to discover their potential.
+                    </p>
+
+                    <div class="hero-buttons">
+                        <a href="html/add_student.html" class="button button-primary">
+                            Apply for Admission ↗
+                        </a>
+                        <a href="#about" class="button button-glass">
+                            Discover Our School ↓
+                        </a>
+                    </div>
+
+                    <div class="hero-note">LEARN · GROW · BELONG</div>
+                </div>
+
+                <div class="hero-side-card glass">
+                    <span>✧</span>
+                    <p>Every child has a unique story.</p>
+                    <strong>Let's make it extraordinary.</strong>
+                </div>
+            </div>
+
+            <div class="container hero-bottom">
+                <span>A JOURNEY OF DISCOVERY</span>
+                <a href="#about">SCROLL TO EXPLORE ↓</a>
+            </div>
+        </section>
+
+        <!-- INTRO -->
+        <section class="intro-strip">
+            <div class="container intro-grid">
+                <div><span>01</span><p><strong>Curiosity First</strong><small>Encouraging exploration</small></p></div>
+                <div><span>02</span><p><strong>Growing Together</strong><small>Learning with confidence</small></p></div>
+                <div><span>03</span><p><strong>Every Child Matters</strong><small>Respecting individuality</small></p></div>
+            </div>
+        </section>
+
+        <!-- ABOUT -->
+        <section class="section" id="about">
+            <div class="container about-grid">
+                <div class="about-visual reveal">
+                    <img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=1100&q=85" alt="Children learning" loading="lazy">
+                    <div class="floating-glass">✦ &nbsp; Learning with purpose</div>
+                </div>
+
+                <div class="about-copy reveal">
+                    <span class="section-label">01 / ABOUT THE ACADEMY</span>
+                    <h2>A foundation for <span>lifelong learning.</span></h2>
+                    <p>
+                        Shivaji Kids Care Academy aims to create a child-centred
+                        learning environment where children can explore ideas,
+                        build confidence and develop their individual abilities.
+                    </p>
+                    <p>
+                        We believe education is more than textbooks. It is about
+                        curiosity, creativity, discipline, kindness and growth.
+                    </p>
+                    <a href="#academics" class="text-link">Explore our approach →</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- VISION -->
+        <section class="section vision-section">
+            <div class="container">
+                <div class="section-heading reveal">
+                    <span class="section-label">02 / WHAT GUIDES US</span>
+                    <h2>Learning with <span>meaning.</span></h2>
+                    <p>The values that shape our approach to children's growth.</p>
+                </div>
+
+                <div class="vision-grid">
+                    <article class="glass-card reveal">
+                        <span>◎</span><h3>Our Vision</h3>
+                        <p>Inspiring young learners to become confident and curious individuals.</p>
+                    </article>
+                    <article class="glass-card reveal">
+                        <span>◇</span><h3>Our Mission</h3>
+                        <p>Encouraging meaningful learning through creativity and care.</p>
+                    </article>
+                    <article class="glass-card reveal">
+                        <span>♡</span><h3>Our Values</h3>
+                        <p>Respect, responsibility, kindness and a love for learning.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- ACADEMICS -->
+        <section class="section" id="academics">
+            <div class="container">
+                <div class="section-heading reveal">
+                    <span class="section-label">03 / OUR APPROACH</span>
+                    <h2>Learning beyond <span>classrooms.</span></h2>
+                    <p>Supporting academic, creative, social and personal development.</p>
+                </div>
+
+                <div class="academics-grid">
+                    <article class="academic-card reveal">
+                        <span>01</span><h3>Academic Learning</h3>
+                        <p>Building strong foundations through engaging learning.</p>
+                    </article>
+                    <article class="academic-card reveal">
+                        <span>02</span><h3>Creative Thinking</h3>
+                        <p>Encouraging imagination, curiosity and self-expression.</p>
+                    </article>
+                    <article class="academic-card reveal">
+                        <span>03</span><h3>Physical Growth</h3>
+                        <p>Promoting movement, healthy habits and participation.</p>
+                    </article>
+                    <article class="academic-card reveal">
+                        <span>04</span><h3>Social Skills</h3>
+                        <p>Developing communication, empathy and teamwork.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- FACILITIES -->
+        <section class="section facilities-section" id="facilities">
+            <div class="container">
+                <div class="section-heading reveal">
+                    <span class="section-label">04 / LEARNING ENVIRONMENT</span>
+                    <h2>Spaces that inspire <span>possibility.</span></h2>
+                    <p>A glimpse of learning experiences that support a child's journey.</p>
+                </div>
+
+                <div class="facilities-grid">
+                    <article class="facility-card facility-large reveal">
+                        <img src="https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=1200&q=85" alt="Sample classroom" loading="lazy">
+                        <div><h3>Learning Spaces</h3><p>Room to explore and discover.</p></div>
+                    </article>
+
+                    <article class="facility-card reveal">
+                        <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=900&q=85" alt="Sample student learning" loading="lazy">
+                        <div><h3>Learning Together</h3><p>Growing through knowledge.</p></div>
+                    </article>
+
+                    <article class="facility-card reveal">
+                        <img src="https://images.unsplash.com/photo-1472162072942-cd5147eb3902?auto=format&fit=crop&w=900&q=85" alt="Sample activities" loading="lazy">
+                        <div><h3>Play & Activities</h3><p>Learning through participation.</p></div>
+                    </article>
+                </div>
+
+                <p class="sample-note">Illustrative photographs, not verified school facilities.</p>
+            </div>
+        </section>
+
+        <!-- ACTIVITIES -->
+        <section class="section">
+            <div class="container activities-grid">
+                <div class="activities-copy reveal">
+                    <span class="section-label">05 / BEYOND THE BOOKS</span>
+                    <h2>Every child has <span>something special.</span></h2>
+                    <p>Creative exploration, collaboration and participation make learning meaningful.</p>
+                    <ul>
+                        <li>✦ Art and creative expression</li>
+                        <li>✦ Sports and physical activities</li>
+                        <li>✦ Cultural celebrations</li>
+                        <li>✦ Collaborative learning</li>
+                    </ul>
+                </div>
+
+                <div class="activities-visual reveal">
+                    <img src="https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?auto=format&fit=crop&w=1100&q=85" alt="Sample children activities" loading="lazy">
+                </div>
+            </div>
+        </section>
+
+        <!-- GALLERY -->
+        <section class="section gallery-section" id="gallery">
+            <div class="container">
+                <div class="section-heading reveal">
+                    <span class="section-label">06 / A VISUAL JOURNEY</span>
+                    <h2>Moments of <span>discovery.</span></h2>
+                    <p>Explore our sample gallery.</p>
+                </div>
+
+                <div class="gallery-grid">
+                    <button class="gallery-item gallery-large" type="button" aria-label="View classroom photograph">
+                        <img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=1100&q=85" alt="Classroom" loading="lazy">
+                    </button>
+                    <button class="gallery-item" type="button" aria-label="View play photograph">
+                        <img src="https://images.unsplash.com/photo-1472162072942-cd5147eb3902?auto=format&fit=crop&w=800&q=85" alt="Play" loading="lazy">
+                    </button>
+                    <button class="gallery-item" type="button" aria-label="View study photograph">
+                        <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=800&q=85" alt="Study" loading="lazy">
+                    </button>
+                    <button class="gallery-item" type="button" aria-label="View activities photograph">
+                        <img src="https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?auto=format&fit=crop&w=800&q=85" alt="Activities" loading="lazy">
+                    </button>
+                </div>
+
+                <p class="sample-note">Sample photographs. Actual school photographs will replace these later.</p>
+            </div>
+        </section>
+
+        <!-- ADMISSION -->
+        <section class="section admission-section" id="admissions">
+            <div class="container">
+                <div class="admission-panel reveal">
+                    <div>
+                        <span class="section-label">07 / BEGIN THE JOURNEY</span>
+                        <h2>A brighter beginning <span>starts here.</span></h2>
+                        <p>Interested in joining Shivaji Kids Care Academy? Start your admission process.</p>
+                        <a href="html/add_student.html" class="button button-primary">
+                            Apply for Admission ↗
+                        </a>
+                        <small>Public access to the registration form must be authorised by the school.</small>
+                    </div>
+
+                    <div class="admission-art">
+                        <span>✦</span>
+                        <strong>LEARN · GROW · BELONG</strong>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONTACT -->
+        <section class="section" id="contact">
+            <div class="container">
+                <div class="section-heading reveal">
+                    <span class="section-label">08 / CONNECT WITH US</span>
+                    <h2>Let's start a <span>conversation.</span></h2>
+                    <p>Have questions? School contact information will be added soon.</p>
+                </div>
+
+                <div class="contact-grid">
+                    <article class="glass-card reveal"><span>✉</span><h3>Email</h3><p>Details coming soon.</p></article>
+                    <article class="glass-card reveal"><span>☎</span><h3>Phone</h3><p>Office number coming soon.</p></article>
+                    <article class="glass-card reveal"><span>⌖</span><h3>Location</h3><p>Campus address coming soon.</p></article>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+        <div class="container footer-grid">
+            <div>
+                <a href="#home" class="brand">
+                    <div class="brand-logo">✦<small>SK</small></div>
+                    <div class="brand-text">
+                        <strong>SHIVAJI</strong>
+                        <small>KIDS CARE ACADEMY</small>
+                    </div>
+                </a>
+                <p>Nurturing young minds through learning, creativity and care.</p>
+            </div>
+
+            <div class="footer-column">
+                <h3>Explore</h3>
+                <a href="#about">About</a>
+                <a href="#academics">Academics</a>
+                <a href="#facilities">Facilities</a>
+                <a href="#gallery">Gallery</a>
+            </div>
+
+            <div class="footer-column">
+                <h3>Quick Links</h3>
+                <a href="#admissions">Admissions</a>
+                <a href="#contact">Contact</a>
+                <a href="html/login.html">School Login</a>
+            </div>
+
+            <div class="footer-column">
+                <h3>Academy</h3>
+                <p>Shivaji Kids Care Academy</p>
+                <p>Location coming soon.</p>
+                <p>Contact details coming soon.</p>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <div class="container footer-bottom-inner">
+                <span>© <span id="currentYear"></span> Shivaji Kids Care Academy</span>
+                <span>Learn · Grow · Belong</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- GALLERY LIGHTBOX -->
+    <div class="lightbox" id="lightbox" aria-hidden="true">
+        <button class="lightbox-close" id="lightboxClose" aria-label="Close">×</button>
+        <img id="lightboxImage" src="" alt="Gallery preview">
+    </div>
+
+</div>
+
+<!-- CORRECT JS LOCATION -->
+<script src="js/index.js"></script>
 </body>
 </html>
