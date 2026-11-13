@@ -126,10 +126,46 @@
 
 .panel-toolbar {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
     gap: 16px;
     margin-bottom: 16px;
+    flex-wrap: wrap;
+}
+
+.heads-year-banner {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 16px;
+    margin-bottom: 16px;
+    font-size: 13.5px;
+    color: var(--olive-dark);
+    font-weight: 500;
+}
+
+.heads-year-banner strong {
+    color: var(--olive);
+    font-weight: 700;
+}
+
+.modal-academic-year-note {
+    background: #f7f8f2;
+    border: 1px solid #d7ddd2;
+    border-radius: 6px;
+    padding: 8px 12px;
+    margin-bottom: 14px;
+    font-size: 13px;
+    color: var(--olive-dark);
+    font-weight: 500;
+}
+
+.modal-academic-year-note strong {
+    color: var(--olive);
+    font-weight: 700;
 }
 
 .search-box {
@@ -215,9 +251,20 @@
     text-transform: uppercase;
 }
 
-.badge-status.paid { background: #dcfce7; color: #15803d; }
-.badge-status.partial { background: #fef3c7; color: #b45309; }
-.badge-status.pending { background: #fee2e2; color: #b91c1c; }
+.badge-status.paid {
+    background: #dcfce7;
+    color: #15803d;
+}
+
+.badge-status.partial {
+    background: #fef3c7;
+    color: #b45309;
+}
+
+.badge-status.pending {
+    background: #fee2e2;
+    color: #b91c1c;
+}
 
 .badge-mode {
     padding: 3px 8px;
@@ -238,7 +285,31 @@
     font-size: 12px;
 }
 
-.delete-btn:hover { opacity: 0.9; }
+.delete-btn:hover {
+    opacity: 0.9;
+}
+
+.collect-btn {
+    border: none;
+    padding: 6px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    background: #10b981;
+    color: white;
+    font-size: 12px;
+    font-weight: 500;
+    transition: opacity 0.2s;
+}
+
+.collect-btn:hover {
+    opacity: 0.9;
+}
+
+.table-actions {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+}
 
 .table-loading {
     text-align: center;
@@ -306,8 +377,13 @@
     gap: 6px;
 }
 
-.form-group.flex-1 { flex: 1; }
-.form-group.flex-2 { flex: 2; }
+.form-group.flex-1 {
+    flex: 1;
+}
+
+.form-group.flex-2 {
+    flex: 2;
+}
 
 .form-group label {
     font-size: 12px;
@@ -358,11 +434,411 @@
     font-weight: 500;
 }
 
-.btn-save:hover { opacity: 0.92; }
+.btn-save:hover {
+    opacity: 0.92;
+}
 
 @media (max-width: 768px) {
-    .fee-stats-grid { grid-template-columns: 1fr; }
-    .form-row { flex-direction: column; }
+    .fee-stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .form-row {
+        flex-direction: column;
+    }
+}
+
+
+/* ========================================
+   FEE STRUCTURE SECTION
+======================================== */
+
+.structure-toolbar {
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.structure-filters {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.structure-filters .filter-box select {
+    min-width: 155px;
+}
+
+.structure-toolbar .search-box {
+    flex: 1;
+    min-width: 220px;
+}
+
+.structure-footer {
+    padding: 14px 4px;
+    font-size: 13px;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+#panelStructures .fee-table tbody tr td {
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+#panelStructures .fee-table tbody tr:hover {
+    background: #f8f9f5;
+}
+
+#panelStructures .delete-btn {
+    background: #fff0f0;
+    color: #c0392b;
+    border: 1px solid #f5d0d0;
+}
+
+#panelStructures .delete-btn:hover {
+    background: #fee2e2;
+}
+
+#structureYearFilter:focus,
+#structureClassFilter:focus {
+    border-color: var(--olive);
+    outline: none;
+}
+
+@media (max-width: 768px) {
+    .structure-toolbar {
+        align-items: stretch;
+    }
+
+    .structure-filters {
+        width: 100%;
+    }
+
+    .structure-filters .filter-box {
+        flex: 1;
+    }
+
+    .structure-filters .filter-box select {
+        width: 100%;
+        min-width: 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .structure-filters {
+        flex-direction: column;
+    }
+}
+
+
+/* ========================================
+   FEE HEADS + FEE STRUCTURE GRID (v2)
+======================================== */
+
+.freq-badge {
+    padding: 3px 9px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    background: #eef2ea;
+    color: var(--olive);
+    white-space: nowrap;
+}
+
+.edit-btn {
+    border: 1px solid #d8d8d8;
+    padding: 6px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    background: #fff;
+    color: #333;
+    font-size: 12px;
+}
+
+.edit-btn:hover {
+    background: #f4f4f0;
+}
+
+.field-hint {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin: -2px 0 0;
+}
+
+.grid-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 14px;
+}
+
+.grid-toolbar .grow {
+    flex: 1;
+}
+
+.btn-ghost {
+    padding: 9px 14px;
+    border: 1px solid #d8d8d8;
+    background: #fff;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.btn-ghost:hover {
+    background: #f4f4f0;
+}
+
+.dirty-note {
+    font-size: 13px;
+    color: #b45309;
+    font-weight: 500;
+}
+
+.matrix-table th,
+.matrix-table td {
+    white-space: nowrap;
+}
+
+.matrix-table th:first-child,
+.matrix-table td:first-child {
+    position: sticky;
+    left: 0;
+    background: #fff;
+    z-index: 1;
+    font-weight: 600;
+    border-right: 1px solid #e5e5e5;
+}
+
+.matrix-table th:first-child {
+    background: #fafaf8;
+}
+
+.matrix-head-sub {
+    display: block;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text-muted);
+    margin-top: 2px;
+}
+
+.matrix-input {
+    width: 96px;
+    padding: 7px 8px;
+    border: 1px solid #d8d8d8;
+    border-radius: 6px;
+    font-size: 14px;
+    text-align: right;
+    background: #fafaf8;
+    outline: none;
+}
+
+.matrix-input:focus {
+    border-color: var(--olive);
+    background: #fff;
+}
+
+.matrix-input.changed {
+    border-color: #f59e0b;
+    background: #fffbeb;
+}
+
+.fill-row td {
+    background: #f8f9f5;
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+.fill-cell {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+}
+
+.fill-cell button {
+    border: 1px solid #d8d8d8;
+    background: #fff;
+    border-radius: 6px;
+    cursor: pointer;
+    padding: 6px 8px;
+    font-size: 12px;
+}
+
+.row-total {
+    font-weight: 700;
+    text-align: right;
+}
+
+.legend-note {
+    font-size: 12px;
+    color: var(--text-muted);
+    padding: 12px 4px 0;
+}
+
+.hidden {
+    display: none !important;
+}
+
+
+.class-payment-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+/* Payment records are intentionally a compact list, not a card dashboard. */
+.payment-record-list {
+    margin-top: 20px;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+}
+
+.payment-record-list .fee-table th,
+.payment-record-list .fee-table td {
+    padding: 15px 18px;
+    border-bottom: 1px solid #edf0f2;
+}
+
+.payment-record-list .fee-table tr:last-child td { border-bottom: 0; }
+.payment-record-list .fee-table th:nth-child(n+2),
+.payment-record-list .fee-table td:nth-child(n+2) { text-align: right; }
+.payment-record-list .fee-table th:last-child,
+.payment-record-list .fee-table td:last-child { text-align: center; }
+
+.view-class-payments,
+.view-student-fee-details {
+    border: 1px solid var(--olive);
+    background: #fff;
+    color: var(--olive);
+    border-radius: 6px;
+    padding: 7px 10px;
+    font-weight: 600;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.student-fee-detail {
+    margin-top: 18px;
+    padding: 16px;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+}
+
+.student-fee-detail h4 { margin: 0 0 10px; }
+.student-fee-detail ul { margin: 8px 0; padding-left: 18px; }
+
+.class-payment-card {
+    background: var(--card-bg, #fff);
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 20px;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.class-payment-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 18px rgba(0, 0, 0, 0.08);
+}
+
+.class-card-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.class-payment-stats {
+    display: grid;
+    gap: 14px;
+}
+
+.class-payment-stats div {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.class-payment-stats span {
+    color: #64748b;
+    font-size: 13px;
+}
+
+.received-amount {
+    color: #16a34a;
+}
+
+.remaining-amount {
+    color: #dc2626;
+}
+
+.class-payment-card button {
+    margin-top: 20px;
+    width: 100%;
+    padding: 10px;
+    border: 0;
+    border-radius: 8px;
+    background: #eef2ff;
+    color: #3730a3;
+    cursor: pointer;
+}
+
+.payment-summary-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin: 20px 0;
+}
+
+.payment-summary-cards > div {
+    padding: 18px;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    background: var(--card-bg, #fff);
+}
+
+.payment-summary-cards span {
+    color: #64748b;
+    font-size: 13px;
+}
+
+.payment-status {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.payment-status.paid {
+    background: #dcfce7;
+    color: #15803d;
+}
+
+.payment-status.partial {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.payment-status.not-paid {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+#classStudentPaymentBody small {
+    display: block;
+    color: #64748b;
+}
+
+@media (max-width: 650px) {
+    .payment-summary-cards {
+        grid-template-columns: 1fr;
+    }
 }
 
 /* Align payment and fee structure table content */
