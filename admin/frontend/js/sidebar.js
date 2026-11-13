@@ -240,6 +240,69 @@
         return aside;
     }
 
+    function getStoredAcademicYear() {
+        const stored = localStorage.getItem("school_academic_year");
+        if (stored && /^\d{4}-\d{4}$/.test(stored.trim())) {
+            return stored.trim();
+        }
+        const now = new Date();
+        const start = now.getMonth() >= 3 ? now.getFullYear() : now.getFullYear() - 1;
+        return `${start}-${start + 1}`;
+    }
+
+    function injectAcademicYearBadge() {
+        const topbarActions = document.querySelector(".topbar-actions");
+        if (!topbarActions || document.getElementById("topbarAcademicYear")) {
+            return;
+        }
+
+        const badge = document.createElement("div");
+        badge.className = "topbar-academic-year";
+        badge.id = "topbarAcademicYear";
+        badge.title = "Active Academic Year";
+
+        const icon = document.createElement("span");
+        icon.className = "ay-icon";
+        icon.textContent = "📅";
+
+        const text = document.createElement("span");
+        text.className = "ay-text";
+        text.id = "topbarAyText";
+        text.textContent = `AY ${getStoredAcademicYear()}`;
+
+        badge.appendChild(icon);
+        badge.appendChild(text);
+
+        topbarActions.prepend(badge);
+
+        if (!localStorage.getItem("school_academic_year")) {
+            const apiBase = (window.API_BASE_URL || "http://127.0.0.1:8000").replace(/\/+$/, "");
+            fetch(`${apiBase}/settings`)
+                .then(r => r.ok ? r.json() : null)
+                .then(settings => {
+                    if (settings && settings.academic_year) {
+                        localStorage.setItem("school_academic_year", settings.academic_year);
+                        const el = document.getElementById("topbarAyText");
+                        if (el) el.textContent = `AY ${settings.academic_year}`;
+                    }
+                })
+                .catch(() => {});
+        }
+    }
+
+    window.addEventListener("academicYearChanged", (e) => {
+        const ay = e?.detail?.academic_year;
+        const el = document.getElementById("topbarAyText");
+        if (el && ay) el.textContent = `AY ${ay}`;
+    });
+
+    window.addEventListener("storage", (e) => {
+        if (e.key === "school_academic_year" && e.newValue) {
+            const el = document.getElementById("topbarAyText");
+            if (el) el.textContent = `AY ${e.newValue}`;
+        }
+    });
+
     // Insert sidebar immediately without making API requests.
     function injectSidebar() {
         const layout = document.querySelector(".page-layout");
@@ -253,15 +316,20 @@
         layout.prepend(sidebar);
     }
 
-    // Initialize sidebar.
+    function initComponents() {
+        injectSidebar();
+        injectAcademicYearBadge();
+    }
+
+    // Initialize sidebar and components.
     if (document.readyState === "loading") {
         document.addEventListener(
             "DOMContentLoaded",
-            injectSidebar,
+            initComponents,
             { once: true }
         );
     } else {
-        injectSidebar();
+        initComponents();
     }
 
 })();

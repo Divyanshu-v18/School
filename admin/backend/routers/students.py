@@ -5,6 +5,7 @@ across the student_details, student_personal_details, student_parent_details,
 and student_address tables in the school_management database.
 """
 
+from datetime import date
 from fastapi import APIRouter, HTTPException, Query
 from database import db_cursor
 from models.student import Student
@@ -97,6 +98,9 @@ def add_student(student: Student):
                         student.state,
                     ),
                 )
+
+                # Fee structures define what is due.  Do not create placeholder
+                # fee_payments rows here: that table is the actual receipt ledger.
 
                 conn.commit()
                 return {

@@ -1,256 +1,199 @@
+/* Teacher directory: search, post filter, and CRUD navigation. */
+(() => {
+    "use strict";
 
-/* ==========================================================================
-   TEACHER DIRECTORY & MANAGEMENT
-   Handles listing, filtering, search, and deletion of teachers.
-   ========================================================================== */
-
-document.addEventListener("DOMContentLoaded", () => {
     const addTeacherBtn = document.getElementById("addTeacherBtn");
     const teacherSearch = document.getElementById("teacherSearch");
-    const tableBody = document.getElementById("teacherTableBody");
+    const postFilter = document.getElementById("postFilter");
+    const clearFiltersBtn = document.getElementById("clearTeacherFilters");
+    const teacherTableBody = document.getElementById("teacherTableBody");
+    const resultCount = document.getElementById("teacherResultCount");
 
     let teachers = [];
 
-    /* ========================================
-       VALIDATION & TABLE HELPERS
-    ======================================== */
-
-    function isValidTeacherId(value) {
-        const id = Number(value);
-        return Number.isSafeInteger(id) && id > 0;
-    }
+    const apiBase = () => (window.API_BASE_URL || "http://127.0.0.1:8000").replace(/\/+$/, "");
+    const authenticatedFetch = (url, options) => {
+        if (typeof window.authenticatedFetch !== "function") {
+            throw new Error("Authentication helper is unavailable. Check api.js.");
+        }
+        return window.authenticatedFetch(url, options);
+    };
+    const validTeacherId = id => /^\d+$/.test(String(id ?? "")) && Number(id) > 0;
 
     function showTableMessage(message) {
-        if (!tableBody) return;
-
+        if (!teacherTableBody) return;
+        teacherTableBody.replaceChildren();
         const row = document.createElement("tr");
         const cell = document.createElement("td");
-
         cell.colSpan = 5;
         cell.textContent = message;
-
         row.appendChild(cell);
-        tableBody.replaceChildren(row);
+        teacherTableBody.appendChild(row);
+        if (resultCount) resultCount.textContent = "";
     }
 
-    /* ========================================
-       NAVIGATION
-    ======================================== */
+    function uniqueSorted(values) {
+        return [...new Set(values.map(v => String(v ?? "").trim()).filter(Boolean))]
+            .sort((a, b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: "base" }));
+    }
 
-    if (addTeacherBtn) {
-        addTeacherBtn.addEventListener("click", () => {
-            window.location.href = "add_teacher.html";
+    function populateSelect(select, values, defaultLabel) {
+        if (!select) return;
+        const previous = select.value;
+        select.replaceChildren();
+        const allOption = document.createElement("option");
+        allOption.value = "";
+        allOption.textContent = defaultLabel;
+        select.appendChild(allOption);
+        values.forEach(value => {
+            const option = document.createElement("option");
+            option.value = value;
+            option.textContent = value;
+            select.appendChild(option);
+        });
+        select.value = values.includes(previous) ? previous : "";
+    }
+
+    function populateFilters() {
+        populateSelect(postFilter, uniqueSorted(teachers.map(t => t.post)), "All posts");
+    }
+
+    function getFilteredTeachers() {
+        const query = (teacherSearch?.value || "").trim().toLowerCase();
+        const selectedPost = postFilter?.value || "";
+
+        return teachers.filter(teacher => {
+            const matchesQuery = [
+                teacher.teacher_id, teacher.full_name, teacher.phone, teacher.post
+            ].some(value => String(value ?? "").toLowerCase().includes(query));
+            const matchesPost = !selectedPost || String(teacher.post ?? "") === selectedPost;
+            return matchesQuery && matchesPost;
         });
     }
 
-    function viewTeacher(teacherId) {
-        if (!isValidTeacherId(teacherId)) {
-            alert("Invalid teacher ID.");
+    function displayTeachers(list) {
+        if (!teacherTableBody) return;
+        teacherTableBody.replaceChildren();
+
+        if (!list.length) {
+            showTableMessage(teachers.length ? "No teachers match the selected filters." : "No teachers found.");
             return;
         }
 
-        window.location.href =
-            `teacher_details.html?teacher_id=${encodeURIComponent(Number(teacherId))}`;
-    }
-
-    function editTeacher(teacherId) {
-        if (!isValidTeacherId(teacherId)) {
-            alert("Invalid teacher ID.");
-            return;
-        }
-
-        window.location.href =
-            `edit_teacher.html?teacher_id=${encodeURIComponent(Number(teacherId))}`;
-    }
-
-    /* ========================================
-       LOAD TEACHERS FROM API
-    ======================================== */
-
-    async function loadTeachers() {
-        const apiBase = window.API_BASE_URL || "http://127.0.0.1:8000";
-
-        try {
-            const response = await authenticatedFetch(`${apiBase}/teachers`);
-
-            if (!response.ok) {
-                throw new Error("Failed to load teachers.");
-            }
-
-            const data = await response.json();
-
-            if (!Array.isArray(data)) {
-                throw new Error("Invalid teachers response.");
-            }
-
-            teachers = data;
-            displayTeachers(teachers);
-        } catch (error) {
-            console.error("Error loading teachers:", error);
-            showTableMessage(
-                "Unable to load teachers. Please check the backend connection."
-            );
-        }
-    }
-
-    /* ========================================
-       DISPLAY & RENDER TABLE
-    ======================================== */
-
-    function displayTeachers(data) {
-        if (!tableBody) return;
-
-        tableBody.replaceChildren();
-
-        if (data.length === 0) {
-            showTableMessage("No teachers found.");
-            return;
-        }
-
-        data.forEach(teacher => {
+        list.forEach(teacher => {
             const row = document.createElement("tr");
+            [teacher.teacher_id, teacher.full_name, teacher.phone, teacher.post].forEach(value => {
+                const cell = document.createElement("td");
+                cell.textContent = value === null || value === undefined || value === "" ? "-" : String(value);
+                row.appendChild(cell);
+            });
 
-            const idCell = document.createElement("td");
-            idCell.textContent = String(teacher.teacher_id ?? "");
-
-            const nameCell = document.createElement("td");
-            nameCell.textContent = String(teacher.full_name ?? "");
-
-            const phoneCell = document.createElement("td");
-            phoneCell.textContent = String(teacher.phone ?? "");
-
-            const postCell = document.createElement("td");
-            postCell.textContent = String(teacher.post || "-");
-
-            const actionsCell = document.createElement("td");
-            actionsCell.className = "teacher-actions";
+            const actionCell = document.createElement("td");
+            actionCell.className = "teacher-actions";
 
             const infoButton = document.createElement("button");
             infoButton.type = "button";
             infoButton.className = "info-btn";
             infoButton.textContent = "Info";
-            infoButton.addEventListener("click", () => {
-                viewTeacher(teacher.teacher_id);
-            });
+            infoButton.addEventListener("click", () => viewTeacher(teacher.teacher_id));
 
             const editButton = document.createElement("button");
             editButton.type = "button";
             editButton.className = "edit-btn";
             editButton.textContent = "Edit";
-            editButton.addEventListener("click", () => {
-                editTeacher(teacher.teacher_id);
-            });
+            editButton.addEventListener("click", () => editTeacher(teacher.teacher_id));
 
             const deleteButton = document.createElement("button");
             deleteButton.type = "button";
             deleteButton.className = "delete-btn";
             deleteButton.textContent = "Delete";
-            deleteButton.addEventListener("click", () => {
-                deleteTeacher(teacher.teacher_id);
-            });
+            deleteButton.addEventListener("click", () => deleteTeacher(teacher.teacher_id));
 
-            actionsCell.append(infoButton, editButton, deleteButton);
-
-            row.append(
-                idCell,
-                nameCell,
-                phoneCell,
-                postCell,
-                actionsCell
-            );
-
-            tableBody.appendChild(row);
+            actionCell.append(infoButton, editButton, deleteButton);
+            row.appendChild(actionCell);
+            teacherTableBody.appendChild(row);
         });
+
+        if (resultCount) resultCount.textContent = `Showing ${list.length} of ${teachers.length} teachers`;
     }
 
-    /* ========================================
-       LIVE SEARCH
-    ======================================== */
-
-    if (teacherSearch) {
-        teacherSearch.addEventListener("input", () => {
-            const searchValue = teacherSearch.value.toLowerCase().trim();
-
-            const filteredTeachers = teachers.filter(teacher => {
-                const id = String(teacher.teacher_id ?? "");
-                const name = String(teacher.full_name ?? "").toLowerCase();
-                const phone = String(teacher.phone ?? "").toLowerCase();
-                const post = String(teacher.post ?? "").toLowerCase();
-
-                return (
-                    id.includes(searchValue) ||
-                    name.includes(searchValue) ||
-                    phone.includes(searchValue) ||
-                    post.includes(searchValue)
-                );
-            });
-
-            displayTeachers(filteredTeachers);
-        });
+    function applyFilters() {
+        displayTeachers(getFilteredTeachers());
     }
 
-    /* ========================================
-       DELETE TEACHER (WITH COUNTDOWN MODAL)
-    ======================================== */
+    function viewTeacher(id) {
+        if (!validTeacherId(id)) return alert("Invalid teacher ID.");
+        window.location.href = `teacher_details.html?teacher_id=${encodeURIComponent(id)}`;
+    }
+
+    function editTeacher(id) {
+        if (!validTeacherId(id)) return alert("Invalid teacher ID.");
+        window.location.href = `edit_teacher.html?teacher_id=${encodeURIComponent(id)}`;
+    }
+
+    async function loadTeachers() {
+        if (!teacherTableBody) return;
+        try {
+            const response = await authenticatedFetch(`${apiBase()}/teachers`);
+            if (!response.ok) throw new Error(`Unable to load teachers (HTTP ${response.status}).`);
+            const data = await response.json();
+            const list = Array.isArray(data) ? data : data?.teachers;
+            if (!Array.isArray(list)) throw new Error("Unexpected teacher API response.");
+            teachers = list;
+            populateFilters();
+            displayTeachers(getFilteredTeachers());
+        } catch (error) {
+            console.error("Error loading teachers:", error);
+            if (!window.location.pathname.toLowerCase().endsWith("login.html")) {
+                showTableMessage("Unable to load teachers. Please try again.");
+            }
+        }
+    }
 
     function deleteTeacher(teacherId) {
-        const id = Number(teacherId);
-
-        if (!isValidTeacherId(id)) {
-            alert("Invalid teacher ID.");
-            return;
-        }
-
+        if (!validTeacherId(teacherId)) return alert("Invalid teacher ID.");
         if (typeof window.showDeleteConfirmationModal !== "function") {
-            console.error("Delete confirmation modal is unavailable.");
-            alert("Unable to open the delete confirmation dialog.");
-            return;
+            return alert("Delete confirmation modal is unavailable.");
         }
 
         window.showDeleteConfirmationModal({
             title: "Delete Teacher?",
             initialMessage: "Please wait before confirmation.",
-            confirmMessage:
-                "Are you sure you want to permanently delete this teacher?",
+            confirmMessage: "Are you sure you want to permanently delete this teacher?",
             countdownSeconds: 5,
-
             onConfirm: async () => {
-                const apiBase =
-                    window.API_BASE_URL || "http://127.0.0.1:8000";
-
                 try {
                     const response = await authenticatedFetch(
-                        `${apiBase}/teachers/${id}`,
+                        `${apiBase()}/teachers/${encodeURIComponent(teacherId)}`,
                         { method: "DELETE" }
                     );
-
                     if (!response.ok) {
-                        let message = "Failed to delete teacher.";
-
+                        let message = `Failed to delete teacher (HTTP ${response.status}).`;
                         try {
                             const result = await response.json();
-
-                            if (typeof result.detail === "string") {
-                                message = result.detail;
-                            }
-                        } catch {
-                            // Keep the generic error message.
-                        }
-
+                            if (typeof result.detail === "string") message = result.detail;
+                        } catch (_) {}
                         alert(message);
                         return;
                     }
-
                     alert("Teacher deleted successfully!");
                     await loadTeachers();
                 } catch (error) {
                     console.error("Error deleting teacher:", error);
-                    alert("Unable to connect to the backend.");
+                    alert("Unable to complete the request. Check your session and backend connection.");
                 }
             }
         });
     }
 
-    // Initial load
+    addTeacherBtn?.addEventListener("click", () => { window.location.href = "add_teacher.html"; });
+    teacherSearch?.addEventListener("input", () => displayTeachers(getFilteredTeachers()));
+    postFilter?.addEventListener("change", applyFilters);
+    clearFiltersBtn?.addEventListener("click", () => {
+        if (teacherSearch) teacherSearch.value = "";
+        if (postFilter) postFilter.value = "";
+        displayTeachers(getFilteredTeachers());
+    });
+
     loadTeachers();
-});
+})();

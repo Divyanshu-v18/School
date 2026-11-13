@@ -1,170 +1,72 @@
 <!doctype html>
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Manage all student records – add, search, edit, and remove students.">
-
-
+    <meta name="description" content="Manage student records.">
     <title>Students</title>
-
-    <!-- COMMON CSS -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
     <link rel="stylesheet" href="../css/style.css">
-
-    <!-- STUDENT PAGE CSS -->
     <link rel="stylesheet" href="../css/student.css">
-
+    <link rel="stylesheet" href="../css/student_overrides.css">
 </head>
-
-
 <body>
-
     <div class="page-layout">
-
-        <!-- ================= SIDEBAR ================= -->
-        <!-- ================= MAIN CONTENT ================= -->
-
         <main class="main-content">
-
-
-            <!-- ================= NAVBAR ================= -->
-
             <header class="topbar">
-
                 <h1>ABC Public School</h1>
-
-
                 <div class="topbar-actions">
-
-                    <button class="notification-btn" id="notificationBtn" title="Notifications">
-                        ♧
-
-                        <span class="notification-dot"></span>
-
-                    </button>
-
-
+                    <button class="notification-btn" id="notificationBtn" title="Notifications">♧<span class="notification-dot"></span></button>
                     <div class="top-profile">
-
-                        <div class="profile-avatar">
-                            AS
-                        </div>
-
-                        <div class="top-profile-info">
-
-                            <strong>Admin</strong>
-                            <span>Administrator</span>
-
-                        </div>
-
+                        <div class="profile-avatar">AS</div>
+                        <div class="top-profile-info"><strong>Admin</strong><span>Administrator</span></div>
                     </div>
-
                 </div>
-
             </header>
 
-
-            <!-- ================= STUDENT CONTENT ================= -->
-
             <div class="student-content">
-
-
-                <!-- Student Header -->
-
                 <div class="student-header">
-
                     <div class="page-title">
-
                         <h2>Students</h2>
-
-                        <p>
-                            Manage all students in the school
-                        </p>
+                        <p>Manage all students in the school</p>
                     </div>
-                 </div>
-
-                
-
-
-                <!-- Search -->
-
-                <div class="student-toolbar">
-
-                    <div class="student-search">
-
-                        <span class="search-icon">
-                            ⌕
-                        </span>
-
-                        <input type="text" id="studentSearch" placeholder="Search students...">
-
-                    </div>
-
+                    <button type="button" id="addStudentBtn" class="add-student-btn">+ Add Student</button>
                 </div>
 
-
-                <!-- ================= STUDENT LIST ================= -->
+                <div class="student-toolbar student-toolbar-filters">
+                    <div class="student-search">
+                        <span class="search-icon" aria-hidden="true">⌕</span>
+                        <input type="search" id="studentSearch" placeholder="Search by name or student ID..." aria-label="Search students">
+                    </div>
+                    <label class="student-filter">
+                        <span>Class</span>
+                        <select id="classFilter"><option value="">All classes</option></select>
+                    </label>
+                    <label class="student-filter">
+                        <span>Section</span>
+                        <select id="sectionFilter"><option value="">All sections</option></select>
+                    </label>
+                    <button type="button" id="clearStudentFilters" class="clear-filters-btn">Clear filters</button>
+                </div>
 
                 <section class="student-list-section">
-
-                    <div class="student-list-header">
-
-                        <div>
-                            <h2>Students</h2>
-                            <p>Manage all students</p>
-                        </div>
-
-                    </div>
-
-
                     <div class="student-table-wrapper">
-
                         <table class="student-table">
-
-                            <thead>
-
-                                <tr>
-                                    <th>Student ID</th>
-                                    <th>Name</th>
-                                    <th>Class</th>
-                                    <th>Section</th>
-                                    <th>Action</th>
-                                </tr>
-
-                            </thead>
-                            <tbody id="studentTableBody">
-
-                                <tr>
-                                    <td colspan="5">Loading students...</td>
-                                </tr>
-
-                            </tbody>
-
+                            <thead><tr><th>Student ID</th><th>Name</th><th>Class</th><th>Section</th><th>Action</th></tr></thead>
+                            <tbody id="studentTableBody"><tr><td colspan="5">Loading students...</td></tr></tbody>
                         </table>
-
                     </div>
-
+                    <p class="student-result-count" id="studentResultCount" aria-live="polite"></p>
                 </section>
-
             </div>
-
         </main>
-
     </div>
-
 
     <script src="../js/api.js"></script>
     <script src="../js/sidebar.js"></script>
-
     <script src="../js/script.js"></script>
     <script src="../js/student.js"></script>
-
 </body>
-
 </html>

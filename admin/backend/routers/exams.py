@@ -120,3 +120,49 @@ def add_exam_result(exam_id: int, result: ExamResult):
             status_code=500,
             detail="An internal server error occurred."
         )
+
+
+@router.get("/students/{student_id}/marks")
+def get_student_marks(student_id: int):
+    """Retrieve all examination results for one student."""
+
+    try:
+        with db_cursor(database="school_management", dictionary=True) as (cur, _):
+
+            cur.execute(
+                """
+                SELECT
+                    er.result_id,
+                    er.exam_id,
+                    er.student_id,
+                    er.student_name,
+                    er.marks_obtained,
+                    er.grade,
+                    e.exam_name,
+                    e.class_name,
+                    e.subject,
+                    e.exam_date,
+                    e.max_marks
+
+                FROM exam_results er
+
+                INNER JOIN exams e
+                    ON er.exam_id = e.exam_id
+
+                WHERE er.student_id = %s
+
+                ORDER BY e.exam_date DESC, e.exam_name, e.subject
+                """,
+                (student_id,)
+            )
+
+            return cur.fetchall()
+
+    except Exception:
+        logger.exception(
+            "Unable to retrieve marks for student %s", student_id
+        )
+        raise HTTPException(
+            status_code=500,
+            detail="An internal server error occurred."
+        )

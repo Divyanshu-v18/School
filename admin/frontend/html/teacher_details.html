@@ -1,164 +1,243 @@
 <!doctype html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description"
-        content="View complete details for a teacher including professional and personal information.">
-
-    <title>Teacher Details</title>
-
-    <!-- COMMON CSS -->
+    <meta name="description" content="Teacher profile, academic assignments, attendance records, and salary details.">
+    <title>Teacher Profile</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../css/teacher_details.css">
 </head>
-
-<!-- ================= TEACHER DETAILS ================= -->
-
 <body>
-
-    <div class="teacher-details-page">
-        <div class="teacher-details-wrap">
-
-            <div class="details-header">
-                <div>
-                    <h1>Teacher Details</h1>
-                    <p>Complete information about the teacher</p>
-                </div>
-
-                <div class="header-actions">
-                    <button type="button" id="printTeacherBtn" class="action-btn print-btn">
-                        Print
-                    </button>
-                    <button type="button" id="editTeacherBtn" class="action-btn edit-btn">
-                        Edit
-                    </button>
-                    <button type="button" id="deleteTeacherBtn" class="action-btn delete-btn">
-                        Delete
-                    </button>
-                    <button type="button" id="backToTeachers" class="back-btn">
-                        ← Back to Teachers
-                    </button>
+<div class="page-layout">
+    <!-- sidebar.js injects the same sidebar used by the other dashboard pages -->
+    <main class="main-content">
+        <header class="topbar">
+            <h1>ABC Public School</h1>
+            <div class="topbar-actions">
+                <button class="notification-btn" id="notificationBtn" title="Notifications" type="button">♧<span class="notification-dot"></span></button>
+                <div class="top-profile">
+                    <div class="profile-avatar">AS</div>
+                    <div class="top-profile-info"><strong>Admin</strong><span>Administrator</span></div>
                 </div>
             </div>
+        </header>
 
-            <!-- ================= BASIC DETAILS ================= -->
+        <div class="teacher-profile-page">
+            <div class="teacher-profile-wrap">
 
-            <section class="details-section">
-                <h2>Basic Details</h2>
+                <section class="teacher-hero">
+                    <div class="teacher-avatar" id="teacherAvatar">T</div>
+                    <div class="teacher-hero-info">
+                        <h1 id="profileName">Loading teacher...</h1>
+                        <p id="profileSubtitle">Post - | ID - | Qualification -</p>
+                        <span class="profile-status" id="profileStatus">Teacher Profile</span>
+                    </div>
+                    <div class="profile-actions">
+                        <button type="button" id="printTeacherBtn" class="action-btn print-btn">Print</button>
+                        <button type="button" id="editTeacherBtn" class="action-btn edit-btn">Edit Profile</button>
+                        <button type="button" id="deleteTeacherBtn" class="action-btn delete-btn">Delete</button>
+                        <button type="button" id="backToTeachers" class="back-btn">← Back</button>
+                    </div>
+                </section>
 
-                <div class="details-grid">
-                    <div class="details-group">
-                        <span>Teacher ID</span>
-                        <strong id="teacherId">-</strong>
-                    </div>
-                    <div class="details-group">
-                        <span>Full Name</span>
-                        <strong id="fullName">-</strong>
-                    </div>
-                    <div class="details-group">
-                        <span>Date of Birth</span>
-                        <strong id="dateOfBirth">-</strong>
-                    </div>
-                    <div class="details-group">
-                        <span>Gender</span>
-                        <strong id="gender">-</strong>
-                    </div>
-                    <div class="details-group">
-                        <span>Category</span>
-                        <strong id="category">-</strong>
-                    </div>
-                    <div class="details-group">
-                        <span>Blood Group</span>
-                        <strong id="bloodGroup">-</strong>
-                    </div>
-                    <div class="details-group">
-                        <span>Phone</span>
-                        <strong id="phone">-</strong>
-                    </div>
-                    <div class="details-group">
-                        <span>Email</span>
-                        <strong id="email">-</strong>
-                    </div>
-                </div>
-            </section>
+                <section class="profile-panel">
+                    <nav class="profile-tabs" role="tablist" aria-label="Teacher information">
+                        <button type="button" class="profile-tab active" role="tab" aria-selected="true" aria-controls="panel-overview" data-tab="overview">Overview</button>
+                        <button type="button" class="profile-tab" role="tab" aria-selected="false" aria-controls="panel-academic" data-tab="academic">Academic Details</button>
+                        <button type="button" class="profile-tab" role="tab" aria-selected="false" aria-controls="panel-attendance" data-tab="attendance">Attendance</button>
+                        <button type="button" class="profile-tab" role="tab" aria-selected="false" aria-controls="panel-salary" data-tab="salary">Salary</button>
+                    </nav>
 
-            <!-- ================= ADDRESS DETAILS ================= -->
+                    <!-- TAB 1: OVERVIEW -->
+                    <div class="profile-tab-panel" id="panel-overview" role="tabpanel">
+                        <div class="overview-grid">
+                            <section class="overview-card">
+                                <h2>Basic Information</h2>
+                                <dl class="profile-details-grid">
+                                    <div><dt>Teacher ID</dt><dd id="teacherId">-</dd></div>
+                                    <div><dt>Date of Birth</dt><dd id="dateOfBirth">-</dd></div>
+                                    <div><dt>Gender</dt><dd id="gender">-</dd></div>
+                                    <div><dt>Category</dt><dd id="category">-</dd></div>
+                                    <div><dt>Blood Group</dt><dd id="bloodGroup">-</dd></div>
+                                    <div><dt>Phone</dt><dd id="phone">-</dd></div>
+                                    <div><dt>Email</dt><dd id="email">-</dd></div>
+                                </dl>
+                            </section>
 
-            <section class="details-section">
-                <h2>Address Details</h2>
+                            <section class="overview-card">
+                                <h2>Professional Details</h2>
+                                <dl class="profile-details-grid">
+                                    <div><dt>Post / Designation</dt><dd id="post">-</dd></div>
+                                    <div><dt>Qualification</dt><dd id="qualification">-</dd></div>
+                                    <div><dt>Date of Joining</dt><dd id="dateOfJoining">-</dd></div>
+                                    <div><dt>Joining Number</dt><dd id="joiningNo">-</dd></div>
+                                    <div><dt>Aadhaar Number</dt><dd id="aadharNo">-</dd></div>
+                                    <div><dt>Casual Leave (CL)</dt><dd id="cl">-</dd></div>
+                                </dl>
+                            </section>
 
-                <div class="details-grid">
-                    <div class="details-group">
-                        <span>House No.</span>
-                        <strong id="houseNo">-</strong>
+                            <section class="overview-card" style="grid-column: 1 / -1;">
+                                <h2>Address Details</h2>
+                                <dl class="profile-details-grid">
+                                    <div><dt>House Number</dt><dd id="houseNo">-</dd></div>
+                                    <div><dt>Street</dt><dd id="street">-</dd></div>
+                                    <div><dt>City</dt><dd id="city">-</dd></div>
+                                    <div><dt>State</dt><dd id="state">-</dd></div>
+                                    <div><dt>Pincode</dt><dd id="pincode">-</dd></div>
+                                </dl>
+                            </section>
+                        </div>
                     </div>
-                    <div class="details-group">
-                        <span>Street</span>
-                        <strong id="street">-</strong>
-                    </div>
-                    <div class="details-group">
-                        <span>City</span>
-                        <strong id="city">-</strong>
-                    </div>
-                    <div class="details-group">
-                        <span>State</span>
-                        <strong id="state">-</strong>
-                    </div>
-                    <div class="details-group">
-                        <span>Pincode</span>
-                        <strong id="pincode">-</strong>
-                    </div>
-                </div>
-            </section>
 
-            <!-- ================= PROFESSIONAL DETAILS ================= -->
+                    <!-- TAB 2: ACADEMIC DETAILS -->
+                    <div class="profile-tab-panel" id="panel-academic" role="tabpanel" hidden>
+                        <div class="records-heading">
+                            <div>
+                                <h2>Academic & Teaching Details</h2>
+                                <p>Classes assigned, subjects taught, and weekly lecture timetable</p>
+                            </div>
+                            <button class="refresh-records-btn" type="button" data-refresh="academic">Refresh</button>
+                        </div>
 
-            <section class="details-section">
-                <h2>Professional Details</h2>
+                        <div class="summary-cards" id="academicSummary"></div>
 
-                <div class="details-grid">
-                    <div class="details-group">
-                        <span>Date of Joining</span>
-                        <strong id="dateOfJoining">-</strong>
-                    </div>
-                    <div class="details-group">
-                        <span>Joining No.</span>
-                        <strong id="joiningNo">-</strong>
-                    </div>
-                    <div class="details-group">
-                        <span>Aadhar No.</span>
-                        <strong id="aadharNo">-</strong>
-                    </div>
-                    <div class="details-group">
-                        <span>Qualification</span>
-                        <strong id="qualification">-</strong>
-                    </div>
-                    <div class="details-group">
-                        <span>Post</span>
-                        <strong id="post">-</strong>
-                    </div>
-                    <div class="details-group">
-                        <span>CL</span>
-                        <strong id="cl">-</strong>
-                    </div>
-                </div>
-            </section>
+                        <section class="details-section-wrap">
+                            <h3 class="sub-heading">Assigned Classes & Subjects</h3>
+                            <div class="records-table-wrap">
+                                <table class="records-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Class</th>
+                                            <th>Section</th>
+                                            <th>Subject</th>
+                                            <th>Weekly Periods</th>
+                                            <th>Role</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="assignedClassesBody"><tr><td colspan="5" class="table-empty">Open Academic Details to load classes.</td></tr></tbody>
+                                </table>
+                            </div>
+                        </section>
 
+                        <section class="details-section-wrap" style="margin-top: 24px;">
+                            <h3 class="sub-heading">Weekly Lecture Schedule</h3>
+                            <div class="records-table-wrap">
+                                <table class="records-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Day</th>
+                                            <th>Period</th>
+                                            <th>Class & Section</th>
+                                            <th>Subject</th>
+                                            <th>Timings</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="academicTimetableBody"><tr><td colspan="5" class="table-empty">Open Academic Details to load timetable.</td></tr></tbody>
+                                </table>
+                            </div>
+                        </section>
+                    </div>
+
+                    <!-- TAB 3: ATTENDANCE -->
+                    <div class="profile-tab-panel" id="panel-attendance" role="tabpanel" hidden>
+                        <div class="records-heading">
+                            <div>
+                                <h2>Attendance Records</h2>
+                                <p>Attendance history for this teacher</p>
+                            </div>
+                            <button class="refresh-records-btn" type="button" data-refresh="attendance">Refresh</button>
+                        </div>
+                        <div class="summary-cards" id="attendanceSummary"></div>
+                        <div class="records-table-wrap">
+                            <table class="records-table">
+                                <thead id="attendanceHead"></thead>
+                                <tbody id="attendanceBody"><tr><td>Open Attendance to load records.</td></tr></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- TAB 4: SALARY -->
+                    <div class="profile-tab-panel" id="panel-salary" role="tabpanel" hidden>
+                        <div class="records-heading">
+                            <div>
+                                <h2>Salary & Compensation</h2>
+                                <p>Monthly compensation structure, allowances, deductions, and payment disbursement history</p>
+                            </div>
+                            <button class="refresh-records-btn" type="button" data-refresh="salary">Refresh</button>
+                        </div>
+
+                        <div class="summary-cards" id="salarySummary"></div>
+
+                        <div class="overview-grid" style="margin-bottom: 24px;">
+                            <section class="overview-card">
+                                <h2>Monthly Earnings & Allowances</h2>
+                                <dl class="profile-details-grid">
+                                    <div><dt>Basic Pay</dt><dd id="salaryBasicPay">-</dd></div>
+                                    <div><dt>House Rent Allowance (HRA)</dt><dd id="salaryHra">-</dd></div>
+                                    <div><dt>Dearness Allowance (DA)</dt><dd id="salaryDa">-</dd></div>
+                                    <div><dt>Special / Medical Allowance</dt><dd id="salarySpecial">-</dd></div>
+                                    <div><dt>Gross Monthly Salary</dt><dd id="salaryGross" style="font-weight: 700; color: #15803d;">-</dd></div>
+                                </dl>
+                            </section>
+
+                            <section class="overview-card">
+                                <h2>Deductions & Net Pay</h2>
+                                <dl class="profile-details-grid">
+                                    <div><dt>Provident Fund (PF - 12%)</dt><dd id="salaryPf">-</dd></div>
+                                    <div><dt>Income Tax (TDS)</dt><dd id="salaryTax">-</dd></div>
+                                    <div><dt>Professional Tax (PT)</dt><dd id="salaryPt">-</dd></div>
+                                    <div><dt>Casual Leave (CL) Balance</dt><dd id="salaryCl">-</dd></div>
+                                    <div><dt>Total Deductions</dt><dd id="salaryDeductions" style="color: #b91c1c;">-</dd></div>
+                                    <div><dt>Net Take Home Salary</dt><dd id="salaryNet" style="font-weight: 700; color: #1e40af;">-</dd></div>
+                                </dl>
+                            </section>
+
+                            <section class="overview-card" style="grid-column: 1 / -1;">
+                                <h2>Bank & Disbursement Information</h2>
+                                <dl class="profile-details-grid">
+                                    <div><dt>Bank Name</dt><dd id="salaryBankName">-</dd></div>
+                                    <div><dt>Account Number</dt><dd id="salaryAccountNo">-</dd></div>
+                                    <div><dt>IFSC Code</dt><dd id="salaryIfsc">-</dd></div>
+                                    <div><dt>PAN Number</dt><dd id="salaryPan">-</dd></div>
+                                    <div><dt>Payment Mode</dt><dd id="salaryPaymentMode">-</dd></div>
+                                </dl>
+                            </section>
+                        </div>
+
+                        <section class="details-section-wrap">
+                            <h3 class="sub-heading">Disbursement & Payslip History</h3>
+                            <div class="records-table-wrap">
+                                <table class="records-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Month</th>
+                                            <th>Pay Date</th>
+                                            <th>Gross Pay</th>
+                                            <th>Deductions</th>
+                                            <th>Net Paid</th>
+                                            <th>Payment Mode</th>
+                                            <th>Reference No.</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="salaryHistoryBody"><tr><td colspan="8" class="table-empty">Open Salary to load disbursement history.</td></tr></tbody>
+                                </table>
+                            </div>
+                        </section>
+                    </div>
+
+                </section>
+            </div>
         </div>
-    </div>
-
-    <script src="../js/api.js"></script>
-    <script src="../js/sidebar.js"></script>
-
-    <script src="../js/script.js"></script>
-    <script src="../js/teacher_details.js"></script>
-
+    </main>
+</div>
+<script src="../js/api.js"></script>
+<script src="../js/sidebar.js"></script>
+<script src="../js/script.js"></script>
+<script src="../js/teacher_details.js"></script>
 </body>
-
 </html>
