@@ -723,3 +723,62 @@ body.edit_student-page {
         grid-template-columns: 1fr;
     }
 }
+
+
+/* Additive styles for the updated student directory. Existing student.css remains intact. */
+.student-toolbar-filters {
+    display: flex;
+    align-items: end;
+    flex-wrap: wrap;
+    gap: 14px;
+}
+.student-toolbar-filters .student-search { flex: 1 1 260px; }
+.student-filter { display: flex; flex-direction: column; gap: 6px; min-width: 145px; }
+.student-filter span { color: var(--text-light); font-size: 12px; font-weight: 600; }
+.student-filter select {
+    height: 42px; min-width: 145px; padding: 0 34px 0 12px;
+    border: 1px solid #d8d8d8; border-radius: 8px;
+    background: #fff; color: var(--text-dark); font: inherit; font-size: 14px;
+}
+.student-filter select:focus { outline: none; border-color: var(--olive); }
+.clear-filters-btn {
+    height: 42px; padding: 0 14px; border: 1px solid #d8d8d8;
+    border-radius: 8px; background: #fff; color: var(--text-dark);
+    cursor: pointer; font: inherit; font-size: 13px;
+}
+.clear-filters-btn:hover { background: #f1f1f1; }
+.student-result-count { margin: 12px 2px 0; color: var(--text-light); font-size: 12px; }
+@media (max-width: 600px) {
+    .student-toolbar-filters { align-items: stretch; }
+    .student-toolbar-filters .student-search, .student-filter, .student-filter select { width: 100%; }
+    .clear-filters-btn { align-self: flex-start; }
+}
+
+/* Additive styles for the updated student directory. Existing student.css remains intact. */
+.student-toolbar-filters {
+    display: flex;
+    align-items: end;
+    flex-wrap: wrap;
+    gap: 14px;
+}
+.student-toolbar-filters .student-search { flex: 1 1 260px; }
+.student-filter { display: flex; flex-direction: column; gap: 6px; min-width: 145px; }
+.student-filter span { color: var(--text-light); font-size: 12px; font-weight: 600; }
+.student-filter select {
+    height: 42px; min-width: 145px; padding: 0 34px 0 12px;
+    border: 1px solid #d8d8d8; border-radius: 8px;
+    background: #fff; color: var(--text-dark); font: inherit; font-size: 14px;
+}
+.student-filter select:focus { outline: none; border-color: var(--olive); }
+.clear-filters-btn {
+    height: 42px; padding: 0 14px; border: 1px solid #d8d8d8;
+    border-radius: 8px; background: #fff; color: var(--text-dark);
+    cursor: pointer; font: inherit; font-size: 13px;
+}
+.clear-filters-btn:hover { background: #f1f1f1; }
+.student-result-count { margin: 12px 2px 0; color: var(--text-light); font-size: 12px; }
+@media (max-width: 600px) {
+    .student-toolbar-filters { align-items: stretch; }
+    .student-toolbar-filters .student-search, .student-filter, .student-filter select { width: 100%; }
+    .clear-filters-btn { align-self: flex-start; }
+}

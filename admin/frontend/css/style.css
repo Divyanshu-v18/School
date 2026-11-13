@@ -443,6 +443,27 @@ button {
     gap: 18px;
 }
 
+.topbar-academic-year {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: var(--off-white);
+    color: var(--olive-dark);
+    border: 1px solid var(--border);
+    padding: 6px 14px;
+    border-radius: 9999px;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.2;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+    user-select: none;
+    white-space: nowrap;
+}
+
+.topbar-academic-year .ay-icon {
+    font-size: 14px;
+}
+
 
 /* ========================================
    NOTIFICATION
