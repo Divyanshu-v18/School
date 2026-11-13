@@ -75,7 +75,6 @@ document.addEventListener("DOMContentLoaded", () => {
         if (typeof window.authenticatedFetch !== "function") {
             throw new Error("Authentication helper unavailable. Check api.js.");
         }
-
         return window.authenticatedFetch(url, options);
     }
 
@@ -94,28 +93,21 @@ document.addEventListener("DOMContentLoaded", () => {
         let data = {};
         try { data = await response.json(); } catch (_) { }
         if (!response.ok) {
-            throw new Error(
-                typeof data.detail === "string"
-                    ? data.detail
-                    : `Request failed (HTTP ${response.status}).`
-            );
+            throw new Error(typeof data.detail === "string"
+                ? data.detail
+                : `Request failed (HTTP ${response.status}).`);
         }
-
         return data;
     }
 
     function setTableMessage(body, columns, message) {
         if (!body) return;
-
         body.replaceChildren();
-
         const row = document.createElement("tr");
         const cell = document.createElement("td");
-
         cell.colSpan = columns;
         cell.className = "table-loading";
         cell.textContent = message;
-
         row.appendChild(cell);
         body.appendChild(row);
     }
@@ -124,19 +116,15 @@ document.addEventListener("DOMContentLoaded", () => {
         const cell = document.createElement(tag);
         cell.textContent = String(value ?? "");
         row.appendChild(cell);
-
         return cell;
     }
 
     function actionButton(label, className, action) {
         const button = document.createElement("button");
-
         button.type = "button";
         button.className = className;
         button.textContent = label;
-
         button.addEventListener("click", action);
-
         return button;
     }
 
@@ -380,237 +368,6 @@ document.addEventListener("DOMContentLoaded", () => {
         } catch (_) {}
     }
 
-    function formatClass(cls) {
-        if (!cls) return "—";
-        const str = String(cls).replace(/^class\s+/i, "").trim();
-        return /^\d+$/.test(str) ? `Class ${str}` : str;
-    }
-
-    function formatMoney(value) {
-        const amount = Number(value);
-        return Number.isFinite(amount)
-            ? amount.toLocaleString("en-IN", { maximumFractionDigits: 2 })
-            : "—";
-    }
-
-    function todayISO() {
-        const d = new Date();
-        return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
-    }
-
-    // Indian academic year starts in April
-    function academicYearStart(date = new Date()) {
-        return date.getMonth() >= 3 ? date.getFullYear() : date.getFullYear() - 1;
-    }
-
-    const yearLabel = (start) => `${start}-${start + 1}`;
-    const headById = (id) => allHeads.find((h) => Number(h.head_id) === Number(id));
-
-    /* ---------- populate static dropdowns ---------- */
-    function fillClassSelects() {
-        document.querySelectorAll("select[data-classes]").forEach((select) => {
-            select.replaceChildren();
-            const allLabel = select.dataset.all;
-            if (allLabel) {
-                const o = document.createElement("option");
-                o.value = "";
-                o.textContent = allLabel;
-                select.appendChild(o);
-            }
-            CLASSES.forEach(([value, label]) => {
-                const o = document.createElement("option");
-                o.value = value;
-                o.textContent = label;
-                select.appendChild(o);
-            });
-        });
-    }
-
-    function getActiveAcademicYear() {
-        const stored = localStorage.getItem("school_academic_year");
-        if (stored && /^\d{4}-\d{4}$/.test(stored.trim())) {
-            return stored.trim();
-        }
-        return yearLabel(academicYearStart());
-    }
-
-    function getPaymentAcademicYear(p) {
-        if (!p) return getActiveAcademicYear();
-        if (p.academic_year && /^\d{4}-\d{4}$/.test(String(p.academic_year).trim())) {
-            return String(p.academic_year).trim();
-        }
-        if (p.period && String(p.period).includes("-")) {
-            const [y, m] = String(p.period).split("-").map(Number);
-            if (!isNaN(y) && !isNaN(m)) {
-                const start = m >= 4 ? y : y - 1;
-                return `${start}-${start + 1}`;
-            }
-        }
-        if (p.payment_date) {
-            const parts = String(p.payment_date).slice(0, 10).split("-").map(Number);
-            if (parts.length === 3 && !isNaN(parts[0]) && !isNaN(parts[1])) {
-                const [y, m] = parts;
-                const start = m >= 4 ? y : y - 1;
-                return `${start}-${start + 1}`;
-            }
-        }
-        return getActiveAcademicYear();
-    }
-
-    function fillYearSelects() {
-        const current = academicYearStart();
-        const active = getActiveAcademicYear();
-        const years = new Set([
-            yearLabel(current - 2),
-            yearLabel(current - 1),
-            yearLabel(current),
-            yearLabel(current + 1),
-            yearLabel(current + 2)
-        ]);
-        if (active) years.add(active);
-        allStructures.forEach((s) => s.academic_year && years.add(String(s.academic_year).trim()));
-        allPayments.forEach((p) => {
-            const py = getPaymentAcademicYear(p);
-            if (py) years.add(py);
-        });
-
-        const sorted = [...years].sort();
-
-        if (yearSelect) {
-            yearSelect.replaceChildren();
-            sorted.forEach((y) => {
-                const o = document.createElement("option");
-                o.value = y;
-                o.textContent = `Academic Year ${y}`;
-                yearSelect.appendChild(o);
-            });
-            yearSelect.value = years.has(active) ? active : yearLabel(current);
-            yearSelect.dataset.prev = yearSelect.value;
-        }
-
-        if (paymentYearFilter) {
-            paymentYearFilter.replaceChildren();
-            sorted.forEach((y) => {
-                const o = document.createElement("option");
-                o.value = y;
-                o.textContent = `AY ${y}`;
-                paymentYearFilter.appendChild(o);
-            });
-            paymentYearFilter.value = years.has(active) ? active : yearLabel(current);
-        }
-
-        const currentYear = paymentYearFilter ? paymentYearFilter.value : (yearSelect ? yearSelect.value : active);
-        const headsDisplay = $("headsActiveYearDisplay");
-        if (headsDisplay) headsDisplay.textContent = currentYear;
-        const modalDisplay = $("collectModalYearDisplay");
-        if (modalDisplay) modalDisplay.textContent = currentYear;
-    }
-
-    async function setActiveAcademicYear(newYear, options = {}) {
-        if (!newYear) return false;
-        const prevYear = getActiveAcademicYear();
-
-        if (options.checkDraft && draft.size && [...draft.keys()].some(isChanged)) {
-            if (!confirm("You have unsaved changes in fee structure. Switch year and discard them?")) {
-                if (options.source === "payment" && paymentYearFilter) {
-                    paymentYearFilter.value = prevYear;
-                } else if (yearSelect) {
-                    yearSelect.value = prevYear;
-                }
-                return false;
-            }
-            draft.clear();
-            refreshDirtyState();
-        }
-
-        localStorage.setItem("school_academic_year", newYear);
-        if (yearSelect && yearSelect.value !== newYear) {
-            yearSelect.value = newYear;
-            yearSelect.dataset.prev = newYear;
-        }
-        if (paymentYearFilter && paymentYearFilter.value !== newYear) {
-            paymentYearFilter.value = newYear;
-        }
-        const headsDisplay = $("headsActiveYearDisplay");
-        if (headsDisplay) headsDisplay.textContent = newYear;
-        const modalDisplay = $("collectModalYearDisplay");
-        if (modalDisplay) modalDisplay.textContent = newYear;
-
-        window.dispatchEvent(new CustomEvent("academicYearChanged", { detail: { academic_year: newYear } }));
-
-        if (!options.skipBackend) {
-            try {
-                request(`${apiBase()}/settings`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ academic_year: newYear })
-                }).catch((err) => console.warn("Failed to persist academic_year setting:", err));
-            } catch (_) {}
-        }
-
-        const startYear = parseInt(newYear.split("-")[0], 10);
-        fillPeriodSelect(isNaN(startYear) ? academicYearStart() : startYear);
-
-        renderMatrix();
-        renderPayments();
-        updateKPIs();
-        return true;
-    }
-
-    function fillPeriodSelect(customStart = null) {
-        const select = $("payPeriod");
-        if (!select) return;
-        const currentAy = getActiveAcademicYear();
-        const parsedStart = parseInt(currentAy.split("-")[0], 10);
-        const start = customStart || (!isNaN(parsedStart) ? parsedStart : academicYearStart());
-        select.replaceChildren();
-        MONTHS.forEach((name, i) => {
-            const monthIndex = (3 + i) % 12;                 // Apr = 3
-            const year = monthIndex >= 3 ? start : start + 1;
-            const o = document.createElement("option");
-            o.value = `${year}-${String(monthIndex + 1).padStart(2, "0")}`;
-            o.textContent = `${name} ${year}`;
-            select.appendChild(o);
-        });
-    }
-
-    function fillHeadSelect() {
-        const select = $("payFeeHead");
-        const prev = select.value;
-        select.replaceChildren();
-        const first = document.createElement("option");
-        first.value = "";
-        first.textContent = "-- Select fee head --";
-        select.appendChild(first);
-        allHeads.forEach((h) => {
-            const o = document.createElement("option");
-            o.value = h.head_id;
-            o.textContent = `${h.name} (${FREQUENCIES[h.frequency]?.label ?? h.frequency})`;
-            select.appendChild(o);
-        });
-        select.value = prev;
-    }
-
-    /* ---------- tabs ---------- */
-    function showTab(index) {
-        tabs.forEach((t, i) => {
-            t.btn?.classList.toggle("active", i === index);
-            if (t.panel) t.panel.style.display = i === index ? "block" : "none";
-        });
-    }
-    tabs.forEach((t, i) => t.btn?.addEventListener("click", () => showTab(i)));
-
-    /* ---------- data loading ---------- */
-    async function loadSchoolSettings() {
-        try {
-            const data = await parseResponse(await request(`${apiBase()}/settings`));
-            if (data && data.academic_year && !localStorage.getItem("school_academic_year")) {
-                localStorage.setItem("school_academic_year", data.academic_year);
-            }
-        } catch (_) {}
-    }
-
-    // Load all required data.
     async function loadData() {
         await Promise.all([loadSchoolSettings(), loadHeads(), loadStructures(), loadPayments(), loadDirectoryStudents()]);
         fillYearSelects();
@@ -1063,7 +820,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function renderPayments() {
         if (!paymentsBody) return;
-
         paymentsBody.replaceChildren();
 
         const term = (searchInput?.value || "").toLowerCase().trim();
@@ -1090,25 +846,6 @@ document.addEventListener("DOMContentLoaded", () => {
             receipt.appendChild(el("strong", "", `#RC-${p.payment_id}`));
             row.appendChild(receipt);
 
-            const receipt = document.createElement("td");
-            receipt.appendChild(el("strong", "", `#RC-${p.payment_id}`));
-            row.appendChild(receipt);
-
-            // Receipt number.
-            const receiptCell = addCell(
-                row,
-                p.payment_id == null
-                    ? "—"
-                    : `#RC-${p.payment_id}`
-            );
-
-            if (p.payment_id != null) {
-                const receiptStrong = document.createElement("strong");
-                receiptStrong.textContent = receiptCell.textContent;
-                receiptCell.replaceChildren(receiptStrong);
-            }
-
-            // Student name and ID.
             const studentCell = document.createElement("td");
             studentCell.appendChild(el("strong", "", String(p.student_name ?? "—")));
             const sid = el("div", "", `ID: ${p.student_id ?? "—"}`);
@@ -1125,7 +862,6 @@ document.addEventListener("DOMContentLoaded", () => {
             amountCell.appendChild(el("strong", "", `₹${formatMoney(p.amount_paid)}`));
             row.appendChild(amountCell);
 
-            // Payment date.
             addCell(row, p.payment_date || "—");
 
             const modeCell = document.createElement("td");
@@ -1220,33 +956,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function value(id) {
         const field = $(id);
-
-        if (!field) {
-            throw new Error(`Required field missing: ${id}`);
-        }
-
+        if (!field) throw new Error(`Required field missing: ${id}`);
         return field.value.trim();
     }
 
-    // Common form submission helper.
     async function submitForm(form, button, operation) {
         if (!form.reportValidity()) return;
-
         if (button) button.disabled = true;
-
         try {
             await operation();
-
         } catch (error) {
             console.error(error);
             alert(`Unable to complete request: ${error.message}`);
-
         } finally {
             if (button) button.disabled = false;
         }
     }
 
-    // Record payment form.
     collectForm?.addEventListener("submit", (event) => {
         event.preventDefault();
         const button = collectForm.querySelector('button[type="submit"]');

@@ -1,8 +1,8 @@
 /* ========================================
-   STUDENT PAGE
+   SUBJECT PAGE
 ======================================== */
 
-.student-content {
+.subject-content {
     width: 100%;
     min-height: calc(100vh - 88px);
     padding: 28px 32px 50px;
@@ -10,12 +10,11 @@
     background: #f6f6f2;
 }
 
-
 /* ========================================
-   STUDENT HEADER
+   HEADER
 ======================================== */
 
-.student-header {
+.subject-header {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
@@ -31,754 +30,301 @@
 
 .page-title p {
     margin: 7px 0 0;
-    color: var(--text-light);
+    color: var(--text-muted);
     font-size: 14px;
 }
 
-
-/* ========================================
-   ADD STUDENT BUTTON
-======================================== */
-
-.add-student-btn {
+.add-subject-btn {
     border: none;
     padding: 11px 18px;
     border-radius: 8px;
-
     cursor: pointer;
-
     font-size: 14px;
     font-weight: 500;
-
     white-space: nowrap;
-
     background: var(--olive);
     color: #ffffff;
+    transition: opacity 0.2s ease;
 }
 
-.add-student-btn:hover {
+.add-subject-btn:hover {
     opacity: 0.9;
 }
 
-
 /* ========================================
-   SEARCH
+   TOOLBAR
 ======================================== */
 
-.student-toolbar {
+.subject-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
     margin-bottom: 24px;
 }
 
-.student-search {
+.subject-search {
     position: relative;
     width: 100%;
     max-width: 340px;
 }
 
-.student-search input {
+.subject-search input {
     width: 100%;
     height: 42px;
-
     padding: 0 14px 0 40px;
-
     box-sizing: border-box;
-
     border: 1px solid #d8d8d8;
     border-radius: 8px;
-
     outline: none;
-
     font-size: 14px;
-
     background: #ffffff;
     color: var(--text-dark);
 }
 
-.student-search input:focus {
+.subject-search input:focus {
     border-color: var(--olive);
 }
 
 .search-icon {
     position: absolute;
-
     left: 14px;
     top: 50%;
-
     transform: translateY(-50%);
-
-    font-size: 20px;
-
-    color: var(--text-light);
-
+    font-size: 16px;
+    color: var(--text-muted);
     pointer-events: none;
 }
 
-/* ========================================
-   ADD STUDENT PAGE (full screen, own scroll)
-======================================== */
-
-html:has(body.add_student-page) {
-    height: auto !important;
-    overflow-y: auto !important;
-}
-
-body.add_student-page {
-    display: block !important;
-    height: auto !important;
-    min-height: 100vh;
-    overflow-y: auto !important;
-
-    margin: 0;
-    background: var(--off-white);
-}
-
-.add_student-wrap {
-    width: 100%;
-    min-height: 100vh;
-    box-sizing: border-box;
-
-    padding: 28px 32px;
-}
-
-
-/* ========================================
-   ADD STUDENT FORM
-======================================== */
-
-.add_student-section {
-    width: 100%;
-    box-sizing: border-box;
-
-    background: #fff;
-    border: 1px solid #d8d8d8;
-    border-radius: 12px;
-
-    padding: 26px 32px 0;
-
-    min-height: calc(100vh - 56px);
-}
-
-
-/* ========================================
-   FORM HEADER
-======================================== */
-
-.form-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-
-    padding-bottom: 18px;
-    margin-bottom: 20px;
-
-    border-bottom: 1px solid #e5e5e5;
-}
-
-.form-header h2 {
-    margin: 0;
-    font-size: 21px;
-    font-weight: 600;
-}
-
-.form-header p {
-    margin: 6px 0 0;
-    color: var(--text-light);
-    font-size: 13px;
-}
-
-.close-form-btn {
-    width: 34px;
-    height: 34px;
-
+.class-filter-wrap {
     display: flex;
     align-items: center;
-    justify-content: center;
-
-    border: none;
-    border-radius: 7px;
-
-    background: transparent;
-
-    font-size: 25px;
-    cursor: pointer;
-    color: var(--text-light);
-}
-
-.close-form-btn:hover {
-    background: #f1f1f1;
-}
-
-
-/* ========================================
-   FORM SECTIONS
-======================================== */
-
-.form-section {
-    margin-bottom: 30px;
-}
-
-.form-section h3 {
-    margin: 0 0 18px;
-
-    font-size: 16px;
-    font-weight: 600;
-}
-
-
-/* ========================================
-   FORM GRID
-======================================== */
-
-.form-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 18px 22px;
-}
-
-.form-group {
-    display: flex;
-    flex-direction: column;
-    min-width: 0;
-}
-
-.form-group label {
-    margin-bottom: 7px;
-
-    font-size: 13px;
+    gap: 10px;
+    font-size: 14px;
+    color: var(--text-dark);
     font-weight: 500;
 }
 
-.form-group label span {
-    color: #b33a3a;
-}
-
-.form-group input,
-.form-group select {
-    width: 100%;
+.class-filter-wrap select {
     height: 42px;
-
-    box-sizing: border-box;
-
-    padding: 0 12px;
-
+    padding: 0 14px;
     border: 1px solid #d8d8d8;
-    border-radius: 7px;
-
-    outline: none;
-
+    border-radius: 8px;
+    background: #ffffff;
+    color: var(--text-dark);
     font-size: 14px;
-    background: #fff;
+    outline: none;
+    cursor: pointer;
 }
 
-.form-group input:focus,
-.form-group select:focus {
+.class-filter-wrap select:focus {
     border-color: var(--olive);
 }
 
-.form-group small {
-    margin-top: 5px;
-
-    color: #888;
-    font-size: 11px;
-}
-
-
 /* ========================================
-   FORM ACTIONS
+   TABLE
 ======================================== */
 
-.form-actions {
-    position: sticky;
-    bottom: 0;
-    z-index: 10;
-
-    background: #fff;
-
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-
-    gap: 12px;
-
-    padding: 18px 0 22px;
+.subject-list-section {
     margin-top: 10px;
-    border-radius: 0 0 12px 12px;
-
-    border-top: 1px solid #e5e5e5;
 }
 
-.cancel-btn,
-.save-student-btn {
-    height: 42px;
-
-    padding: 0 20px;
-
-    border: none;
-    border-radius: 7px;
-
-    cursor: pointer;
-
-    font-size: 14px;
-}
-
-.cancel-btn {
-    background: #eee;
-    color: #333;
-}
-
-.cancel-btn:hover {
-    background: var(--border-color);
-}
-
-.save-student-btn {
-    background: var(--olive);
-    color: #fff;
-}
-
-.save-student-btn:hover {
-    background: var(--olive);
-}
-
-
-/* ========================================
-   RESPONSIVE
-======================================== */
-
-@media (max-width: 768px) {
-
-    .teacher-content {
-        padding: 22px 18px 40px;
-    }
-
-    .teacher-header {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 15px;
-    }
-
-    .add_teacher-btn {
-        width: fit-content;
-    }
-
-    .add_student-wrap {
-        padding: 16px;
-    }
-
-    .add_student-section {
-        padding: 20px 18px 0;
-        min-height: calc(100vh - 32px);
-    }
-
-    .form-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .form-actions {
-        justify-content: stretch;
-    }
-
-    .cancel-btn,
-    .save-student-btn {
-        flex: 1;
-    }
-}
-
-/* ========================================
-   STUDENT FORM EXTRAS
-======================================== */
-
-.form-group textarea {
-    resize: vertical;
-    min-height: 100px;
-    padding: 12px;
-}
-
-.full-width {
-    grid-column: 1 / -1;
-}
-
-/* ========================================
-   STUDENT LIST
-======================================== */
-
-.student-list-section {
-    margin-top: 25px;
-}
-
-.student-list-header {
-    margin-bottom: 20px;
-}
-
-.student-list-header h2 {
-    margin: 0;
-}
-
-.student-list-header p {
-    margin-top: 5px;
-    color: #777;
-}
-
-.student-table-wrapper {
+.subject-table-wrapper {
     width: 100%;
-    max-width: 100%;
     overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
+    background: #fff;
+    border-radius: 12px;
+    border: 1px solid #e5e5e5;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
 }
 
-.student-table {
+.subject-table {
     width: 100%;
-    min-width: 700px;
     border-collapse: collapse;
     background: #fff;
-    table-layout: fixed;
-    border-radius: 15px 15px 0 0;
 }
 
-.student-table th,
-.student-table td {
-    padding: 14px 16px;
+.subject-table th,
+.subject-table td {
+    padding: 14px 18px;
     border-bottom: 1px solid #e5e5e5;
     text-align: left;
     vertical-align: middle;
+    font-size: 14px;
 }
 
-/* FIXED COLUMNS */
-
-.student-table th:nth-child(1),
-.student-table td:nth-child(1) {
-    width: 130px;
-}
-
-.student-table th:nth-child(2),
-.student-table td:nth-child(2) {
-    width: auto;
-}
-
-.student-table th:nth-child(3),
-.student-table td:nth-child(3) {
-    width: 130px;
-}
-
-.student-table th:nth-child(4),
-.student-table td:nth-child(4) {
-    width: 130px;
-}
-
-.student-table th:nth-child(5),
-.student-table td:nth-child(5) {
-    width: 200px;
-}
-
-/* NAME */
-
-.student-table td:nth-child(2) {
-    white-space: normal;
-    overflow-wrap: anywhere;
-    word-break: break-word;
-}
-
-.student-table th {
+.subject-table th {
+    background: #fafaf8;
     font-weight: 600;
+    color: var(--text-dark);
     white-space: nowrap;
 }
 
-.student-table tbody tr:hover {
+.subject-table tbody tr:hover {
     background: #fafafa;
 }
 
-/* ACTIONS */
-
-.student-actions {
-    white-space: nowrap;
+.subject-code-badge {
+    background: #f0f3eb;
+    color: var(--olive-dark);
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 12px;
+    display: inline-block;
 }
 
-.student-actions button {
+.class-badge {
+    background: #e8edf3;
+    color: #1e3a8a;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+    display: inline-block;
+}
+
+.table-loading {
+    text-align: center;
+    color: var(--text-muted);
+    padding: 30px !important;
+}
+
+.delete-btn {
     border: none;
     padding: 7px 12px;
     border-radius: 5px;
     cursor: pointer;
-    margin-right: 5px;
-}
-
-.info-btn {
-    background: #eee;
-}
-
-.edit-btn {
-    background: #8a9a5b;
-    color: white;
-}
-
-.delete-btn {
     background: #d9534f;
     color: white;
-}
-
-/* ========================================
-   STUDENT DETAILS
-======================================== */
-
-.details-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-}
-
-.details-grid label {
-    display: block;
     font-size: 13px;
-    color: #777;
-    margin-bottom: 6px;
+    transition: opacity 0.2s;
 }
 
-.details-grid p {
-    margin: 0;
-    font-size: 15px;
-    font-weight: 500;
-}
-
-@media (max-width: 900px) {
-    .details-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-@media (max-width: 600px) {
-    .details-grid {
-        grid-template-columns: 1fr;
-    }
+.delete-btn:hover {
+    opacity: 0.9;
 }
 
 /* ========================================
-   EDIT STUDENT PAGE
+   MODAL
 ======================================== */
 
-body.edit_student-page {
-    background: var(--off-white);
-    margin: 0;
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
 }
 
-.edit_student-page .edit_student-wrap {
-    max-width: 1200px;
-    margin: 30px auto;
+.modal-card {
     background: #ffffff;
-    border: 1px solid var(--border-color);
-    border-radius: 14px;
-    padding: 30px;
-    box-sizing: border-box;
+    width: 100%;
+    max-width: 480px;
+    border-radius: 12px;
+    padding: 24px 28px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
 }
 
-
-/* ========================================
-   FORM HEADER
-======================================== */
-
-.edit_student-page .form-header {
+.modal-header {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
-    border-bottom: 1px solid var(--border-color);
-    padding-bottom: 20px;
-    margin-bottom: 25px;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #eee;
 }
 
-.edit_student-page .form-header h2 {
+.modal-header h3 {
     margin: 0;
+    font-size: 18px;
+    color: var(--text-dark);
 }
 
-.edit_student-page .form-header p {
-    margin: 6px 0 0;
-    color: var(--text-light);
-}
-
-.edit_student-page .close-form-btn {
-    width: 34px;
-    height: 34px;
+.modal-close-btn {
     border: none;
-    background: transparent;
-    font-size: 28px;
+    background: none;
+    font-size: 24px;
     cursor: pointer;
-    color: var(--text-light);
+    color: #888;
 }
 
-
-/* ========================================
-   FORM SECTIONS
-======================================== */
-
-.edit_student-page .form-section {
-    margin-bottom: 30px;
+.modal-close-btn:hover {
+    color: #333;
 }
 
-.edit_student-page .form-section h3 {
-    margin: 0 0 20px;
-}
-
-
-/* ========================================
-   FORM GRID
-======================================== */
-
-.edit_student-page .form-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px 24px;
-}
-
-.edit_student-page .form-group {
+.form-group {
+    margin-bottom: 16px;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 6px;
 }
 
-.edit_student-page .form-group label {
-    font-size: 14px;
+.form-group label {
+    font-size: 13px;
     font-weight: 500;
-}
-
-.edit_student-page .form-group label span {
-    color: #c0392b;
-}
-
-
-/* ========================================
-   INPUTS & SELECTS
-======================================== */
-
-.edit_student-page .form-group input,
-.edit_student-page .form-group select {
-    width: 100%;
-    height: 42px;
-    padding: 0 12px;
-    box-sizing: border-box;
-
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-
-    background: #ffffff;
     color: var(--text-dark);
+}
 
-    font-size: 15px;
+.form-group input,
+.form-group select,
+.form-group textarea {
+    padding: 10px 12px;
+    border: 1px solid #d8d8d8;
+    border-radius: 7px;
+    font-size: 14px;
+    font-family: inherit;
     outline: none;
 }
 
-.edit_student-page .form-group input:focus,
-.edit_student-page .form-group select:focus {
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
     border-color: var(--olive);
 }
 
-
-/* ========================================
-   FORM ACTIONS
-======================================== */
-
-.edit_student-page .form-actions {
-    position: static;
-
+.modal-actions {
     display: flex;
     justify-content: flex-end;
-    align-items: center;
-
     gap: 12px;
-
-    border-top: 1px solid var(--border-color);
-    padding-top: 20px;
-    margin-top: 10px;
+    margin-top: 24px;
 }
 
-.edit_student-page .form-actions button {
-    height: 42px;
-    padding: 0 22px;
-
-    border: none;
-    border-radius: 8px;
-
+.btn-cancel {
+    padding: 10px 18px;
+    border: 1px solid #ccc;
+    background: #fff;
+    border-radius: 7px;
     cursor: pointer;
     font-size: 14px;
 }
 
-.edit_student-page #cancelStudentForm {
-    background: #eeeeee;
-    color: #333333;
-}
-
-.edit_student-page .form-actions button[type="submit"] {
+.btn-save {
+    padding: 10px 18px;
+    border: none;
     background: var(--olive);
-    color: #ffffff;
+    color: #fff;
+    border-radius: 7px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
 }
 
+.btn-save:hover {
+    opacity: 0.92;
+}
 
-/* ========================================
-   RESPONSIVE
-======================================== */
-
-@media (max-width: 768px) {
-
-    .edit_student-page .edit_student-wrap {
-        margin: 15px;
-        padding: 20px;
+@media (max-width: 650px) {
+    .subject-toolbar {
+        flex-direction: column;
+        align-items: stretch;
     }
-
-    .edit_student-page .form-grid {
-        grid-template-columns: 1fr;
+    .subject-search {
+        max-width: 100%;
     }
-}
-
-
-/* Additive styles for the updated student directory. Existing student.css remains intact. */
-.student-toolbar-filters {
-    display: flex;
-    align-items: end;
-    flex-wrap: wrap;
-    gap: 14px;
-}
-.student-toolbar-filters .student-search { flex: 1 1 260px; }
-.student-filter { display: flex; flex-direction: column; gap: 6px; min-width: 145px; }
-.student-filter span { color: var(--text-light); font-size: 12px; font-weight: 600; }
-.student-filter select {
-    height: 42px; min-width: 145px; padding: 0 34px 0 12px;
-    border: 1px solid #d8d8d8; border-radius: 8px;
-    background: #fff; color: var(--text-dark); font: inherit; font-size: 14px;
-}
-.student-filter select:focus { outline: none; border-color: var(--olive); }
-.clear-filters-btn {
-    height: 42px; padding: 0 14px; border: 1px solid #d8d8d8;
-    border-radius: 8px; background: #fff; color: var(--text-dark);
-    cursor: pointer; font: inherit; font-size: 13px;
-}
-.clear-filters-btn:hover { background: #f1f1f1; }
-.student-result-count { margin: 12px 2px 0; color: var(--text-light); font-size: 12px; }
-@media (max-width: 600px) {
-    .student-toolbar-filters { align-items: stretch; }
-    .student-toolbar-filters .student-search, .student-filter, .student-filter select { width: 100%; }
-    .clear-filters-btn { align-self: flex-start; }
-}
-
-/* Additive styles for the updated student directory. Existing student.css remains intact. */
-.student-toolbar-filters {
-    display: flex;
-    align-items: end;
-    flex-wrap: wrap;
-    gap: 14px;
-}
-.student-toolbar-filters .student-search { flex: 1 1 260px; }
-.student-filter { display: flex; flex-direction: column; gap: 6px; min-width: 145px; }
-.student-filter span { color: var(--text-light); font-size: 12px; font-weight: 600; }
-.student-filter select {
-    height: 42px; min-width: 145px; padding: 0 34px 0 12px;
-    border: 1px solid #d8d8d8; border-radius: 8px;
-    background: #fff; color: var(--text-dark); font: inherit; font-size: 14px;
-}
-.student-filter select:focus { outline: none; border-color: var(--olive); }
-.clear-filters-btn {
-    height: 42px; padding: 0 14px; border: 1px solid #d8d8d8;
-    border-radius: 8px; background: #fff; color: var(--text-dark);
-    cursor: pointer; font: inherit; font-size: 13px;
-}
-.clear-filters-btn:hover { background: #f1f1f1; }
-.student-result-count { margin: 12px 2px 0; color: var(--text-light); font-size: 12px; }
-@media (max-width: 600px) {
-    .student-toolbar-filters { align-items: stretch; }
-    .student-toolbar-filters .student-search, .student-filter, .student-filter select { width: 100%; }
-    .clear-filters-btn { align-self: flex-start; }
 }
