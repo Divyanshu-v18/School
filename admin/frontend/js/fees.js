@@ -17,6 +17,7 @@
    ========================================================================== */
 
 document.addEventListener("DOMContentLoaded", () => {
+
     const $ = (id) => document.getElementById(id);
 
     /* ---------- constants ---------- */
@@ -75,6 +76,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (typeof window.authenticatedFetch !== "function") {
             throw new Error("Authentication helper unavailable. Check api.js.");
         }
+
         return window.authenticatedFetch(url, options);
     }
 
@@ -93,21 +95,28 @@ document.addEventListener("DOMContentLoaded", () => {
         let data = {};
         try { data = await response.json(); } catch (_) { }
         if (!response.ok) {
-            throw new Error(typeof data.detail === "string"
-                ? data.detail
-                : `Request failed (HTTP ${response.status}).`);
+            throw new Error(
+                typeof data.detail === "string"
+                    ? data.detail
+                    : `Request failed (HTTP ${response.status}).`
+            );
         }
+
         return data;
     }
 
     function setTableMessage(body, columns, message) {
         if (!body) return;
+
         body.replaceChildren();
+
         const row = document.createElement("tr");
         const cell = document.createElement("td");
+
         cell.colSpan = columns;
         cell.className = "table-loading";
         cell.textContent = message;
+
         row.appendChild(cell);
         body.appendChild(row);
     }
@@ -116,15 +125,19 @@ document.addEventListener("DOMContentLoaded", () => {
         const cell = document.createElement(tag);
         cell.textContent = String(value ?? "");
         row.appendChild(cell);
+
         return cell;
     }
 
     function actionButton(label, className, action) {
         const button = document.createElement("button");
+
         button.type = "button";
         button.className = className;
         button.textContent = label;
+
         button.addEventListener("click", action);
+
         return button;
     }
 
@@ -368,6 +381,7 @@ document.addEventListener("DOMContentLoaded", () => {
         } catch (_) {}
     }
 
+    // Load all required data.
     async function loadData() {
         await Promise.all([loadSchoolSettings(), loadHeads(), loadStructures(), loadPayments(), loadDirectoryStudents()]);
         fillYearSelects();
@@ -820,6 +834,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function renderPayments() {
         if (!paymentsBody) return;
+
         paymentsBody.replaceChildren();
 
         const term = (searchInput?.value || "").toLowerCase().trim();
@@ -846,6 +861,21 @@ document.addEventListener("DOMContentLoaded", () => {
             receipt.appendChild(el("strong", "", `#RC-${p.payment_id}`));
             row.appendChild(receipt);
 
+            // Receipt number.
+            const receiptCell = addCell(
+                row,
+                p.payment_id == null
+                    ? "—"
+                    : `#RC-${p.payment_id}`
+            );
+
+            if (p.payment_id != null) {
+                const receiptStrong = document.createElement("strong");
+                receiptStrong.textContent = receiptCell.textContent;
+                receiptCell.replaceChildren(receiptStrong);
+            }
+
+            // Student name and ID.
             const studentCell = document.createElement("td");
             studentCell.appendChild(el("strong", "", String(p.student_name ?? "—")));
             const sid = el("div", "", `ID: ${p.student_id ?? "—"}`);
@@ -862,6 +892,7 @@ document.addEventListener("DOMContentLoaded", () => {
             amountCell.appendChild(el("strong", "", `₹${formatMoney(p.amount_paid)}`));
             row.appendChild(amountCell);
 
+            // Payment date.
             addCell(row, p.payment_date || "—");
 
             const modeCell = document.createElement("td");
@@ -956,23 +987,33 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function value(id) {
         const field = $(id);
-        if (!field) throw new Error(`Required field missing: ${id}`);
+
+        if (!field) {
+            throw new Error(`Required field missing: ${id}`);
+        }
+
         return field.value.trim();
     }
 
+    // Common form submission helper.
     async function submitForm(form, button, operation) {
         if (!form.reportValidity()) return;
+
         if (button) button.disabled = true;
+
         try {
             await operation();
+
         } catch (error) {
             console.error(error);
             alert(`Unable to complete request: ${error.message}`);
+
         } finally {
             if (button) button.disabled = false;
         }
     }
 
+    // Record payment form.
     collectForm?.addEventListener("submit", (event) => {
         event.preventDefault();
         const button = collectForm.querySelector('button[type="submit"]');
