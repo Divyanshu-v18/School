@@ -52,7 +52,7 @@ if (notificationBtn) {
         "dashboard.html": ["admin"], "settings.html": ["admin"],
         "add_student.html": ["admin"], "edit_student.html": ["admin"],
         "add_teacher.html": ["admin"], "edit_teacher.html": ["admin"],
-        "fees.html": ["admin", "staff"], "transport.html": ["admin", "staff"],
+        "fees.html": ["admin", "staff"], "fee_class_students.html": ["admin", "staff"], "transport.html": ["admin", "staff"],
         "attendance.html": ["admin", "teacher"], "student.html": ["admin", "teacher", "staff"],
         "teacher.html": ["admin", "teacher", "staff"], "subject.html": ["admin", "teacher", "staff"],
         "timetable.html": ["admin", "teacher", "staff"], "calendar.html": ["admin", "teacher", "staff"],

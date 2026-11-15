@@ -78,9 +78,17 @@
                         <div class="records-table-wrap"><table class="records-table"><thead id="attendanceHead"></thead><tbody id="attendanceBody"><tr><td>Open Attendance to load records.</td></tr></tbody></table></div>
                     </div>
                     <div class="profile-tab-panel" id="panel-fees" role="tabpanel" hidden>
-                        <div class="records-heading"><div><h2>Fee Details</h2><p>Fee dues and payment history for this student</p></div><button class="refresh-records-btn" type="button" data-refresh="fees">Refresh</button></div>
-                        <div class="summary-cards" id="feesSummary"></div>
-                        <div class="records-table-wrap"><table class="records-table"><thead id="feesHead"></thead><tbody id="feesBody"><tr><td>Open Fees to load records.</td></tr></tbody></table></div>
+                        <div class="records-heading"><div><h2>Fee Details</h2><p id="feesYearNote">Fee dues and payment history for this student</p></div><a id="manageFeesBtn" class="action-btn manage-fees-btn" href="#">Manage Fees →</a></div>
+                        <div id="feesMessage" class="fees-message" role="status" aria-live="polite">Loading fee details…</div>
+                        <div id="feesContent" hidden>
+                            <div class="summary-cards" id="feesSummary"></div>
+                            <h3 class="fees-section-title">Monthly fee</h3>
+                            <div class="records-table-wrap"><table class="records-table fees-wide-table"><thead><tr><th>Month</th><th>Amount</th><th>Paid</th><th>Due Date</th><th>Status</th><th>Paid On</th><th>Mode</th></tr></thead><tbody id="feesMonthlyBody"></tbody></table></div>
+                            <h3 class="fees-section-title">Other fees</h3>
+                            <div class="records-table-wrap"><table class="records-table fees-wide-table"><thead><tr><th>Fee Head</th><th>Frequency</th><th>Total Amount</th><th>Paid</th><th>Due Date</th><th>Status</th><th>Paid On</th><th>Mode</th></tr></thead><tbody id="feesOtherBody"></tbody></table></div>
+                            <h3 class="fees-section-title">Payment receipts</h3>
+                            <div class="records-table-wrap"><table class="records-table fees-wide-table"><thead><tr><th>For</th><th>Fee Head</th><th>Amount</th><th>Payment Date</th><th>Mode</th><th>Status</th><th>Remarks</th></tr></thead><tbody id="feesReceiptsBody"></tbody></table></div>
+                        </div>
                     </div>
                     <div class="profile-tab-panel" id="panel-marks" role="tabpanel" hidden>
                         <div class="records-heading"><div><h2>Academic Performance</h2><p>Exam-wise and subject-wise marks for this student</p></div><button class="refresh-records-btn" type="button" data-refresh="marks">Refresh</button></div>

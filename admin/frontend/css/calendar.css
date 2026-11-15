@@ -15,6 +15,8 @@
     justify-content: space-between;
     align-items: flex-start;
     margin-bottom: 24px;
+    gap: 16px;
+    flex-wrap: wrap;
 }
 
 .add-event-btn {
@@ -27,6 +29,7 @@
     background: var(--olive);
     color: #ffffff;
     transition: opacity 0.2s;
+    white-space: nowrap;
 }
 
 .add-event-btn:hover {
@@ -36,9 +39,11 @@
 /* LAYOUT */
 .calendar-layout {
     display: grid;
-    grid-template-columns: 1fr 380px;
+    grid-template-columns: minmax(0, 1fr) 340px;
     gap: 24px;
     align-items: start;
+    width: 100%;
+    min-width: 0;
 }
 
 /* CALENDAR BOX */
@@ -48,6 +53,9 @@
     border-radius: 12px;
     padding: 24px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+    min-width: 0;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .calendar-nav {
@@ -87,23 +95,27 @@
 
 .weekdays-grid {
     display: grid;
-    grid-template-columns: repeat(7, 1fr);
+    grid-template-columns: repeat(7, minmax(0, 1fr));
     text-align: center;
     font-size: 12px;
     font-weight: 600;
     color: var(--text-muted);
     text-transform: uppercase;
     margin-bottom: 10px;
+    min-width: 0;
 }
 
 .days-grid {
     display: grid;
-    grid-template-columns: repeat(7, 1fr);
+    grid-template-columns: repeat(7, minmax(0, 1fr));
     gap: 6px;
+    min-width: 0;
 }
 
 .cal-day-cell {
     min-height: 80px;
+    min-width: 0;
+    overflow: hidden;
     border: 1px solid #edf0ea;
     border-radius: 8px;
     padding: 6px 8px;
@@ -112,6 +124,7 @@
     background: #fafaf8;
     cursor: pointer;
     transition: all 0.15s ease;
+    box-sizing: border-box;
 }
 
 .cal-day-cell:hover {
@@ -146,6 +159,9 @@
     display: flex;
     flex-direction: column;
     gap: 3px;
+    min-width: 0;
+    overflow: hidden;
+    width: 100%;
 }
 
 .event-dot-pill {
@@ -156,6 +172,10 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    display: block;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
 }
 
 .dot-holiday { background: #dcfce7; color: #166534; }
@@ -171,6 +191,8 @@
     border-radius: 12px;
     padding: 24px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+    min-width: 0;
+    box-sizing: border-box;
 }
 
 .events-box-header {
@@ -202,6 +224,20 @@
     gap: 12px;
     max-height: 520px;
     overflow-y: auto;
+    padding-right: 2px;
+}
+
+.events-scroll-list::-webkit-scrollbar {
+    width: 5px;
+}
+
+.events-scroll-list::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.events-scroll-list::-webkit-scrollbar-thumb {
+    background: #d1d5db;
+    border-radius: 4px;
 }
 
 .event-card-item {
@@ -213,24 +249,47 @@
     flex-direction: column;
     gap: 6px;
     border-left: 4px solid var(--olive);
+    min-width: 0;
+    box-sizing: border-box;
+    word-break: break-word;
 }
 
 .event-card-item.holiday { border-left-color: #10b981; }
 .event-card-item.exam { border-left-color: #3b82f6; }
 .event-card-item.event { border-left-color: #f59e0b; }
 .event-card-item.meeting { border-left-color: #8b5cf6; }
+.event-card-item.other { border-left-color: #64748b; }
 
 .event-card-top {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 8px;
 }
 
 .event-card-title {
     font-size: 14px;
     font-weight: 600;
     color: var(--text-dark);
+    line-height: 1.3;
 }
+
+/* Category badge inside event card */
+.badge-cat {
+    padding: 3px 8px;
+    border-radius: 10px;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    flex-shrink: 0;
+}
+
+.badge-cat.holiday { background: #dcfce7; color: #166534; }
+.badge-cat.exam { background: #e0f2fe; color: #0369a1; }
+.badge-cat.event { background: #fef3c7; color: #92400e; }
+.badge-cat.meeting { background: #f3e8ff; color: #6b21a8; }
+.badge-cat.other { background: #f1f5f9; color: #334155; }
 
 .event-card-date {
     font-size: 12px;
@@ -372,8 +431,67 @@
     padding: 30px;
 }
 
+@media (max-width: 1200px) {
+    .calendar-content {
+        padding: 20px 20px 40px;
+    }
+
+    .calendar-layout {
+        grid-template-columns: minmax(0, 1fr) 300px;
+        gap: 16px;
+    }
+
+    .calendar-box,
+    .events-box {
+        padding: 16px;
+    }
+
+    .event-card-item {
+        padding: 12px;
+    }
+}
+
 @media (max-width: 950px) {
     .calendar-layout {
         grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .events-scroll-list {
+        max-height: 400px;
+    }
+}
+
+@media (max-width: 600px) {
+    .calendar-content {
+        padding: 16px 12px 30px;
+    }
+
+    .calendar-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .add-event-btn {
+        width: 100%;
+        text-align: center;
+    }
+
+    .days-grid {
+        gap: 3px;
+    }
+
+    .cal-day-cell {
+        min-height: 60px;
+        padding: 4px;
+    }
+
+    .day-number {
+        font-size: 11px;
+    }
+
+    .event-dot-pill {
+        font-size: 9px;
+        padding: 1px 3px;
     }
 }

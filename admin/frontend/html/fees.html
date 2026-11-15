@@ -1,442 +1,101 @@
-
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Manage fee heads, class-wise fee structure and student fee payments.">
-
+    <meta name="description" content="View school fee collections and payment records.">
     <title>Fees</title>
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../css/fees.css">
 </head>
-
 <body>
-
     <div class="page-layout">
         <main class="main-content">
-
             <header class="topbar">
                 <h1>ABC Public School</h1>
                 <div class="topbar-actions">
-                    <button class="notification-btn" id="notificationBtn" title="Notifications">
-                        ♧
-                        <span class="notification-dot"></span>
-                    </button>
-                    <div class="top-profile">
-                        <div class="profile-avatar">AS</div>
-                        <div class="top-profile-info">
-                            <strong>Admin</strong>
-                            <span>Administrator</span>
-                        </div>
-                    </div>
+                    <button class="notification-btn" id="notificationBtn" title="Notifications">♧<span class="notification-dot"></span></button>
+                    <div class="top-profile"><div class="profile-avatar">AS</div><div class="top-profile-info"><strong>Admin</strong><span>Administrator</span></div></div>
                 </div>
             </header>
 
             <section class="fees-content">
-
-                <!-- HEADER -->
                 <div class="fees-header">
-                    <div class="page-title">
-                        <h2>Fees Management</h2>
-                        <p>Define fee heads once, set class-wise amounts in one grid, and record payments.</p>
-                    </div>
-
-                    <div class="fees-header-actions">
-                        <button class="btn-structure" id="openAddHeadBtn">+ Add Fee Head</button>
-                        <button class="btn-collect" id="openCollectFeeBtn">+ Record Payment</button>
-                    </div>
+                    <div class="page-title"><h2>Fees</h2><p>Track fee collection and payment performance.</p></div>
+                    <label class="year-select" for="overviewAcademicYear">Academic Year
+                        <select id="overviewAcademicYear" aria-label="Academic year"></select>
+                    </label>
                 </div>
 
-                <!-- STATS -->
-                <div class="fee-stats-grid">
-                    <div class="fee-stat-card">
-                        <span class="stat-title">Total Collected</span>
-                        <h3 class="stat-num" id="totalCollectedVal">₹0</h3>
-                        <span class="stat-sub">Across all payment modes</span>
+                <nav class="fee-tabs" aria-label="Fee management sections">
+                    <button class="tab-btn active" id="tabOverview" type="button" aria-controls="panelOverview" aria-selected="true">Overview</button>
+                    <button class="tab-btn" id="tabStudents" type="button" role="tab" aria-selected="false">Students</button>
+                    <button class="tab-btn" id="tabPayments" type="button" aria-controls="panelPayments" aria-selected="false">Payment Records</button>
+                    <button class="tab-btn" id="tabStructure" type="button" aria-controls="panelStructure" aria-selected="false">Fee Structure</button>
+                    <button class="tab-btn" id="tabHeads" type="button" aria-controls="panelHeads" aria-selected="false">Fee Head</button>
+                </nav>
+
+                <div id="overviewError" class="overview-error" role="alert" hidden></div>
+                <section class="overview-panel" id="panelOverview" aria-label="Fee overview">
+                    <div class="fee-stats-grid">
+                        <article class="fee-stat-card"><span>Total collection</span><strong id="totalCollected">₹0</strong><small>Paid receipts this academic year</small></article>
+                        <article class="fee-stat-card"><span>Outstanding amount</span><strong id="outstandingAmount">₹0</strong><small>Pending and partial payment rows</small></article>
+                        <article class="fee-stat-card"><span>Total transactions</span><strong id="totalTransactions">0</strong><small>Completed payments recorded</small></article>
                     </div>
 
-                    <div class="fee-stat-card">
-                        <span class="stat-title">Transactions Recorded</span>
-                        <h3 class="stat-num" id="totalTransactionsVal">0</h3>
-                        <span class="stat-sub">Verified payments</span>
+                    <div class="overview-grid">
+                        <article class="chart-card"><div class="card-heading"><div><h3>Collection trend</h3><p>Monthly paid receipts</p></div><strong id="billedAmount">₹0 billed</strong></div><div id="collectionChart" class="bar-chart" aria-label="Monthly collection chart"></div></article>
+                        <article class="chart-card"><div class="card-heading"><div><h3>Payment status</h3><p>Payment rows by status</p></div></div><div class="status-chart"><div class="donut" id="statusDonut"><span id="statusTotal">0</span><small>records</small></div><ul id="statusLegend" class="status-legend"></ul></div></article>
                     </div>
+                </section>
 
-                    <div class="fee-stat-card">
-                        <span class="stat-title">Fee Heads</span>
-                        <h3 class="stat-num" id="totalHeadsVal">0</h3>
-                        <span class="stat-sub">Fee types configured</span>
+                <section id="panelStudents" hidden>
+                    <div class="payment-records-heading"><h3>Students</h3><p>Fee status of every student. Open a student to record or change payments.</p></div>
+                    <div id="studentsTabError" class="overview-error" role="alert" hidden></div>
+                    <div class="students-toolbar">
+                        <input type="search" id="studentsSearch" placeholder="Search by name or roll no." aria-label="Search students">
+                        <select id="studentsClassFilter" aria-label="Filter by class"><option value="">All classes</option></select>
+                        <span id="studentsCount"></span>
                     </div>
-                </div>
+                    <div class="payment-table-wrap"><table class="payment-table students-fee-table">
+                        <thead><tr><th>Roll No.</th><th>Student Name</th><th>Class</th><th>Section</th><th>Total Fee</th><th>Paid</th><th>Pending</th><th>Action</th></tr></thead>
+                        <tbody id="studentsTabBody"></tbody>
+                    </table></div>
+                </section>
 
-                <!-- TABS -->
-                <div class="fee-tabs">
-                    <button class="tab-btn active" id="tabPaymentsBtn">Payment Records</button>
-                    <button class="tab-btn" id="tabStructuresBtn">Fee Structure</button>
-                    <button class="tab-btn" id="tabHeadsBtn">Fee Heads</button>
-                </div>
-
-                <!-- TAB 1: PAYMENT RECORDS -->
-                <div class="tab-panel active" id="panelPayments">
-
-                    <!-- CLASS-WISE PAYMENT VIEW -->
-                    <div id="classPaymentView">
-
-                        <div class="panel-toolbar payment-record-toolbar">
-                            <div>
-                                <h3>Class-wise Payment Records</h3>
-                                <p>View total fees, collected amounts and outstanding balances for each class.</p>
-                            </div>
-
-                            <div class="filter-box academic-year-box">
-                                <select id="paymentAcademicYear" title="Academic Year">
-                                    <option value="2026-2027">2026-2027</option>
-                                    <option value="2025-2026">2025-2026</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="fee-table-wrap payment-record-list">
-                            <table class="fee-table">
-                                <thead>
-                                    <tr>
-                                        <th>Class</th>
-                                        <th>Total Students</th>
-                                        <th>Total Fees</th>
-                                        <th>Received Amount</th>
-                                        <th>Remaining Amount</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="classPaymentSummary">
-                                    <tr><td colspan="6" class="table-loading">Loading class payment records...</td></tr>
-                                </tbody>
-                            </table>
-                        </div>
-
+                <section class="payment-records-panel" id="panelPayments" aria-label="Payment records" hidden>
+                    <div class="payment-records-heading"><div><h3>Class payment records</h3><p>Fee totals and collection progress for every class.</p></div></div>
+                    <div class="fee-stats-grid payment-stats">
+                        <article class="fee-stat-card"><span>Revenue</span><strong id="paymentRevenue">₹0</strong><small>Total fee set for enrolled students</small></article>
+                        <article class="fee-stat-card"><span>Total collected</span><strong id="paymentCollected">₹0</strong><small>Paid receipts this academic year</small></article>
+                        <article class="fee-stat-card"><span>Total transactions</span><strong id="paymentTransactions">0</strong><small>Completed payments recorded</small></article>
                     </div>
+                    <div id="paymentRecordsError" class="overview-error" role="alert" hidden></div>
+                    <div class="payment-table-wrap"><table class="payment-table"><thead><tr><th>Class</th><th>Total Students</th><th>Total Fee</th><th>Received Amount</th><th>Remaining Amount</th><th>Action</th></tr></thead><tbody id="paymentRecordsBody"><tr><td colspan="6">Loading payment records…</td></tr></tbody></table></div>
+                </section>
 
-                    <!-- STUDENT-WISE PAYMENT VIEW -->
-                    <div id="studentPaymentView" style="display: none;">
+                <section class="fee-structure-panel" id="panelStructure" aria-label="Fee structure" hidden>
+                    <div class="structure-toolbar"><div><h3>Fee structure</h3><p>Set one fee amount per class and fee head.</p></div><button type="button" class="save-structure-btn" id="saveStructureBtn">Save changes</button></div>
+                    <p class="structure-note">The yearly total automatically accounts for each fee head’s frequency. Blank fields are not charged.</p>
+                    <div class="structure-table-wrap"><table class="structure-table"><thead id="structureTableHead"></thead><tbody id="structureTableBody"></tbody></table></div>
+                </section>
 
-                        <div class="student-payment-header">
-                            <div>
-                                <button type="button" class="btn-ghost" id="backToClasses">
-                                    ← Back to Classes
-                                </button>
-
-                                <h3 id="selectedPaymentClass">Class</h3>
-                                <p>Student-wise fee payment details.</p>
-                            </div>
-                        </div>
-
-                        <!-- CLASS PAYMENT TOTALS -->
-                        <div class="payment-summary-cards">
-
-                            <div class="payment-summary-card">
-                                <span>Payment to Receive</span>
-                                <h2 id="classExpectedTotal">₹0</h2>
-                            </div>
-
-                            <div class="payment-summary-card">
-                                <span>Received</span>
-                                <h2 id="classReceivedTotal">₹0</h2>
-                            </div>
-
-                            <div class="payment-summary-card">
-                                <span>Remaining</span>
-                                <h2 id="classRemainingTotal">₹0</h2>
-                            </div>
-
-                        </div>
-
-                        <!-- STUDENT TABLE -->
-                        <div class="fee-table-wrap">
-                            <table class="fee-table">
-                                <thead>
-                                    <tr>
-                                        <th>Student Name</th>
-                                        <th>Admission No.</th>
-                                        <th>Total Fee</th>
-                                        <th>Paid Amount</th>
-                                        <th>Remaining</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-
-                                <tbody id="classStudentPaymentBody">
-                                    <tr>
-                                        <td colspan="6" class="table-loading">
-                                            Loading student payment details...
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-
-                        <div id="studentFeeDetail" class="student-fee-detail hidden" aria-live="polite"></div>
-
-                    </div>
-
-                </div>
-
-                <!-- TAB 2: FEE STRUCTURE -->
-                <div class="tab-panel" id="panelStructures" style="display: none;">
-
-                    <div class="grid-toolbar">
-                        <div class="filter-box">
-                            <select id="structureYearSelect" title="Academic year"></select>
-                        </div>
-
-                        <span class="grow"></span>
-                        <span class="dirty-note hidden" id="dirtyNote"></span>
-
-                        <button class="btn-ghost" id="copyYearBtn" type="button">
-                            Copy from previous year
-                        </button>
-
-                        <button class="btn-save" id="saveGridBtn" type="button" disabled>
-                            Save changes
-                        </button>
-                    </div>
-
-                    <div class="fee-table-wrap">
-                        <table class="fee-table matrix-table" id="matrixTable">
-                            <thead id="matrixHead"></thead>
-                            <tbody id="matrixBody">
-                                <tr>
-                                    <td class="table-loading">Loading fee structure...</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <p class="legend-note">
-                        Enter the amount for <strong>one</strong> installment (e.g. ₹1500 for a Monthly head).
-                        Leave blank if a fee does not apply to a class. "Yearly total" is calculated from each
-                        head's frequency.
-                    </p>
-                </div>
-
-                <!-- TAB 3: FEE HEADS -->
-                <div class="tab-panel" id="panelHeads" style="display: none;">
-
-                    <div class="heads-year-banner">
-                        <span>
-                            📅 Active Academic Year:
-                            <strong id="headsActiveYearDisplay">2026-2027</strong>
-                        </span>
-                    </div>
-
-                    <div class="fee-table-wrap">
-                        <table class="fee-table">
-                            <thead>
-                                <tr>
-                                    <th>Fee Head</th>
-                                    <th>Frequency</th>
-                                    <th>Due Day</th>
-                                    <th>Description</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-
-                            <tbody id="headsTableBody">
-                                <tr>
-                                    <td colspan="5" class="table-loading">Loading fee heads...</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-                </div>
-
-                <!-- MODAL: RECORD PAYMENT -->
-                <div class="modal-overlay" id="collectFeeModal" style="display: none;">
-
-                    <div class="modal-card">
-
-                        <div class="modal-header">
-                            <h3 id="collectModalTitle">Record Fee Payment</h3>
-                            <button class="modal-close-btn" id="closeCollectFeeBtn">&times;</button>
-                        </div>
-
-                        <form id="collectFeeForm">
-
-                            <input type="hidden" id="editingPaymentId" value="">
-
-                            <div class="modal-academic-year-note" id="collectFeeYearNote">
-                                <span>
-                                    Academic Year:
-                                    <strong id="collectModalYearDisplay">2026-2027</strong>
-                                </span>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="payStudentSelect">Select Student (from Student Section)</label>
-                                <select id="payStudentSelect">
-                                    <option value="">-- Choose Student (Auto-fills details) --</option>
-                                </select>
-                            </div>
-
-                            <div class="form-row">
-                                <div class="form-group flex-1">
-                                    <label for="payStudentId">Student ID *</label>
-                                    <input type="number" id="payStudentId" required placeholder="e.g. 10134">
-                                </div>
-
-                                <div class="form-group flex-2">
-                                    <label for="payStudentName">Student Name *</label>
-                                    <input type="text" id="payStudentName" required placeholder="Student Name">
-                                </div>
-                            </div>
-
-                            <div class="form-row">
-                                <div class="form-group flex-1">
-                                    <label for="payClass">Class *</label>
-                                    <select id="payClass" required data-classes></select>
-                                </div>
-
-                                <div class="form-group flex-2">
-                                    <label for="payFeeHead">Fee Type *</label>
-                                    <select id="payFeeHead" required>
-                                        <option value="">-- Select fee head --</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="form-group hidden" id="payPeriodGroup">
-                                <label for="payPeriod">For Month *</label>
-                                <select id="payPeriod"></select>
-                            </div>
-
-                            <div class="form-row">
-                                <div class="form-group flex-1">
-                                    <label for="payAmount">Amount Paid (₹) *</label>
-                                    <input type="number" step="0.01" id="payAmount" required placeholder="12500">
-                                </div>
-
-                                <div class="form-group flex-1">
-                                    <label for="payDate">Payment Date *</label>
-                                    <input type="date" id="payDate" required>
-                                </div>
-                            </div>
-
-                            <div class="form-row">
-                                <div class="form-group flex-1">
-                                    <label for="payMode">Payment Mode *</label>
-                                    <select id="payMode">
-                                        <option value="Online">Online / Card</option>
-                                        <option value="UPI">UPI</option>
-                                        <option value="Cash">Cash</option>
-                                        <option value="Cheque">Cheque</option>
-                                    </select>
-                                </div>
-
-                                <div class="form-group flex-1">
-                                    <label for="payStatus">Status *</label>
-                                    <select id="payStatus">
-                                        <option value="Paid">Paid</option>
-                                        <option value="Partial">Partial</option>
-                                        <option value="Pending">Pending</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="payRemarks">Remarks / Ref No.</label>
-                                <input type="text" id="payRemarks" placeholder="e.g. Transaction #TXN99234">
-                            </div>
-
-                            <div class="modal-actions">
-                                <button type="button" class="btn-cancel" id="cancelCollectFeeBtn">
-                                    Cancel
-                                </button>
-
-                                <button type="submit" class="btn-save">
-                                    Save Record
-                                </button>
-                            </div>
-
-                        </form>
-                    </div>
-                </div>
-
-                <!-- MODAL: ADD / EDIT FEE HEAD -->
-                <div class="modal-overlay" id="headModal" style="display: none;">
-
-                    <div class="modal-card">
-
-                        <div class="modal-header">
-                            <h3 id="headModalTitle">Add Fee Head</h3>
-                            <button class="modal-close-btn" id="closeHeadBtn">&times;</button>
-                        </div>
-
-                        <form id="headForm">
-
-                            <input type="hidden" id="editingHeadId" value="">
-
-                            <div class="form-group">
-                                <label for="headName">Fee Head Name *</label>
-                                <input type="text" id="headName" required maxlength="50"
-                                    placeholder="e.g. Monthly Fee, Annual Fee, Exam Fee">
-                            </div>
-
-                            <div class="form-group">
-                                <label for="headFrequency">How often is it charged? *</label>
-
-                                <select id="headFrequency" required>
-                                    <option value="monthly">Monthly (12 times a year)</option>
-                                    <option value="quarterly">Quarterly (4 times a year)</option>
-                                    <option value="half_yearly">Half-yearly (2 times a year)</option>
-                                    <option value="yearly">Yearly (once a year)</option>
-                                    <option value="one_time">One-time (e.g. admission)</option>
-                                </select>
-
-                                <p class="field-hint">
-                                    Exam fee per term? Choose Half-yearly or Quarterly.
-                                </p>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="headDueDay">Due day of the month (optional)</label>
-                                <input type="number" id="headDueDay" min="1" max="28" placeholder="e.g. 10">
-                            </div>
-
-                            <div class="form-group">
-                                <label for="headDesc">Description (optional)</label>
-                                <input type="text" id="headDesc" maxlength="120"
-                                    placeholder="Short note for admins">
-                            </div>
-
-                            <div class="modal-actions">
-                                <button type="button" class="btn-cancel" id="cancelHeadBtn">
-                                    Cancel
-                                </button>
-
-                                <button type="submit" class="btn-save">
-                                    Save Fee Head
-                                </button>
-                            </div>
-
-                        </form>
-                    </div>
-                </div>
-
+                <section class="fee-heads-panel" id="panelHeads" aria-label="Fee heads" hidden>
+                    <div class="structure-toolbar"><div><h3>Fee heads</h3><p>Create the fee types used in the fee structure.</p></div><button type="button" class="save-structure-btn" id="addFeeHeadBtn">+ Add Fee Head</button></div>
+                    <div id="feeHeadsError" class="overview-error" role="alert" hidden></div>
+                    <div class="payment-table-wrap"><table class="payment-table"><thead><tr><th>Fee Head</th><th>Frequency</th><th>Due Day</th><th>Description</th><th>Action</th></tr></thead><tbody id="feeHeadsBody"><tr><td colspan="5">Loading fee heads…</td></tr></tbody></table></div>
+                </section>
             </section>
-
         </main>
     </div>
-
+    <dialog class="fee-head-dialog" id="feeHeadDialog"><form method="dialog" id="feeHeadForm"><div class="dialog-header"><h3 id="feeHeadDialogTitle">Add Fee Head</h3><button type="button" class="dialog-close" id="closeFeeHeadDialog" aria-label="Close">×</button></div><input type="hidden" id="editingFeeHeadId"><label>Fee Head Name *<input id="feeHeadName" required maxlength="80" placeholder="e.g. Monthly Fee"></label><label>How often is it charged? *<select id="feeHeadFrequency"><option value="monthly">Monthly (12 times a year)</option><option value="quarterly">Quarterly (4 times a year)</option><option value="half_yearly">Half-yearly (2 times a year)</option><option value="yearly">Yearly (once a year)</option><option value="one_time">One-time</option></select></label><label>Due day of the month (optional)<input id="feeHeadDueDay" type="number" min="1" max="28" placeholder="e.g. 10"></label><label>Description (optional)<input id="feeHeadDescription" maxlength="255" placeholder="Short note for admins"></label><div class="dialog-actions"><button type="button" class="cancel-dialog" id="cancelFeeHeadDialog">Cancel</button><button type="submit" class="save-structure-btn">Save Fee Head</button></div></form></dialog>
     <script src="../js/api.js"></script>
     <script src="../js/sidebar.js"></script>
     <script src="../js/script.js"></script>
+    <script src="../js/fees_students.js"></script>
     <script src="../js/fees.js"></script>
-
 </body>
 </html>

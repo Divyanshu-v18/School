@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="View students in a fee payment class.">
+    <title>Class Payment Students</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/fees.css">
+</head>
+<body>
+    <div class="page-layout">
+        <main class="main-content">
+            <header class="topbar">
+                <h1>ABC Public School</h1>
+                <div class="topbar-actions">
+                    <button class="notification-btn" id="notificationBtn" title="Notifications">♧<span class="notification-dot"></span></button>
+                    <div class="top-profile"><div class="profile-avatar">AS</div><div class="top-profile-info"><strong>Admin</strong><span>Administrator</span></div></div>
+                </div>
+            </header>
+            <section class="fees-content class-students-content">
+                <div class="fees-header"><div class="page-title"><h2>Fees</h2><p>Track fee collection and payment performance.</p></div></div>
+                <nav class="fee-tabs" aria-label="Fees sections">
+                    <button class="tab-btn" type="button" data-tab="overview">Overview</button>
+                    <button class="tab-btn" type="button" data-tab="students">Students</button>
+                    <button class="tab-btn active" type="button" data-tab="payments" aria-current="page">Payment Records</button>
+                    <button class="tab-btn" type="button" data-tab="structure">Fee Structure</button>
+                    <button class="tab-btn" type="button" data-tab="heads">Fee Head</button>
+                </nav>
+                <div id="classStudentsError" class="overview-error" role="alert" hidden></div>
+
+                <!-- View 1: students of the class -->
+                <div id="studentListView">
+                    <button class="back-to-records" type="button" id="backToPaymentRecords">← Back to Payment Records</button>
+                    <div class="class-students-heading"><div><h2 id="classStudentsTitle">Class Students</h2><p id="classStudentsSubtitle">Loading students…</p></div><span class="class-students-year" id="classStudentsYear"></span></div>
+                    <div class="payment-table-wrap"><table class="payment-table class-students-table"><thead><tr><th>Roll No.</th><th>Student Name</th><th>Class</th><th>Section</th><th>Total Fee</th><th>Paid</th><th>Pending</th><th>Action</th></tr></thead><tbody id="classStudentsBody"><tr><td colspan="8">Loading students…</td></tr></tbody></table></div>
+                </div>
+
+                <!-- View 2: payment history of one student -->
+                <div id="studentDetailView" hidden>
+                    <button class="back-to-records" type="button" id="backToStudents">← Back to Students</button>
+                    <div class="student-detail-heading"><div><h2 id="studentDetailName">Student</h2><p id="studentDetailMeta"></p></div><span class="class-students-year" id="studentDetailYear"></span></div>
+                    <div class="fee-stats-grid payment-stats">
+                        <article class="fee-stat-card"><span>Total fee</span><strong id="studentTotalFee">₹0</strong><small>Set in Fee Structure for this class</small></article>
+                        <article class="fee-stat-card"><span>Paid</span><strong id="studentPaidFee">₹0</strong><small>Payments marked Paid</small></article>
+                        <article class="fee-stat-card"><span>Pending</span><strong id="studentPendingFee">₹0</strong><small>Total fee minus paid</small></article>
+                    </div>
+                    <h3 class="history-section-title">Monthly fee schedule</h3>
+                    <p class="history-section-note">One row per month of the academic year. Use Update to record whether a month was paid, how, and when.</p>
+                    <div class="payment-table-wrap"><table class="payment-table history-table"><thead><tr><th>Month</th><th>Fee Head</th><th>Amount</th><th>Paid</th><th>Due Date</th><th>Status</th><th>Paid On</th><th>Mode</th><th>Action</th></tr></thead><tbody id="studentScheduleBody"></tbody></table></div>
+                    <h3 class="history-section-title">Other fees</h3>
+                    <p class="history-section-note">All fees except the monthly fee, one row per fee head with the total for the year.</p>
+                    <div class="payment-table-wrap"><table class="payment-table history-table"><thead><tr><th>Fee Head</th><th>Frequency</th><th>Total Amount</th><th>Paid</th><th>Due Date</th><th>Status</th><th>Paid On</th><th>Mode</th><th>Action</th></tr></thead><tbody id="studentOtherFeesBody"></tbody></table></div>
+                    <h3 class="history-section-title">Payment receipts</h3>
+                    <div class="payment-table-wrap"><table class="payment-table history-table receipts-table"><thead><tr><th>For</th><th>Fee Head</th><th>Amount</th><th>Payment Date</th><th>Mode</th><th>Status</th><th>Remarks</th></tr></thead><tbody id="studentHistoryBody"></tbody></table></div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <dialog class="fee-head-dialog" id="paymentDialog">
+        <form id="paymentForm">
+            <div class="dialog-header"><h3 id="paymentDialogTitle">Update payment</h3><button type="button" class="dialog-close" id="paymentDialogClose" aria-label="Close">×</button></div>
+            <p class="history-section-note" id="paymentDialogInfo"></p>
+            <div id="paymentDialogError" class="overview-error" role="alert" hidden></div>
+            <div><label>Status<select id="paymentStatus"><option value="Paid">Paid</option><option value="Partial">Partially paid</option><option value="Pending">Not paid (pending)</option></select></label></div>
+            <div id="paymentAmountRow" hidden><label>Amount received (₹)<input type="number" id="paymentAmount" min="1" step="0.01"></label></div>
+            <div id="paymentDetailRows" class="dialog-stack">
+                <label>Payment date<input type="date" id="paymentDate"></label>
+                <label>Payment mode<select id="paymentMode"><option value="Cash">Cash</option><option value="UPI">UPI</option><option value="Online">Online</option><option value="Cheque">Cheque</option></select></label>
+                <label>Remarks (optional)<input type="text" id="paymentRemarks" maxlength="255"></label>
+            </div>
+            <div class="dialog-actions"><button type="button" class="cancel-dialog" id="paymentCancel">Cancel</button><button type="submit" class="save-structure-btn" id="paymentSave">Save</button></div>
+        </form>
+    </dialog>
+    <script src="../js/api.js"></script>
+    <script src="../js/sidebar.js"></script>
+    <script src="../js/script.js"></script>
+    <script src="../js/fee_class_students.js"></script>
+</body>
+</html>
