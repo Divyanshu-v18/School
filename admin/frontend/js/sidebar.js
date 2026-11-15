@@ -50,7 +50,8 @@
         "edit_teacher.html": "teacher.html",
         "teacher_details.html": "teacher.html",
         "class_details.html": "class.html",
-        "section_details.html": "class.html"
+        "section_details.html": "class.html",
+        "fee_class_students.html": "fees.html"
     };
 
     function getActivePage() {

@@ -53,10 +53,10 @@ def add_subject(subject: Subject):
     except HTTPException:
         raise
     except Exception:
-        logger.exception("An internal error occurred")
+        logger.exception("Subject exist with same subject code.")
         raise HTTPException(
             status_code=500,
-            detail="An internal server error occurred."
+            detail="Subject exist with same subject code."
         )
 
 

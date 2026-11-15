@@ -61,11 +61,16 @@ def get_attendance(
             detail="An internal server error occurred."
         )
 
+MAX_RECORDS_PER_REQUEST = 1000
+
+
 @router.post("/attendance")
 def save_attendance(records: List[Attendance]):
     """Save or update attendance for a list of students."""
+    if len(records) > MAX_RECORDS_PER_REQUEST:
+        raise HTTPException(status_code=400, detail="Too many records in one request.")
     try:
-        with db_cursor(database="school_management") as (cur, _):
+        with db_cursor(database="school_management", autocommit=False) as (cur, conn):
             for r in records:
                 cur.execute(
                     """
@@ -75,6 +80,7 @@ def save_attendance(records: List[Attendance]):
                     """,
                     (r.student_id, r.student_name, r.class_name, r.section, r.date, r.status),
                 )
+            conn.commit()  # all-or-nothing: either every record is saved or none
             return {"message": f"Recorded attendance for {len(records)} students"}
     except HTTPException:
         raise
@@ -129,20 +135,26 @@ def get_teacher_attendance(
 @router.post("/teacher-attendance")
 def save_teacher_attendance(records: List[TeacherAttendance]):
     """Save or update attendance for a list of teachers."""
+    if len(records) > MAX_RECORDS_PER_REQUEST:
+        raise HTTPException(status_code=400, detail="Too many records in one request.")
     try:
-        with db_cursor(database="school_management") as (cur, _):
+        with db_cursor(database="school_management", autocommit=False) as (cur, conn):
             for r in records:
+                # time_in / time_out are optional: an existing record keeps its stored
+                # times when none are sent, and a new record gets the default 09:00 / 16:00.
                 cur.execute(
                     """
                     INSERT INTO teacher_attendance (teacher_id, teacher_name, post, date, status, time_in, time_out)
-                    VALUES (%s, %s, %s, %s, %s, %s, %s)
+                    VALUES (%s, %s, %s, %s, %s, COALESCE(%s, '09:00'), COALESCE(%s, '16:00'))
                     ON DUPLICATE KEY UPDATE
                         status = VALUES(status),
-                        time_in = VALUES(time_in),
-                        time_out = VALUES(time_out)
+                        time_in = COALESCE(%s, time_in),
+                        time_out = COALESCE(%s, time_out)
                     """,
-                    (r.teacher_id, r.teacher_name, r.post, r.date, r.status, r.time_in, r.time_out),
+                    (r.teacher_id, r.teacher_name, r.post, r.date, r.status,
+                     r.time_in, r.time_out, r.time_in, r.time_out),
                 )
+            conn.commit()
             return {"message": f"Recorded attendance for {len(records)} teachers"}
     except HTTPException:
         raise

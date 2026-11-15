@@ -33,6 +33,8 @@ ROLE_PERMISSIONS = {
         ("GET", "/calendar/events"),
         ("GET", "/notices"),
         ("GET", "/fees/payments"),
+        ("GET", "/fees/overview"),
+        ("GET", "/fees/heads"),
         ("GET", "/fees/structures"),
         ("POST", "/fees/payments"),
         ("GET", "/transport/drivers"),

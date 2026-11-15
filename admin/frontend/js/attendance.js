@@ -1,8 +1,8 @@
-
 /* ==========================================================================
    ATTENDANCE MANAGEMENT
-   Read-only student/teacher attendance monitoring.
-   Supports daily and monthly attendance views.
+   Student/teacher attendance monitoring with an Edit Attendance switch.
+   Supports daily and monthly attendance views. Attendance can be changed
+   (and saved) in the daily view while Edit Attendance is ON.
 
    Requires:
    - api.js
@@ -12,7 +12,7 @@
    - Existing GET /attendance?date_val=YYYY-MM-DD
    - Existing GET /teacher-attendance?date_val=YYYY-MM-DD
 
-   No attendance POST requests are made by this file.
+   - POST /attendance and POST /teacher-attendance (only when saving in edit mode)
    ========================================================================== */
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -67,6 +67,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const legendNote = $("legendNote");
 
+    const toggleEditBtn = $("toggleEditModeBtn");
+    const toggleModeStatus = $("toggleModeStatus");
+    const saveBtn = $("saveAttendanceBtn");
+    const unsavedBadge = $("unsavedBadge");
+    const editQuickActions = $("editQuickActions");
+    const markAllPresentBtn = $("markAllPresentBtn");
+    const markAllAbsentBtn = $("markAllAbsentBtn");
+    const feedbackBanner = $("attendanceFeedbackBanner");
+
     /* =========================================================
        API CONFIGURATION
     ========================================================= */
@@ -92,7 +101,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         try {
             data = await response.json();
-        } catch (_) {}
+        } catch (_) { }
 
         if (!response.ok) {
 
@@ -223,6 +232,12 @@ document.addEventListener("DOMContentLoaded", () => {
     let loading = false;
 
     let requestVersion = 0;
+
+    // Edit mode
+    let editMode = false;          // the Edit Attendance switch
+    let saving = false;
+    let loadedDate = "";           // date the daily table was loaded for (used when saving)
+    let applied = { date: "", month: "", cls: "ALL", sec: "ALL" };   // filters of the table on screen
 
     if (dateInput) {
         dateInput.value = today();
@@ -414,6 +429,10 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
+        if (view !== currentView && !confirmDiscard()) {
+            return;
+        }
+
         currentView = view;
 
         dailyViewBtn.classList.toggle("active", view === "daily");
@@ -476,14 +495,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         }
 
-        if (legendNote) {
-
-            legendNote.textContent =
-                view === "daily"
-                    ? "Attendance is displayed in read-only mode."
-                    : "Scroll horizontally to view all dates.";
-
-        }
+        updateEditUI();
 
         fetchRosterAndAttendance();
 
@@ -504,6 +516,10 @@ document.addEventListener("DOMContentLoaded", () => {
     function switchTarget(target) {
 
         if (!["student", "teacher"].includes(target)) {
+            return;
+        }
+
+        if (target !== currentTarget && !confirmDiscard()) {
             return;
         }
 
@@ -773,7 +789,11 @@ document.addEventListener("DOMContentLoaded", () => {
             record.status =
                 attendanceMap.get(record.id) || "N/A";
 
+            record.originalStatus = record.status;   // what is saved in the database
+
         });
+
+        loadedDate = selectedDate;
 
         currentRoster = roster;
 
@@ -926,6 +946,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
             }
 
+            applied = {
+                date: dateInput?.value || "",
+                month: monthInput?.value || "",
+                cls: classSelect?.value || "ALL",
+                sec: sectionSelect?.value || "ALL"
+            };
+
             /*
              * Load roster first.
              */
@@ -984,6 +1011,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 loadBtn.disabled = false;
 
                 loadBtn.innerHTML = "<span>↻</span> Load Records";
+
+                updateEditUI();
 
             }
 
@@ -1127,13 +1156,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
             }
 
+            const editing = isEditing();
+
             const statusCell = createCell(
-                statusBadge(record.status)
+                editing
+                    ? statusChoice(record, row)
+                    : statusBadge(record.status)
             );
 
             statusCell.style.textAlign = "center";
 
             row.appendChild(statusCell);
+
+            if (editing && isChanged(record)) {
+                row.classList.add("row-changed");
+            }
 
             tableBody.appendChild(row);
 
@@ -1370,6 +1407,369 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     /* =========================================================
+       EDIT MODE
+       Daily view only. Statuses can be set to Present or Absent
+       and are saved with the Save Attendance button.
+    ========================================================= */
+
+    const SAVE_CHUNK_SIZE = 200;
+
+    function isFutureDate(value) {
+        return Boolean(value) && value > today();
+    }
+
+    // true when the table on screen can be edited
+    function canEdit() {
+        return currentView === "daily" && !isFutureDate(loadedDate || dateInput?.value);
+    }
+
+    function isEditing() {
+        return editMode && canEdit();
+    }
+
+    function isChanged(record) {
+        return (record.status === "Present" || record.status === "Absent") &&
+            record.status !== record.originalStatus;
+    }
+
+    function changedRecords() {
+        return currentView === "daily" ? currentRoster.filter(isChanged) : [];
+    }
+
+    function hasUnsavedChanges() {
+        return changedRecords().length > 0;
+    }
+
+    function discardChanges() {
+        currentRoster.forEach((record) => {
+            if (record.originalStatus !== undefined) {
+                record.status = record.originalStatus;
+            }
+        });
+    }
+
+    // Ask before throwing away unsaved changes. Returns true if it is fine to continue.
+    function confirmDiscard() {
+
+        if (!hasUnsavedChanges()) {
+            return true;
+        }
+
+        const ok = window.confirm(
+            "You have unsaved attendance changes. Discard them?"
+        );
+
+        if (ok) {
+            discardChanges();
+            updateEditUI();
+        }
+
+        return ok;
+
+    }
+
+    function showBanner(kind, message) {
+
+        if (!feedbackBanner) return;
+
+        feedbackBanner.textContent = message;
+        feedbackBanner.dataset.kind = kind;
+        feedbackBanner.className = `attendance-feedback-banner ${kind}`;
+
+    }
+
+    function hideBanner(onlyKind) {
+
+        if (!feedbackBanner) return;
+
+        if (onlyKind && feedbackBanner.dataset.kind !== onlyKind) {
+            return;
+        }
+
+        feedbackBanner.className = "attendance-feedback-banner hidden";
+        feedbackBanner.textContent = "";
+        delete feedbackBanner.dataset.kind;
+
+    }
+
+    function updateLegendNote() {
+
+        if (!legendNote) return;
+
+        if (currentView === "monthly") {
+            legendNote.textContent = "Scroll horizontally to view all dates.";
+        } else if (isEditing()) {
+            legendNote.textContent =
+                "Edit mode is ON: choose Present or Absent for each member, then click Save Attendance.";
+        } else {
+            legendNote.textContent = "Attendance is displayed in read-only mode.";
+        }
+
+    }
+
+    // Keeps the switch, Save button, quick actions and hints in sync with the state.
+    function updateEditUI() {
+
+        const editing = isEditing();
+        const count = changedRecords().length;
+
+        if (toggleEditBtn) {
+            toggleEditBtn.classList.toggle("is-on", editMode);
+            toggleEditBtn.setAttribute("aria-checked", String(editMode));
+        }
+
+        if (toggleModeStatus) {
+            toggleModeStatus.textContent = editMode ? "ON" : "OFF";
+        }
+
+        saveBtn?.classList.toggle("hidden", !editing);
+        editQuickActions?.classList.toggle("hidden", !editing);
+
+        if (saveBtn) {
+            saveBtn.disabled = saving || count === 0;
+        }
+
+        if (unsavedBadge) {
+            unsavedBadge.textContent = String(count);
+            unsavedBadge.classList.toggle("hidden", count === 0);
+        }
+
+        table?.classList.toggle("editing", editing);
+
+        // Explain why editing is not available instead of failing silently.
+        if (editMode && !canEdit()) {
+            showBanner(
+                "info",
+                currentView === "monthly"
+                    ? "Attendance can only be edited in the Daily View. Switch to Daily View to make changes."
+                    : "Attendance cannot be marked for a future date. Choose today or an earlier date."
+            );
+        } else {
+            hideBanner("info");
+        }
+
+        updateLegendNote();
+
+    }
+
+    // The Present / Absent buttons shown in a row while editing.
+    function statusChoice(record, row) {
+
+        const group = document.createElement("div");
+
+        group.className = "status-toggle";
+        group.setAttribute("role", "group");
+        group.setAttribute(
+            "aria-label",
+            `Attendance status for ${record.student_name || record.teacher_name || "member"}`
+        );
+
+        const buttons = {};
+
+        ["Present", "Absent"].forEach((status) => {
+
+            const button = document.createElement("button");
+
+            button.type = "button";
+            button.className = `status-choice ${status.toLowerCase()}`;
+            button.textContent = status;
+            button.addEventListener("click", () => {
+                setStatus(record, status, row, buttons);
+            });
+
+            buttons[status] = button;
+            group.appendChild(button);
+
+        });
+
+        syncChoice(record, row, buttons);
+
+        return group;
+
+    }
+
+    function syncChoice(record, row, buttons) {
+
+        Object.entries(buttons).forEach(([status, button]) => {
+
+            const active = record.status === status;
+
+            button.classList.toggle("active", active);
+            button.setAttribute("aria-pressed", String(active));
+
+        });
+
+        row.classList.toggle("row-changed", isChanged(record));
+
+    }
+
+    function setStatus(record, status, row, buttons) {
+
+        if (saving) return;
+
+        record.status = status;
+
+        syncChoice(record, row, buttons);
+
+        hideBanner();   // a new change makes an old success/error message out of date
+
+        updateKPIs();
+
+        updateEditUI();
+
+    }
+
+    function markAll(status) {
+
+        if (!isEditing() || saving) return;
+
+        filteredRoster().forEach((record) => {
+            record.status = status;
+        });
+
+        hideBanner();
+
+        renderDailyTable();
+
+        updateKPIs();
+
+        updateEditUI();
+
+    }
+
+    function toggleEditMode() {
+
+        if (saving) return;
+
+        if (editMode && !confirmDiscard()) {
+            return;
+        }
+
+        editMode = !editMode;
+
+        hideBanner();
+
+        updateEditUI();
+
+        if (currentView === "daily") {
+            renderDailyTable();
+            updateKPIs();
+        }
+
+    }
+
+    function buildPayload(records) {
+
+        const clean = (value) => (value === "—" ? "" : String(value ?? ""));
+
+        if (currentTarget === "student") {
+
+            return records.map((record) => ({
+                student_id: Number(record.student_id),
+                student_name: record.student_name,
+                class_name: clean(record.class_name),
+                section: clean(record.section),
+                date: loadedDate,
+                status: record.status
+            }));
+
+        }
+
+        // Teacher times are left out on purpose: the server keeps the stored
+        // times of an existing record and uses the defaults for a new one.
+        return records.map((record) => ({
+            teacher_id: Number(record.teacher_id),
+            teacher_name: record.teacher_name,
+            post: record.post,
+            date: loadedDate,
+            status: record.status
+        }));
+
+    }
+
+    async function saveAttendance() {
+
+        if (saving || !isEditing()) return;
+
+        const records = changedRecords();
+
+        if (!records.length) return;
+
+        if (isFutureDate(loadedDate)) {
+            showBanner("error", "Attendance cannot be marked for a future date.");
+            return;
+        }
+
+        saving = true;
+
+        const originalLabel = saveBtn.querySelector(".save-btn-text");
+
+        if (originalLabel) originalLabel.textContent = "Saving...";
+
+        updateEditUI();
+
+        const endpoint =
+            currentTarget === "student" ? "/attendance" : "/teacher-attendance";
+
+        const noun = currentTarget === "student" ? "student" : "teacher";
+
+        let savedCount = 0;
+
+        try {
+
+            for (let start = 0; start < records.length; start += SAVE_CHUNK_SIZE) {
+
+                const chunk = records.slice(start, start + SAVE_CHUNK_SIZE);
+
+                const response = await request(`${apiBase()}${endpoint}`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(buildPayload(chunk))
+                });
+
+                await readResponse(response);
+
+                chunk.forEach((record) => {
+                    record.originalStatus = record.status;   // now saved
+                });
+
+                savedCount += chunk.length;
+
+            }
+
+            showBanner(
+                "success",
+                `Attendance saved for ${savedCount} ${noun}${savedCount === 1 ? "" : "s"} on ${formatDate(loadedDate)}.`
+            );
+
+        } catch (error) {
+
+            console.error("Attendance save error:", error);
+
+            showBanner(
+                "error",
+                savedCount
+                    ? `Saved ${savedCount} of ${records.length}, then failed: ${error.message}. The remaining changes are still unsaved.`
+                    : `Could not save attendance: ${error.message}`
+            );
+
+        } finally {
+
+            saving = false;
+
+            if (originalLabel) originalLabel.textContent = "Save Attendance";
+
+            renderDailyTable();
+
+            updateKPIs();
+
+            updateEditUI();
+
+        }
+
+    }
+
+    /* =========================================================
        KPI CALCULATIONS
     ========================================================= */
 
@@ -1449,13 +1849,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
     loadBtn?.addEventListener(
         "click",
-        fetchRosterAndAttendance
+        () => {
+            if (confirmDiscard()) {
+                fetchRosterAndAttendance();
+            }
+        }
     );
 
     dateInput?.addEventListener(
         "change",
         () => {
             if (currentView === "daily") {
+                if (!confirmDiscard()) {
+                    dateInput.value = applied.date;   // keep showing the table that has the changes
+                    return;
+                }
                 fetchRosterAndAttendance();
             }
         }
@@ -1472,13 +1880,41 @@ document.addEventListener("DOMContentLoaded", () => {
 
     classSelect?.addEventListener(
         "change",
-        fetchRosterAndAttendance
+        () => {
+            if (!confirmDiscard()) {
+                classSelect.value = applied.cls;
+                return;
+            }
+            fetchRosterAndAttendance();
+        }
     );
 
     sectionSelect?.addEventListener(
         "change",
-        fetchRosterAndAttendance
+        () => {
+            if (!confirmDiscard()) {
+                sectionSelect.value = applied.sec;
+                return;
+            }
+            fetchRosterAndAttendance();
+        }
     );
+
+    toggleEditBtn?.addEventListener("click", toggleEditMode);
+
+    saveBtn?.addEventListener("click", saveAttendance);
+
+    markAllPresentBtn?.addEventListener("click", () => markAll("Present"));
+
+    markAllAbsentBtn?.addEventListener("click", () => markAll("Absent"));
+
+    // Warn before leaving the page with unsaved changes.
+    window.addEventListener("beforeunload", (event) => {
+        if (hasUnsavedChanges()) {
+            event.preventDefault();
+            event.returnValue = "";
+        }
+    });
 
     searchInput?.addEventListener(
         "input",
