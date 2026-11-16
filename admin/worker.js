@@ -1,5 +1,5 @@
 
-const BACKEND_URL = "https://school-backend-99n7.onrender.com";
+const BACKEND_URL = "https://school-shivaji.onrender.com";
 
 export default {
     async fetch(request, env) {
