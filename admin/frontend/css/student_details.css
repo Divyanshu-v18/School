@@ -491,3 +491,48 @@
         display: none !important;
     }
 }
+
+/* Attendance tab (read-only) */
+.summary-cards.four {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.attendance-days-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.attendance-month-filter {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 24px;
+    color: var(--text-light);
+    font-size: 13px;
+}
+
+.attendance-month-filter select {
+    height: 36px;
+    padding: 0 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background: #fff;
+    color: var(--text-dark);
+    font: inherit;
+    font-size: 13px;
+}
+
+@media(max-width:900px) {
+    .summary-cards.four {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media(max-width:600px) {
+    .summary-cards.four {
+        grid-template-columns: 1fr;
+    }
+}

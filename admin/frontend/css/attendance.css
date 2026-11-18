@@ -935,3 +935,16 @@
         justify-content: flex-start;
     }
 }
+
+.back-link {
+    display: inline-block;
+    margin-bottom: 14px;
+    color: var(--olive);
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.back-link:hover {
+    text-decoration: underline;
+}

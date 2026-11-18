@@ -1492,6 +1492,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
     }
 
+    // Tell other open pages (e.g. a student's profile) that attendance changed.
+    function notifyAttendanceUpdated() {
+        try { localStorage.setItem("school_attendance_updated", String(Date.now())); } catch (_) {}
+        try {
+            if ("BroadcastChannel" in window) {
+                const channel = new BroadcastChannel("school-attendance");
+                channel.postMessage({ type: "attendance-updated" });
+                channel.close();
+            }
+        } catch (_) {}
+    }
+
     function updateLegendNote() {
 
         if (!legendNote) return;
@@ -1735,6 +1747,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 savedCount += chunk.length;
 
+                notifyAttendanceUpdated();
+
             }
 
             showBanner(
@@ -1940,7 +1954,29 @@ document.addEventListener("DOMContentLoaded", () => {
 
     /* =========================================================
        INITIAL LOAD
+       Optional link parameters (used by a student's profile page):
+       ?date=YYYY-MM-DD&class=9&section=A&q=<name or id>&edit=1&from=profile&student_id=<id>
     ========================================================= */
+
+    const linkParams = new URLSearchParams(window.location.search);
+    const hasOption = (select, value) => Boolean(select) && [...select.options].some((option) => option.value === value);
+
+    const linkedDate = linkParams.get("date") || "";
+    if (dateInput && /^\d{4}-\d{2}-\d{2}$/.test(linkedDate) && linkedDate <= today()) {
+        dateInput.value = linkedDate;
+    }
+    if (hasOption(classSelect, linkParams.get("class") || "")) classSelect.value = linkParams.get("class");
+    if (hasOption(sectionSelect, linkParams.get("section") || "")) sectionSelect.value = linkParams.get("section");
+    if (searchInput && linkParams.get("q")) searchInput.value = linkParams.get("q");
+    if (linkParams.get("edit") === "1") editMode = true;
+
+    const backToProfile = $("backToProfileLink");
+    if (backToProfile && linkParams.get("from") === "profile" && /^\d+$/.test(linkParams.get("student_id") || "")) {
+        const back = new URLSearchParams({ student_id: linkParams.get("student_id"), tab: "attendance" });
+        if (linkParams.get("return_url")) back.set("return_url", linkParams.get("return_url"));
+        backToProfile.href = `student_details.html?${back.toString()}`;
+        backToProfile.classList.remove("hidden");
+    }
 
     switchTarget("student");
 

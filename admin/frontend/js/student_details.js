@@ -228,7 +228,6 @@ document.addEventListener("DOMContentLoaded", () => {
        ========================================================================== */
 
     const cache = {
-        attendance: null,
         marks: null
     };
 
@@ -250,6 +249,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (tabName === "fees") {
             loadFees();            // always fetch fresh fee details
+        } else if (tabName === "attendance") {
+            loadAttendance();      // always fetch fresh attendance
         } else if (tabName !== "overview") {
             loadRecords(tabName);
         }
@@ -322,84 +323,182 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     /* ----------------------------------------
-       ATTENDANCE
+       ATTENDANCE (read-only; changed in the Attendance section)
        ---------------------------------------- */
-    function renderAttendance(rows) {
-        const summaryEl = document.getElementById("attendanceSummary");
-        const headEl = document.getElementById("attendanceHead");
+    const attendanceMessageEl = document.getElementById("attendanceMessage");
+    const attendanceContentEl = document.getElementById("attendanceContent");
+    const manageAttendanceLink = document.getElementById("manageAttendanceBtn");
+    const attendanceMonthFilter = document.getElementById("attendanceMonthFilter");
+    let attendanceLoaded = false, attendanceLoading = false, attendanceReloadQueued = false;
+    let attendanceRows = [], attendanceYear = "";
+
+    function todayIso() {
+        const now = new Date();
+        return new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
+    }
+
+    function monthLabel(key) {   // "2026-04" -> "Apr 2026"
+        return new Date(`${key}-01T00:00:00`).toLocaleDateString("en-IN", { month: "short", year: "numeric" });
+    }
+
+    function ratePercent(present, absent) {
+        const marked = present + absent;
+        return marked ? `${((present / marked) * 100).toFixed(1)}%` : "-";
+    }
+
+    // The "Manage Attendance" button opens the Attendance section for this student's class,
+    // with the student searched and Edit Attendance already switched on.
+    function updateManageAttendanceLink() {
+        if (!manageAttendanceLink) return;
+        if (!validStudentId(currentStudentId)) {
+            manageAttendanceLink.setAttribute("aria-disabled", "true");
+            manageAttendanceLink.removeAttribute("href");
+            return;
+        }
+        const query = new URLSearchParams({ target: "student", date: todayIso(), q: currentStudentId, edit: "1", from: "profile", student_id: currentStudentId });
+        const classKey = String(studentInfo?.class ?? "").trim();
+        const section = String(studentInfo?.section ?? "").trim();
+        if (classKey) query.set("class", classKey);
+        if (section) query.set("section", section);
+        if (returnUrl) query.set("return_url", returnUrl);
+        manageAttendanceLink.href = `attendance.html?${query.toString()}`;
+        manageAttendanceLink.removeAttribute("aria-disabled");
+    }
+
+    function showAttendanceMessage(text, isError = false) {
+        attendanceMessageEl.textContent = text;
+        attendanceMessageEl.classList.toggle("is-error", isError);
+        attendanceMessageEl.hidden = false;
+        attendanceContentEl.hidden = true;
+    }
+
+    function renderAttendanceDays() {
         const bodyEl = document.getElementById("attendanceBody");
+        const month = attendanceMonthFilter ? attendanceMonthFilter.value : "";
+        const rows = attendanceRows
+            .filter(row => !month || row.date.startsWith(month))
+            .sort((a, b) => b.date.localeCompare(a.date));
 
-        if (summaryEl) {
-            summaryEl.replaceChildren();
-            const total = rows.length;
-            const present = rows.filter(r => String(r.status ?? "").toLowerCase() === "present").length;
-            const absent = rows.filter(r => String(r.status ?? "").toLowerCase() === "absent").length;
-            const rate = total > 0 ? `${((present / total) * 100).toFixed(1)}%` : "-";
-
-            summaryEl.append(
-                createSummaryCard("Total Recorded Days", total),
-                createSummaryCard("Days Present", present),
-                createSummaryCard("Attendance Rate", rate)
-            );
-        }
-
-        if (headEl) {
-            headEl.replaceChildren();
+        bodyEl.replaceChildren();
+        if (!rows.length) {
             const tr = document.createElement("tr");
-            ["Date", "Status", "Class / Section", "Remarks"].forEach(text => {
-                const th = document.createElement("th");
-                th.textContent = text;
-                tr.appendChild(th);
-            });
-            headEl.appendChild(tr);
+            const td = document.createElement("td");
+            td.colSpan = 4; td.className = "table-empty";
+            td.textContent = "No attendance has been recorded for this student yet.";
+            tr.appendChild(td); bodyEl.appendChild(tr);
+            return;
         }
+        rows.forEach(row => {
+            const tr = document.createElement("tr");
+            appendCells(tr, [
+                formatDate(row.date),
+                new Date(`${row.date}T00:00:00`).toLocaleDateString("en-IN", { weekday: "long" })
+            ]);
+            appendStatus(tr, row.status);
+            appendCells(tr, [`${row.class_name || ""} ${row.section || ""}`.trim()]);
+            bodyEl.appendChild(tr);
+        });
+    }
 
-        if (bodyEl) {
-            bodyEl.replaceChildren();
-            if (!rows.length) {
-                const tr = document.createElement("tr");
-                const td = document.createElement("td");
-                td.colSpan = 4;
-                td.className = "table-empty";
-                td.textContent = "No attendance records found for this student.";
-                tr.appendChild(td);
-                bodyEl.appendChild(tr);
-                return;
-            }
+    function renderAttendance() {
+        const present = attendanceRows.filter(row => row.status.toLowerCase() === "present").length;
+        const absent = attendanceRows.filter(row => row.status.toLowerCase() === "absent").length;
 
-            rows.forEach(r => {
-                const tr = document.createElement("tr");
+        document.getElementById("attendanceSummary").replaceChildren(
+            createSummaryCard("Days Marked", present + absent),
+            createSummaryCard("Days Present", present),
+            createSummaryCard("Days Absent", absent),
+            createSummaryCard("Attendance Rate", ratePercent(present, absent))
+        );
 
-                // Date
-                const tdDate = document.createElement("td");
-                tdDate.textContent = r.date ?? "-";
-                tr.appendChild(tdDate);
+        // month-wise summary (only months that have records)
+        const byMonth = new Map();
+        attendanceRows.forEach(row => {
+            const key = row.date.slice(0, 7);
+            const entry = byMonth.get(key) || { present: 0, absent: 0 };
+            if (row.status.toLowerCase() === "present") entry.present += 1;
+            else if (row.status.toLowerCase() === "absent") entry.absent += 1;
+            byMonth.set(key, entry);
+        });
+        const months = [...byMonth.keys()].sort();
 
-                // Status
-                const tdStatus = document.createElement("td");
-                const statusStr = String(r.status ?? "-");
-                const badge = document.createElement("span");
-                badge.className = `record-status status-${statusStr.toLowerCase()}`;
-                badge.textContent = statusStr;
-                tdStatus.appendChild(badge);
-                tr.appendChild(tdStatus);
+        const monthlyBody = document.getElementById("attendanceMonthlyBody");
+        monthlyBody.replaceChildren();
+        if (!months.length) {
+            const tr = document.createElement("tr");
+            const td = document.createElement("td");
+            td.colSpan = 5; td.className = "table-empty";
+            td.textContent = "No attendance has been recorded for this academic year.";
+            tr.appendChild(td); monthlyBody.appendChild(tr);
+        }
+        months.forEach(key => {
+            const { present: p, absent: a } = byMonth.get(key);
+            const tr = document.createElement("tr");
+            appendCells(tr, [monthLabel(key), p, a, p + a, ratePercent(p, a)]);
+            monthlyBody.appendChild(tr);
+        });
 
-                // Class / Section
-                const tdClass = document.createElement("td");
-                const cls = r.class_name || r.class || "";
-                const sec = r.section || "";
-                tdClass.textContent = cls || sec ? `${cls} ${sec}`.trim() : "-";
-                tr.appendChild(tdClass);
-
-                // Remarks
-                const tdRemarks = document.createElement("td");
-                tdRemarks.textContent = r.remarks || "-";
-                tr.appendChild(tdRemarks);
-
-                bodyEl.appendChild(tr);
+        // month filter for the daily records (keeps the current choice when possible)
+        if (attendanceMonthFilter) {
+            const previous = attendanceMonthFilter.value;
+            attendanceMonthFilter.replaceChildren();
+            [["", "All months"], ...months.slice().reverse().map(key => [key, monthLabel(key)])].forEach(([value, text]) => {
+                const option = document.createElement("option");
+                option.value = value; option.textContent = text;
+                attendanceMonthFilter.appendChild(option);
             });
+            attendanceMonthFilter.value = months.includes(previous) ? previous : "";
+        }
+        renderAttendanceDays();
+
+        const note = document.getElementById("attendanceYearNote");
+        if (note) note.textContent = `Attendance history for Academic Year ${attendanceYear}`;
+        attendanceMessageEl.hidden = true;
+        attendanceContentEl.hidden = false;
+    }
+
+    async function loadAttendance() {
+        if (!validStudentId(currentStudentId)) return;
+        if (attendanceLoading) { attendanceReloadQueued = true; return; }
+        attendanceLoading = true;
+        attendanceYear = currentAcademicYear();
+        updateManageAttendanceLink();
+        if (!attendanceLoaded) showAttendanceMessage("Loading attendance…");
+        try {
+            const data = await apiGet(`/attendance?student_id=${encodeURIComponent(currentStudentId)}`);
+            const start = Number(attendanceYear.slice(0, 4));
+            const from = `${start}-04-01`, to = `${start + 1}-03-31`;   // academic year runs April to March
+            attendanceRows = asRows(data)
+                .map(row => ({ date: String(row.date ?? "").slice(0, 10), status: String(row.status ?? ""),
+                               class_name: row.class_name || row.class || "", section: row.section || "" }))
+                .filter(row => /^\d{4}-\d{2}-\d{2}$/.test(row.date) && row.date >= from && row.date <= to);
+            renderAttendance();
+            attendanceLoaded = true;
+        } catch (error) {
+            console.error("Error loading attendance:", error);
+            // keep showing the last good data if a background update fails
+            if (!attendanceLoaded) showAttendanceMessage("Could not load attendance. Please check your connection and try again.", true);
+        } finally {
+            attendanceLoading = false;
+            if (attendanceReloadQueued) { attendanceReloadQueued = false; loadAttendance(); }
         }
     }
+
+    attendanceMonthFilter?.addEventListener("change", renderAttendanceDays);
+
+    // Keep the Attendance tab up to date (no Refresh button), same as the Fees tab.
+    let attendanceRefreshTimer = null;
+    function refreshAttendanceIfVisible() {
+        const panel = document.getElementById("panel-attendance");
+        if (!panel || panel.hidden) return;
+        clearTimeout(attendanceRefreshTimer);
+        attendanceRefreshTimer = setTimeout(loadAttendance, 150);
+    }
+    document.addEventListener("visibilitychange", () => { if (!document.hidden) refreshAttendanceIfVisible(); });
+    window.addEventListener("focus", refreshAttendanceIfVisible);
+    window.addEventListener("pageshow", event => { if (event.persisted) refreshAttendanceIfVisible(); });
+    window.addEventListener("storage", event => { if (event.key === "school_attendance_updated") refreshAttendanceIfVisible(); });
+    if ("BroadcastChannel" in window) new BroadcastChannel("school-attendance").addEventListener("message", refreshAttendanceIfVisible);
 
     /* ----------------------------------------
        FEES (read-only; status is changed in the Fees section)
@@ -650,8 +749,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!validStudentId(currentStudentId)) return;
 
         if (!force && cache[type] !== null) {
-            if (type === "attendance") renderAttendance(cache.attendance);
-            else if (type === "marks") renderMarks(cache.marks);
+            if (type === "marks") renderMarks(cache.marks);
             return;
         }
 
@@ -668,7 +766,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         const endpoints = {
-            attendance: `/attendance?student_id=${encodeURIComponent(currentStudentId)}`,
             marks: `/students/${encodeURIComponent(currentStudentId)}/marks`
         };
 
@@ -677,8 +774,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const rows = asRows(data);
             cache[type] = rows;
 
-            if (type === "attendance") renderAttendance(rows);
-            else if (type === "marks") renderMarks(rows);
+            if (type === "marks") renderMarks(rows);
         } catch (error) {
             console.error(`Error loading ${type} records:`, error);
             if (bodyEl) {
@@ -698,6 +794,7 @@ document.addEventListener("DOMContentLoaded", () => {
     loadStudentOverview().then(student => {
         studentInfo = student;
         updateManageFeesLink();
+        updateManageAttendanceLink();
     });
 
     // e.g. student_details.html?student_id=10082&tab=fees (used when returning from the Fees section)
