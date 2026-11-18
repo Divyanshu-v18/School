@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Manage school non-teaching staff, administration, drivers, and support personnel.">
+    <title>Non-Teaching Staff</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/teacher.css">
+    <link rel="stylesheet" href="../css/non_teaching_staff.css">
+</head>
+<body>
+    <div class="page-layout">
+        <main class="main-content">
+            <header class="topbar">
+                <h1>ABC Public School</h1>
+                <div class="topbar-actions">
+                    <button class="notification-btn" id="notificationBtn" title="Notifications">♧<span class="notification-dot"></span></button>
+                    <div class="top-profile">
+                        <div class="profile-avatar">AS</div>
+                        <div class="top-profile-info"><strong>Admin</strong><span>Administrator</span></div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="staff-content">
+                <div class="staff-header">
+                    <div class="page-title">
+                        <h2>Non-Teaching Staff</h2>
+                        <p>Manage all administrative, support, transportation, and maintenance staff in the school</p>
+                    </div>
+                    <button type="button" class="add-staff-btn" id="addStaffBtn">
+                        <span>+ Add Non-Teaching Staff</span>
+                    </button>
+                </div>
+
+                <!-- Quick Department Summary -->
+                <div class="staff-stats-row">
+                    <article class="staff-stat-card">
+                        <span>Total Non-Teaching Staff</span>
+                        <strong id="statTotalStaff">0</strong>
+                        <small>Active employees & support</small>
+                    </article>
+                    <article class="staff-stat-card">
+                        <span>Administration & Office</span>
+                        <strong id="statAdminStaff">0</strong>
+                        <small>Clerks, accounts, managers</small>
+                    </article>
+                    <article class="staff-stat-card">
+                        <span>Transport & Drivers</span>
+                        <strong id="statTransportStaff">0</strong>
+                        <small>School bus drivers & attendants</small>
+                    </article>
+                    <article class="staff-stat-card">
+                        <span>Support & Operations</span>
+                        <strong id="statSupportStaff">0</strong>
+                        <small>Library, lab, maintenance</small>
+                    </article>
+                </div>
+
+                <!-- Search & Filters Toolbar -->
+                <div class="staff-toolbar">
+                    <div class="staff-search">
+                        <span class="search-icon" aria-hidden="true">⌕</span>
+                        <input type="search" id="staffSearch" placeholder="Search by name, ID, phone, or post..." aria-label="Search non-teaching staff">
+                    </div>
+                    <label class="staff-filter">
+                        <span>Department</span>
+                        <select id="departmentFilter">
+                            <option value="">All Departments</option>
+                            <option value="Administration">Administration</option>
+                            <option value="Transport">Transport</option>
+                            <option value="Finance & Accounts">Finance & Accounts</option>
+                            <option value="Library">Library</option>
+                            <option value="Laboratory">Laboratory</option>
+                            <option value="Support & Maintenance">Support & Maintenance</option>
+                        </select>
+                    </label>
+                    <label class="staff-filter">
+                        <span>Post</span>
+                        <select id="staffPostFilter"><option value="">All posts</option></select>
+                    </label>
+                    <button type="button" id="clearStaffFilters" class="clear-filters-btn">Clear filters</button>
+                </div>
+
+                <!-- Table Section -->
+                <section class="staff-table-section">
+                    <div class="staff-table-wrapper">
+                        <table class="staff-table">
+                            <thead>
+                                <tr>
+                                    <th>Staff ID</th>
+                                    <th>Employee Name</th>
+                                    <th>Phone</th>
+                                    <th>Post / Designation</th>
+                                    <th>Department</th>
+                                    <th>Status</th>
+                                    <th style="text-align: right;">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="staffTableBody">
+                                <tr><td colspan="7" style="text-align: center; padding: 32px; color: #70776c;">Loading non-teaching staff...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p class="staff-result-count" id="staffResultCount" aria-live="polite"></p>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- MODAL 1: VIEW STAFF INFO -->
+    <div class="staff-modal-overlay" id="staffInfoModal">
+        <div class="staff-modal-dialog">
+            <div class="staff-modal-header">
+                <h3>Non-Teaching Staff Details</h3>
+                <button type="button" class="staff-modal-close" data-close="staffInfoModal">&times;</button>
+            </div>
+            <div class="staff-modal-body">
+                <div class="info-profile-card">
+                    <div class="info-avatar-large" id="modalInfoAvatar">NT</div>
+                    <div>
+                        <strong id="modalInfoName" style="font-size: 17px; color: #0f172a; display: block;">Full Name</strong>
+                        <span id="modalInfoPostDept" style="font-size: 13.5px; color: #64748b;">Post • Department</span>
+                    </div>
+                </div>
+
+                <div style="font-weight: 700; font-size: 13.5px; color: #334155;">General & Contact Information</div>
+                <dl class="info-details-dl">
+                    <div><dt>Staff ID</dt><dd id="modalInfoStaffId">-</dd></div>
+                    <div><dt>Gender</dt><dd id="modalInfoGender">-</dd></div>
+                    <div><dt>Phone Number</dt><dd id="modalInfoPhone">-</dd></div>
+                    <div><dt>Email Address</dt><dd id="modalInfoEmail">-</dd></div>
+                    <div><dt>Qualification</dt><dd id="modalInfoQualification">-</dd></div>
+                    <div><dt>Date of Joining</dt><dd id="modalInfoDoj">-</dd></div>
+                    <div><dt>Casual Leave Balance</dt><dd id="modalInfoCl">-</dd></div>
+                    <div><dt>Employment Status</dt><dd id="modalInfoStatus" style="color: #15803d;">Active</dd></div>
+                </dl>
+
+                <div style="font-weight: 700; font-size: 13.5px; color: #334155;">Address & Location</div>
+                <dl class="info-details-dl">
+                    <div style="grid-column: 1 / -1;"><dt>Residential Address</dt><dd id="modalInfoAddress">-</dd></div>
+                </dl>
+            </div>
+            <div class="staff-modal-footer">
+                <a href="salary.html" class="add-staff-btn" style="text-decoration: none; background: #047857; margin-right: auto;">
+                    <span>💼 View & Manage Salary →</span>
+                </a>
+                <button type="button" class="clear-filters-btn" data-close="staffInfoModal">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 2: ADD NON-TEACHING STAFF -->
+    <div class="staff-modal-overlay" id="addStaffModal">
+        <div class="staff-modal-dialog">
+            <div class="staff-modal-header">
+                <h3>Add Non-Teaching Staff</h3>
+                <button type="button" class="staff-modal-close" data-close="addStaffModal">&times;</button>
+            </div>
+            <form id="addStaffForm">
+                <div class="staff-modal-body">
+                    <div class="form-grid-2">
+                        <div class="staff-form-group">
+                            <label for="newFullName">Full Name <span class="req">*</span></label>
+                            <input type="text" id="newFullName" placeholder="e.g. Ramesh Kumar" required maxlength="60">
+                        </div>
+                        <div class="staff-form-group">
+                            <label for="newPost">Designation / Role <span class="req">*</span></label>
+                            <input type="text" id="newPost" placeholder="e.g. Accountant, Office Clerk, Driver" required maxlength="50">
+                        </div>
+                        <div class="staff-form-group">
+                            <label for="newGender">Gender <span class="req">*</span></label>
+                            <select id="newGender" required>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="staff-form-group">
+                            <label for="newPhone">Phone Number <span class="req">*</span></label>
+                            <input type="tel" id="newPhone" placeholder="10-digit mobile number" required pattern="[0-9]{10}">
+                        </div>
+                        <div class="staff-form-group">
+                            <label for="newEmail">Email Address <span class="req">*</span></label>
+                            <input type="email" id="newEmail" placeholder="employee@abcpublic.edu" required maxlength="100">
+                        </div>
+                        <div class="staff-form-group">
+                            <label for="newQualification">Qualification</label>
+                            <input type="text" id="newQualification" placeholder="e.g. Graduate / 12th Pass">
+                        </div>
+                        <div class="staff-form-group">
+                            <label for="newStreet">Street / Area</label>
+                            <input type="text" id="newStreet" placeholder="e.g. Main Campus Staff Colony" value="Staff Colony">
+                        </div>
+                        <div class="staff-form-group">
+                            <label for="newCity">City & Pincode</label>
+                            <input type="text" id="newCity" placeholder="City" value="New Delhi">
+                        </div>
+                    </div>
+                </div>
+                <div class="staff-modal-footer">
+                    <button type="button" class="clear-filters-btn" data-close="addStaffModal">Cancel</button>
+                    <button type="submit" class="add-staff-btn" id="saveStaffBtn">Save Staff Member</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL 3: EDIT NON-TEACHING STAFF -->
+    <div class="staff-modal-overlay" id="editStaffModal">
+        <div class="staff-modal-dialog">
+            <div class="staff-modal-header">
+                <h3>Edit Non-Teaching Staff</h3>
+                <button type="button" class="staff-modal-close" data-close="editStaffModal">&times;</button>
+            </div>
+            <form id="editStaffForm">
+                <input type="hidden" id="editStaffKey">
+                <div class="staff-modal-body">
+                    <div class="form-grid-2">
+                        <div class="staff-form-group">
+                            <label for="editFullName">Full Name <span class="req">*</span></label>
+                            <input type="text" id="editFullName" required maxlength="60">
+                        </div>
+                        <div class="staff-form-group">
+                            <label for="editPost">Designation / Role <span class="req">*</span></label>
+                            <input type="text" id="editPost" required maxlength="50">
+                        </div>
+                        <div class="staff-form-group">
+                            <label for="editGender">Gender <span class="req">*</span></label>
+                            <select id="editGender" required>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="staff-form-group">
+                            <label for="editPhone">Phone Number <span class="req">*</span></label>
+                            <input type="tel" id="editPhone" required pattern="[0-9]{10}">
+                        </div>
+                        <div class="staff-form-group">
+                            <label for="editEmail">Email Address <span class="req">*</span></label>
+                            <input type="email" id="editEmail" required maxlength="100">
+                        </div>
+                        <div class="staff-form-group">
+                            <label for="editQualification">Qualification</label>
+                            <input type="text" id="editQualification">
+                        </div>
+                        <div class="staff-form-group">
+                            <label for="editStreet">Street / Address</label>
+                            <input type="text" id="editStreet">
+                        </div>
+                        <div class="staff-form-group">
+                            <label for="editCity">City</label>
+                            <input type="text" id="editCity">
+                        </div>
+                    </div>
+                </div>
+                <div class="staff-modal-footer">
+                    <button type="button" class="clear-filters-btn" data-close="editStaffModal">Cancel</button>
+                    <button type="submit" class="add-staff-btn" id="updateStaffBtn">Update Staff Member</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Application Scripts -->
+    <script src="../js/api.js"></script>
+    <script src="../js/sidebar.js"></script>
+    <script src="../js/script.js"></script>
+    <script src="../js/non_teaching_staff.js"></script>
+</body>
+</html>
