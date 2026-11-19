@@ -37,6 +37,8 @@ from routers.timetable import router as timetable_router
 from routers.calendar import router as calendar_router
 from routers.settings import router as settings_router
 from routers.transport import router as transport_router
+from routers.salary import router as salary_router
+from routers.non_teaching_staff import router as non_teaching_staff_router
 
 from routers.auth import router as auth_router
 from routers.auth import (
@@ -319,6 +321,8 @@ admin_routers = [
     calendar_router,
     settings_router,
     transport_router,
+    salary_router,
+    non_teaching_staff_router,
 ]
 
 

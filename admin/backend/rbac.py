@@ -41,6 +41,12 @@ ROLE_PERMISSIONS = {
         ("GET", "/transport/students"),
         ("GET", "/transport/vehicles"),
         ("POST", "/transport/students"),
+        ("GET", "/salary/overview"),
+        ("GET", "/salary/staff"),
+        ("GET", "/salary/staff/{staff_key}"),
+        ("POST", "/salary/disburse"),
+        ("GET", "/non-teaching-staff"),
+        ("GET", "/non-teaching-staff/{staff_key}"),
     },
 }
 

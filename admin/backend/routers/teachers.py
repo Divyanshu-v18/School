@@ -3,6 +3,7 @@ Teacher management router.
 Handles listing, adding, viewing, updating, and deleting teacher records.
 """
 
+import json
 import logging
 from fastapi import APIRouter, HTTPException, Query
 from database import db_cursor
@@ -11,6 +12,34 @@ from models.teacher import Teacher
 logger = logging.getLogger(__name__)
 
 router = APIRouter(tags=["Teachers"])
+
+
+def _get_staff_directory_types(cursor) -> dict:
+    """Read explicit staff section membership from the shared settings store."""
+    cursor.execute("SELECT setting_value FROM school_settings WHERE setting_key = %s", ("staff_directory_types",))
+    row = cursor.fetchone()
+    setting_value = row.get("setting_value") if isinstance(row, dict) else (row[0] if row else None)
+    if not setting_value:
+        return {}
+    try:
+        value = json.loads(setting_value)
+        return value if isinstance(value, dict) else {}
+    except (TypeError, ValueError):
+        return {}
+
+
+def _set_staff_directory_type(cursor, teacher_id: int, staff_type: str) -> None:
+    """Mark which staff-management section owns this shared employee row."""
+    directory_types = _get_staff_directory_types(cursor)
+    directory_types[str(teacher_id)] = staff_type
+    cursor.execute(
+        """
+        INSERT INTO school_settings (setting_key, setting_value)
+        VALUES (%s, %s)
+        ON DUPLICATE KEY UPDATE setting_value = VALUES(setting_value)
+        """,
+        ("staff_directory_types", json.dumps(directory_types)),
+    )
 
 
 @router.post("/teachers")
@@ -74,6 +103,10 @@ def add_teacher(teacher: Teacher):
                     ),
                 )
 
+                # Salary reads this marker to keep all Teacher-section staff
+                # separate from Non-Teaching Staff-section personnel.
+                _set_staff_directory_type(cursor, teacher_id, "teaching")
+
                 conn.commit()
                 return {
                     "message": "Teacher added successfully",
@@ -117,7 +150,15 @@ def get_teachers():
                     ORDER BY td.teacher_id
                     """
                 )
-                return cursor.fetchall()
+                teachers = cursor.fetchall()
+                directory_types = _get_staff_directory_types(cursor)
+                # Do not show staff created in the Non-Teaching Staff section
+                # in the teacher directory merely because both modules share
+                # the same database tables.
+                return [
+                    teacher for teacher in teachers
+                    if directory_types.get(str(teacher["teacher_id"])) != "non_teaching"
+                ]
             except HTTPException:
                 raise
             except Exception:
