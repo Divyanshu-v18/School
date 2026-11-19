@@ -26,7 +26,7 @@
     const sectionFilter = makeSelect("studentsSectionFilter", "Filter by section", [["", "All sections"]]);
     const statusFilter = makeSelect("studentsStatusFilter", "Filter by payment status", [
         ["", "All payment statuses"], ["paid", "Paid in full"], ["partial", "Partially paid"],
-        ["unpaid", "Not paid"], ["overdue", "Overdue"], ["none", "No fee set"]]);
+        ["unpaid", "Not paid"], ["overdue", "Overdue"], ["none", "No fee set"], ["noclass", "No class assigned"]]);
     const sortSelect = makeSelect("studentsSort", "Sort students", [
         ["class", "Sort: Class & section"], ["name", "Sort: Name (A–Z)"],
         ["pending", "Sort: Highest pending"], ["paid", "Sort: Highest paid"]]);
@@ -41,7 +41,7 @@
 
     /* ---------- helpers ---------- */
     // paid = nothing left to pay, partial = some paid, unpaid = nothing paid, none = no fee set for the class
-    const statusOf = student => !student.total ? "none" : student.pending <= 0.005 ? "paid" : student.paid > 0 ? "partial" : "unpaid";
+    const statusOf = student => !student.classKey ? "noclass" : !student.total ? "none" : student.pending <= 0.005 ? "paid" : student.paid > 0 ? "partial" : "unpaid";
 
     function message(text) {
         body.replaceChildren();
@@ -86,7 +86,7 @@
         body.replaceChildren();
         rows.forEach(student => {
             const row = document.createElement("tr");
-            [student.roll, student.name, classLabel(student.classKey), student.section || "—", money(student.total), money(student.paid)].forEach(value => {
+            [student.roll, student.name, student.classKey ? classLabel(student.classKey) : "Not assigned", student.section || "—", money(student.total), money(student.paid)].forEach(value => {
                 const cell = document.createElement("td"); cell.textContent = value; row.appendChild(cell);
             });
             const pendingCell = document.createElement("td"); pendingCell.textContent = money(student.pending);
@@ -97,6 +97,10 @@
             row.appendChild(pendingCell);
             const action = document.createElement("td"); const button = document.createElement("button");
             button.type = "button"; button.className = "view-students-btn"; button.textContent = "View More";
+            if (!student.classKey) {   // incomplete student record: fees depend on the class
+                button.disabled = true;
+                button.title = "This student has no class assigned yet. Add the class in the student's profile first.";
+            }
             button.addEventListener("click", () => {
                 const query = new URLSearchParams({ class: student.classKey, student_id: student.id, from: "students" });
                 if (year) query.set("academic_year", year);

@@ -52,3 +52,13 @@ class FeePaymentUpdate(SafeFormModel):
     payment_date: Optional[str] = Field(default=None, pattern=r"^\d{4}-\d{2}-\d{2}$")
     payment_mode: Optional[str] = Field(default=None, pattern=r"^(Cash|Online|Cheque|UPI)$")
     remarks: Optional[str] = Field(default=None, max_length=255)
+
+class FineWaiverUpdate(SafeFormModel):
+    """Admin update for waiving a student's late fee."""
+
+    academic_year: str = Field(pattern=r"^\d{4}-\d{4}$")
+    student_id: int = Field(gt=0)
+    fee_type: str = Field(min_length=1, max_length=80)
+    period: str = Field(pattern=r"^(\d{4}-(0[1-9]|1[0-2])|ALL)$")
+    waived: bool
+    reason: Optional[str] = Field(default=None, max_length=255)
