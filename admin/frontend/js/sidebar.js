@@ -11,10 +11,12 @@
         { href: "registration.html", icon: "＋", label: "Registration" },
         { href: "student.html", icon: "♙", label: "Students" },
         { href: "teacher.html", icon: "♟", label: "Teachers" },
+        { href: "non_teaching_staff.html", icon: "👥", label: "Non-Teaching Staff" },
         { href: "class.html", icon: "▤", label: "Classes" },
         { href: "subject.html", icon: "▣", label: "Subjects" },
         { href: "attendance.html", icon: "✓", label: "Attendance" },
         { href: "fees.html", icon: "₹", label: "Fees" },
+        { href: "salary.html", icon: "💼", label: "Salary" },
         { href: "exam.html", icon: "◫", label: "Exams" },
         { href: "assignment.html", icon: "□", label: "Assignments" },
         { href: "notice.html", icon: "▱", label: "Notices" },
@@ -31,9 +33,11 @@
         "registration.html": ["admin", "staff"],
         "student.html": ["admin", "teacher", "staff"],
         "teacher.html": ["admin", "teacher", "staff"],
+        "non_teaching_staff.html": ["admin", "teacher", "staff"],
         "subject.html": ["admin", "teacher", "staff"],
         "attendance.html": ["admin", "teacher"],
         "fees.html": ["admin", "staff"],
+        "salary.html": ["admin", "staff"],
         "exam.html": ["admin", "teacher"],
         "notice.html": ["admin", "teacher", "staff"],
         "timetable.html": ["admin", "teacher", "staff"],
@@ -50,7 +54,8 @@
         "edit_teacher.html": "teacher.html",
         "teacher_details.html": "teacher.html",
         "class_details.html": "class.html",
-        "section_details.html": "class.html"
+        "section_details.html": "class.html",
+        "fee_class_students.html": "fees.html"
     };
 
     function getActivePage() {
@@ -240,69 +245,6 @@
         return aside;
     }
 
-    function getStoredAcademicYear() {
-        const stored = localStorage.getItem("school_academic_year");
-        if (stored && /^\d{4}-\d{4}$/.test(stored.trim())) {
-            return stored.trim();
-        }
-        const now = new Date();
-        const start = now.getMonth() >= 3 ? now.getFullYear() : now.getFullYear() - 1;
-        return `${start}-${start + 1}`;
-    }
-
-    function injectAcademicYearBadge() {
-        const topbarActions = document.querySelector(".topbar-actions");
-        if (!topbarActions || document.getElementById("topbarAcademicYear")) {
-            return;
-        }
-
-        const badge = document.createElement("div");
-        badge.className = "topbar-academic-year";
-        badge.id = "topbarAcademicYear";
-        badge.title = "Active Academic Year";
-
-        const icon = document.createElement("span");
-        icon.className = "ay-icon";
-        icon.textContent = "📅";
-
-        const text = document.createElement("span");
-        text.className = "ay-text";
-        text.id = "topbarAyText";
-        text.textContent = `AY ${getStoredAcademicYear()}`;
-
-        badge.appendChild(icon);
-        badge.appendChild(text);
-
-        topbarActions.prepend(badge);
-
-        if (!localStorage.getItem("school_academic_year")) {
-            const apiBase = (window.API_BASE_URL || "http://127.0.0.1:8000").replace(/\/+$/, "");
-            fetch(`${apiBase}/settings`)
-                .then(r => r.ok ? r.json() : null)
-                .then(settings => {
-                    if (settings && settings.academic_year) {
-                        localStorage.setItem("school_academic_year", settings.academic_year);
-                        const el = document.getElementById("topbarAyText");
-                        if (el) el.textContent = `AY ${settings.academic_year}`;
-                    }
-                })
-                .catch(() => {});
-        }
-    }
-
-    window.addEventListener("academicYearChanged", (e) => {
-        const ay = e?.detail?.academic_year;
-        const el = document.getElementById("topbarAyText");
-        if (el && ay) el.textContent = `AY ${ay}`;
-    });
-
-    window.addEventListener("storage", (e) => {
-        if (e.key === "school_academic_year" && e.newValue) {
-            const el = document.getElementById("topbarAyText");
-            if (el) el.textContent = `AY ${e.newValue}`;
-        }
-    });
-
     // Insert sidebar immediately without making API requests.
     function injectSidebar() {
         const layout = document.querySelector(".page-layout");
@@ -318,7 +260,6 @@
 
     function initComponents() {
         injectSidebar();
-        injectAcademicYearBadge();
     }
 
     // Initialize sidebar and components.

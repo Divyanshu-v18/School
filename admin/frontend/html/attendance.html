@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -54,12 +53,41 @@
             <!-- ATTENDANCE CONTENT -->
             <section class="attendance-content">
 
+                <!-- shown only when opened from a student's profile -->
+                <a class="back-link hidden" id="backToProfileLink" href="#">← Back to Student Profile</a>
+
                 <!-- PAGE HEADER -->
                 <div class="attendance-header">
 
                     <div class="page-title">
                         <h2>Attendance Management</h2>
                         <p>Monitor and review student and teacher attendance records.</p>
+                    </div>
+
+                    <div class="attendance-header-actions">
+
+                        <!-- EDIT MODE TOGGLE BUTTON -->
+                        <button type="button"
+                            class="btn-toggle-edit"
+                            id="toggleEditModeBtn"
+                            role="switch"
+                            aria-checked="false"
+                            title="Turn edit mode ON or OFF">
+                            <span class="toggle-track">
+                                <span class="toggle-thumb"></span>
+                            </span>
+                            <span class="toggle-label-text">
+                                Edit Attendance: <strong id="toggleModeStatus">OFF</strong>
+                            </span>
+                        </button>
+
+                        <!-- SAVE ATTENDANCE BUTTON -->
+                        <button type="button" class="btn-save-attendance hidden" id="saveAttendanceBtn" title="Save attendance records to database">
+                            <span class="save-icon">💾</span>
+                            <span class="save-btn-text">Save Attendance</span>
+                            <span class="unsaved-badge hidden" id="unsavedBadge">0</span>
+                        </button>
+
                     </div>
 
                 </div>
@@ -121,9 +149,9 @@
 
                         <select id="attClass">
                             <option value="ALL">All Classes</option>
-                            <option value="10">Class 12</option>
+                            <option value="12">Class 12</option>
                             <option value="11">Class 11</option>
-                            <option value="12">Class 10</option>
+                            <option value="10">Class 10</option>
                             <option value="9">Class 9</option>
                             <option value="8">Class 8</option>
                             <option value="7">Class 7</option>
@@ -262,9 +290,26 @@
                         <p id="tableSubtitle">Attendance status of all enrolled students.</p>
                     </div>
 
-                    <span class="record-count" id="recordCount">0 Records</span>
+                    <div class="table-heading-right">
+
+                        <!-- QUICK ACTIONS (VISIBLE IN EDIT MODE) -->
+                        <div class="edit-quick-actions hidden" id="editQuickActions">
+                            <button type="button" class="btn-quick-action mark-present" id="markAllPresentBtn" title="Mark all displayed members as Present">
+                                ✓ Mark All Present
+                            </button>
+                            <button type="button" class="btn-quick-action mark-absent" id="markAllAbsentBtn" title="Mark all displayed members as Absent">
+                                ✕ Mark All Absent
+                            </button>
+                        </div>
+
+                        <span class="record-count" id="recordCount">0 Records</span>
+
+                    </div>
 
                 </div>
+
+                <!-- FEEDBACK / ALERT BANNER -->
+                <div class="attendance-feedback-banner hidden" id="attendanceFeedbackBanner" role="alert"></div>
 
                 <!-- TABLE -->
                 <div class="attendance-table-wrap" id="attendanceTableWrap">
