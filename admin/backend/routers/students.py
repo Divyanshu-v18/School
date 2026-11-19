@@ -16,6 +16,12 @@ logger = logging.getLogger(__name__)
 router = APIRouter(tags=["Students"])
 
 
+def _row_exists(cursor, table: str, student_id: int) -> bool:
+    """True if the student already has a row in one of the detail tables."""
+    cursor.execute(f"SELECT 1 AS found FROM {table} WHERE student_id = %s LIMIT 1", (student_id,))
+    return cursor.fetchone() is not None
+
+
 @router.post("/students")
 def add_student(student: Student):
     """Create a new student record with all related detail tables."""
@@ -270,76 +276,141 @@ def update_student(student_id: int, student: Student):
                     ),
                 )
 
-                cursor.execute(
-                    """
-                    UPDATE student_personal_details
-                    SET
-                        admission_date = %s,
-                        admission_no = %s,
-                        aadhar_no_last_four = %s,
-                        apaar_no = %s,
-                        pen_no = %s,
-                        bpl = %s,
-                        class = %s,
-                        section = %s
-                    WHERE student_id = %s
-                    """,
-                    (
-                        student.admission_date,
-                        student.admission_no,
-                        student.aadhar_no_last_four,
-                        student.apaar_no,
-                        student.pen_no,
-                        student.bpl,
-                        student.class_name,
-                        student.section,
-                        student_id,
-                    ),
-                )
+                # A student created outside the Add Student form (for example by a SQL script) may be
+                # missing some of these rows. Update the row when it exists, otherwise create it, so
+                # that Edit Profile can complete an incomplete record.
+                if _row_exists(cursor, "student_personal_details", student_id):
+                    cursor.execute(
+                        """
+                        UPDATE student_personal_details
+                        SET
+                            admission_date = %s,
+                            admission_no = %s,
+                            aadhar_no_last_four = %s,
+                            apaar_no = %s,
+                            pen_no = %s,
+                            bpl = %s,
+                            class = %s,
+                            section = %s
+                        WHERE student_id = %s
+                        """,
+                        (
+                            student.admission_date,
+                            student.admission_no,
+                            student.aadhar_no_last_four,
+                            student.apaar_no,
+                            student.pen_no,
+                            student.bpl,
+                            student.class_name,
+                            student.section,
+                            student_id,
+                        ),
+                    )
+                else:
+                    cursor.execute(
+                        """
+                        INSERT INTO student_personal_details (
+                            student_id, admission_date, admission_no, aadhar_no_last_four,
+                            apaar_no, pen_no, bpl, class, section
+                        )
+                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+                        """,
+                        (
+                            student_id,
+                            student.admission_date,
+                            student.admission_no,
+                            student.aadhar_no_last_four,
+                            student.apaar_no,
+                            student.pen_no,
+                            student.bpl,
+                            student.class_name,
+                            student.section,
+                        ),
+                    )
 
-                cursor.execute(
-                    """
-                    UPDATE student_parent_details
-                    SET
-                        father_name = %s,
-                        father_aadhar_last_four = %s,
-                        father_phone = %s,
-                        mother_name = %s,
-                        mother_aadhar_last_four = %s,
-                        mother_phone = %s
-                    WHERE student_id = %s
-                    """,
-                    (
-                        student.father_name,
-                        student.father_aadhar_last_four,
-                        student.father_phone,
-                        student.mother_name,
-                        student.mother_aadhar_last_four,
-                        student.mother_phone,
-                        student_id,
-                    ),
-                )
+                if _row_exists(cursor, "student_parent_details", student_id):
+                    cursor.execute(
+                        """
+                        UPDATE student_parent_details
+                        SET
+                            father_name = %s,
+                            father_aadhar_last_four = %s,
+                            father_phone = %s,
+                            mother_name = %s,
+                            mother_aadhar_last_four = %s,
+                            mother_phone = %s
+                        WHERE student_id = %s
+                        """,
+                        (
+                            student.father_name,
+                            student.father_aadhar_last_four,
+                            student.father_phone,
+                            student.mother_name,
+                            student.mother_aadhar_last_four,
+                            student.mother_phone,
+                            student_id,
+                        ),
+                    )
+                else:
+                    cursor.execute(
+                        """
+                        INSERT INTO student_parent_details (
+                            student_id,
+                            father_name, father_aadhar_last_four, father_phone,
+                            mother_name, mother_aadhar_last_four, mother_phone
+                        )
+                        VALUES (%s, %s, %s, %s, %s, %s, %s)
+                        """,
+                        (
+                            student_id,
+                            student.father_name,
+                            student.father_aadhar_last_four,
+                            student.father_phone,
+                            student.mother_name,
+                            student.mother_aadhar_last_four,
+                            student.mother_phone,
+                        ),
+                    )
 
-                cursor.execute(
-                    """
-                    UPDATE student_address
-                    SET
-                        house_no = %s,
-                        pincode = %s,
-                        street = %s,
-                        city = %s,
-                        state = %s
-                    WHERE student_id = %s
-                    """,
-                    (
-                        student.house_no,
-                        student.pincode,
-                        student.street,
-                        student.city,
-                        student.state,
-                        student_id,
-                    ),
-                )
+                if _row_exists(cursor, "student_address", student_id):
+                    cursor.execute(
+                        """
+                        UPDATE student_address
+                        SET
+                            house_no = %s,
+                            pincode = %s,
+                            street = %s,
+                            city = %s,
+                            state = %s
+                        WHERE student_id = %s
+                        """,
+                        (
+                            student.house_no,
+                            student.pincode,
+                            student.street,
+                            student.city,
+                            student.state,
+                            student_id,
+                        ),
+                    )
+                else:
+                    cursor.execute(
+                        """
+                        INSERT INTO student_address (
+                            address_id, student_id, house_no, pincode, street, city, state
+                        )
+                        VALUES (%s, %s, %s, %s, %s, %s, %s)
+                        """,
+                        (
+                            student_id,
+                            student_id,
+                            student.house_no,
+                            student.pincode,
+                            student.street,
+                            student.city,
+                            student.state,
+                        ),
+                    )
 
                 conn.commit()
                 return {"message": "Student updated successfully"}

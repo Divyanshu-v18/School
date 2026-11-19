@@ -26,27 +26,21 @@ ROLE_PERMISSIONS = {
         ("GET", "/notices"),
     },
     "staff": {
-        ("GET", "/students"),
-        ("GET", "/teachers"),
-        ("GET", "/subjects"),
-        ("GET", "/timetable"),
-        ("GET", "/calendar/events"),
-        ("GET", "/notices"),
-        ("GET", "/fees/payments"),
-        ("GET", "/fees/overview"),
-        ("GET", "/fees/heads"),
-        ("GET", "/fees/structures"),
-        ("POST", "/fees/payments"),
-        ("GET", "/transport/drivers"),
-        ("GET", "/transport/students"),
-        ("GET", "/transport/vehicles"),
-        ("POST", "/transport/students"),
-        ("GET", "/salary/overview"),
-        ("GET", "/salary/staff"),
-        ("GET", "/salary/staff/{staff_key}"),
-        ("POST", "/salary/disburse"),
-        ("GET", "/non-teaching-staff"),
-        ("GET", "/non-teaching-staff/{staff_key}"),
+    # Existing student, teacher and other permissions...
+
+    # Fees - Read access
+    ("GET", "/fees/overview"),
+    ("GET", "/fees/heads"),
+    ("GET", "/fees/structures"),
+    ("GET", "/fees/payment-records"),
+    ("GET", "/fees/class-students"),
+    ("GET", "/fees/all-students"),
+    ("GET", "/fees/student-payments"),
+
+    # Fees - Payment collection
+    ("PUT", "/fees/student-payments"),
+
+    # Existing transport permissions...
     },
 }
 

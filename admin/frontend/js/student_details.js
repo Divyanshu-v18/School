@@ -298,7 +298,7 @@ document.addEventListener("DOMContentLoaded", () => {
         return [];
     }
 
-    function createSummaryCard(label, value) {
+    function createSummaryCard(label, value, note) {
         const card = document.createElement("div");
         card.className = "summary-card";
 
@@ -309,6 +309,12 @@ document.addEventListener("DOMContentLoaded", () => {
         strong.textContent = String(value);
 
         card.append(span, strong);
+
+        if (note) {
+            const small = document.createElement("small");
+            small.textContent = note;
+            card.appendChild(small);
+        }
         return card;
     }
 
@@ -582,14 +588,16 @@ document.addEventListener("DOMContentLoaded", () => {
         const summary = data.summary || {};
         const summaryEl = document.getElementById("feesSummary");
         summaryEl.replaceChildren(
-            createSummaryCard("Total Fee", formatCurrency(summary.total_fee)),
+            createSummaryCard("Total Fee", formatCurrency(summary.total_fee),
+                summary.late_fine > 0 ? `Includes ${formatCurrency(summary.late_fine)} late fine` : ""),
             createSummaryCard("Paid", formatCurrency(summary.paid_amount)),
             createSummaryCard("Pending", formatCurrency(summary.pending_amount))
         );
 
-        fillRows(document.getElementById("feesMonthlyBody"), data.schedule || [], 7,
+        fillRows(document.getElementById("feesMonthlyBody"), data.schedule || [], 8,
             "No monthly fee is set for this student's class.", (tr, item) => {
-                appendCells(tr, [item.period, formatCurrency(item.amount), formatCurrency(item.paid_amount), formatDate(item.due_date)]);
+                const fineText = item.fine > 0 ? formatCurrency(item.fine) : item.fine_waived ? "Waived" : "-";
+                appendCells(tr, [item.period, formatCurrency(item.amount), fineText, formatCurrency(item.paid_amount), formatDate(item.due_date)]);
                 appendStatus(tr, item.status);
                 appendCells(tr, [formatDate(item.payment_date), item.payment_mode]);
             });
@@ -610,7 +618,10 @@ document.addEventListener("DOMContentLoaded", () => {
             });
 
         const note = document.getElementById("feesYearNote");
-        if (note) note.textContent = `Fee dues and payment history for Academic Year ${data.academic_year}`;
+        if (note) {
+            note.textContent = `Fee dues and payment history for Academic Year ${data.academic_year}` +
+                (data.fine_policy && data.fine_policy.exempt_all ? " · Exempt from late fines" : "");
+        }
         feesMessageEl.hidden = true;
         feesContentEl.hidden = false;
     }
@@ -624,6 +635,11 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!feesLoaded) showFeesMessage("Loading fee details…");
         try {
             const data = await apiGet(`/fees/student-payments?student_id=${encodeURIComponent(currentStudentId)}&academic_year=${encodeURIComponent(feesYear)}`);
+            if (data.no_class) {   // incomplete record: fees depend on the class
+                showFeesMessage("No fees to show yet: this student has no class assigned. Use Edit Profile to complete the admission details, class and section.");
+                feesLoaded = true;
+                return;
+            }
             renderFees(data);
             feesLoaded = true;
         } catch (error) {
