@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Staff salary details and payment history.">
+    <title>Salary Details</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/fees.css">
+    <link rel="stylesheet" href="../css/salary.css">
+</head>
+<body>
+    <div class="page-layout">
+        <main class="main-content">
+            <header class="topbar">
+                <h1>ABC Public School</h1>
+                <div class="topbar-actions"><button class="notification-btn" id="notificationBtn" title="Notifications">♧<span class="notification-dot"></span></button><div class="top-profile"><div class="profile-avatar">AS</div><div class="top-profile-info"><strong>Admin</strong><span>Administrator</span></div></div></div>
+            </header>
+            <section class="fees-content sal-detail-page">
+                <div class="sal-detail-toolbar">
+                    <button type="button" class="view-students-btn" id="backToStaff">← Back to Staff</button>
+                    <a class="head-action-btn" href="salary.html?tab=structure">Manage salary structure</a>
+                </div>
+                <div class="fees-header sal-profile-header">
+                    <div class="page-title"><h2 id="staffName">Salary Details</h2><p id="staffMeta">Loading staff details…</p></div>
+                </div>
+                <div id="salaryDetailError" class="overview-error" role="alert" hidden></div>
+
+                <div class="fee-stats-grid sal-stats-4">
+                    <article class="fee-stat-card"><span>Monthly Basic Pay</span><strong id="basicPay">—</strong></article>
+                    <article class="fee-stat-card"><span>Gross Monthly Salary</span><strong id="grossPay">—</strong></article>
+                    <article class="fee-stat-card"><span>Total Deductions</span><strong id="totalDeductions">—</strong></article>
+                    <article class="fee-stat-card"><span>Net Take Home</span><strong id="netPay">—</strong></article>
+                </div>
+
+                <div class="fee-stats-grid sal-stats-2 sal-schedule-stats">
+                    <article class="fee-stat-card"><span>Pending Salary</span><strong id="pendingSalary">—</strong><small id="pendingSalaryNote">Salary due for started months</small></article>
+                    <article class="fee-stat-card"><span>Upcoming Salary</span><strong id="upcomingSalary">—</strong><small id="upcomingSalaryNote">Planned salary for future months</small></article>
+                </div>
+
+                <div class="sal-detail-grid sal-detail-sections">
+                    <section class="sal-detail-section"><h3>Monthly Earnings &amp; Allowances</h3><div id="earningsList" class="sal-info-grid"></div></section>
+                    <section class="sal-detail-section"><h3>Deductions &amp; Net Pay</h3><div id="deductionsList" class="sal-info-grid"></div></section>
+                </div>
+
+                <section class="sal-detail-section"><h3>Bank &amp; Disbursement Information</h3><div id="bankDetails" class="sal-info-grid sal-bank-grid"></div></section>
+
+                <section class="sal-history-section sal-monthly-schedule">
+                    <div class="payment-records-heading"><h3>Monthly Salary Schedule</h3><p>One row per month of the academic year. Use Pay or Update to record how and when each salary was paid.</p></div>
+                    <div class="payment-table-wrap"><table class="payment-table sal-table sal-history-table">
+                        <thead><tr><th>Month</th><th class="num">Gross Salary</th><th class="num">Deductions</th><th class="num">Net Salary</th><th>Status</th><th>Paid On</th><th>Mode</th><th>Action</th></tr></thead>
+                        <tbody id="salaryScheduleBody"><tr><td colspan="8">Loading monthly salary schedule…</td></tr></tbody>
+                    </table></div>
+                </section>
+
+                <section class="sal-history-section">
+                    <div class="payment-records-heading"><h3>Salary Payment History</h3><p>All recorded salary payments for this staff member.</p></div>
+                    <div class="payment-table-wrap"><table class="payment-table sal-table sal-history-table">
+                        <thead><tr><th>Month</th><th>Paid On</th><th class="num">Gross Salary</th><th class="num">Deductions</th><th class="num">Net Paid</th><th>Payment Mode</th><th>Reference No.</th><th>Status</th></tr></thead>
+                        <tbody id="salaryHistoryBody"><tr><td colspan="8">Loading payment history…</td></tr></tbody>
+                    </table></div>
+                </section>
+            </section>
+        </main>
+    </div>
+    <dialog class="fee-head-dialog" id="detailPayDialog"><form method="dialog" id="detailPayForm">
+        <div class="dialog-header"><h3 id="detailPayTitle">Pay salary</h3><button type="button" class="dialog-close" id="detailPayClose" aria-label="Close">×</button></div>
+        <p class="sal-dialog-summary" id="detailPaySummary"></p>
+        <label>Payment date *<input id="detailPayDate" type="date" required></label>
+        <label>Payment mode *<select id="detailPayMode"><option>Bank Transfer</option><option>UPI</option><option>Cheque</option><option>Cash</option></select></label>
+        <label>Reference no. (optional)<input id="detailPayRef" maxlength="50" placeholder="Created automatically if blank"></label>
+        <label>Remarks (optional)<input id="detailPayRemarks" maxlength="255" placeholder="Optional payment note"></label>
+        <div class="dialog-actions"><button type="button" class="cancel-dialog" id="detailPayCancel">Cancel</button><button type="submit" class="save-structure-btn" id="detailPaySubmit">Mark as paid</button></div>
+    </form></dialog>
+    <script src="../js/api.js"></script>
+    <script src="../js/sidebar.js"></script>
+    <script src="../js/script.js"></script>
+    <script src="../js/salary_staff_details.js"></script>
+</body>
+</html>

@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Manage salary types, staff salary structure and monthly payroll.">
+    <title>Salary</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/fees.css">
+    <link rel="stylesheet" href="../css/salary.css">
+</head>
+<body>
+    <div class="page-layout">
+        <main class="main-content">
+            <header class="topbar">
+                <h1>ABC Public School</h1>
+                <div class="topbar-actions">
+                    <button class="notification-btn" id="notificationBtn" title="Notifications">♧<span class="notification-dot"></span></button>
+                    <div class="top-profile"><div class="profile-avatar">AS</div><div class="top-profile-info"><strong>Admin</strong><span>Administrator</span></div></div>
+                </div>
+            </header>
+
+            <section class="fees-content">
+                <div class="fees-header">
+                    <div class="page-title"><h2>Salary</h2><p>Set salary types, each person’s pay, and record monthly salary payments.</p></div>
+                    <label class="year-select" for="academicYear">Academic Year
+                        <select id="academicYear" aria-label="Academic year"></select>
+                    </label>
+                </div>
+
+                <nav class="fee-tabs" aria-label="Salary management sections">
+                    <button class="tab-btn active" id="tabOverview" type="button" aria-selected="true">Overview</button>
+                    <button class="tab-btn" id="tabStaff" type="button" aria-selected="false">Staff</button>
+                    <button class="tab-btn" id="tabPayments" type="button" aria-selected="false">Payment Records</button>
+                    <button class="tab-btn" id="tabStructure" type="button" aria-selected="false">Salary Structure</button>
+                    <button class="tab-btn" id="tabTypes" type="button" aria-selected="false">Salary Types</button>
+                </nav>
+
+                <div id="pageError" class="overview-error" role="alert" hidden></div>
+
+                <!-- OVERVIEW -->
+                <section id="panelOverview" aria-label="Salary overview">
+                    <div id="setupWarning" class="sal-warning" hidden></div>
+                    <div class="fee-stats-grid sal-stats-4">
+                        <article class="fee-stat-card"><span>Total paid</span><strong id="ovPaid">₹0</strong><small>Salaries paid this academic year</small></article>
+                        <article class="fee-stat-card"><span>Pending salary</span><strong id="ovPending">₹0</strong><small>Unpaid for months that have started</small></article>
+                        <article class="fee-stat-card"><span>Monthly payroll</span><strong id="ovMonthly">₹0</strong><small>Net pay of all staff, per month</small></article>
+                        <article class="fee-stat-card"><span>Staff</span><strong id="ovStaff">0</strong><small id="ovStaffSplit">Teaching 0 · Non-teaching 0</small></article>
+                    </div>
+                    <div class="overview-grid">
+                        <article class="chart-card"><div class="card-heading"><div><h3>Salary paid</h3><p>Paid salary by month</p></div></div><div id="paidChart" class="bar-chart" aria-label="Monthly salary paid"></div></article>
+                        <article class="chart-card"><div class="card-heading"><div><h3>Payment status</h3><p>Staff-months paid and pending</p></div></div><div class="status-chart"><div class="donut" id="statusDonut"><span id="statusTotal">0</span><small>records</small></div><ul id="statusLegend" class="status-legend"></ul></div></article>
+                    </div>
+                </section>
+
+                <!-- STAFF -->
+                <section id="panelStaff" hidden>
+                    <div class="payment-records-heading"><h3>Staff</h3><p>Everyone who is paid a salary. Open a person to see their pay, bank details and payment history.</p></div>
+                    <div class="students-toolbar">
+                        <input type="search" id="staffSearch" placeholder="Search by name or post" aria-label="Search staff">
+                        <select id="staffSection" aria-label="Filter by section"><option value="">All staff</option><option value="teaching">Teaching</option><option value="non_teaching">Non-teaching</option></select>
+                        <span id="staffCount"></span>
+                    </div>
+                    <div class="payment-table-wrap"><table class="payment-table sal-table">
+                        <thead><tr><th>ID</th><th>Name</th><th>Post</th><th>Section</th><th>Gross</th><th>Deductions</th><th>Net Salary</th><th>Action</th></tr></thead>
+                        <tbody id="staffBody"></tbody>
+                    </table></div>
+                </section>
+
+                <!-- PAYMENT RECORDS -->
+                <section id="panelPayments" hidden>
+                    <div id="monthsView">
+                        <div class="payment-records-heading"><h3>Monthly payment records</h3><p>Salary payable, paid and pending for every month of the academic year.</p></div>
+                        <div class="fee-stats-grid">
+                            <article class="fee-stat-card"><span>Total payable</span><strong id="prPayable">₹0</strong><small>Paid plus pending, whole year</small></article>
+                            <article class="fee-stat-card"><span>Paid</span><strong id="prPaid">₹0</strong><small>Salaries paid this academic year</small></article>
+                            <article class="fee-stat-card"><span>Pending</span><strong id="prPending">₹0</strong><small>Months that have started</small></article>
+                        </div>
+                        <div class="payment-table-wrap"><table class="payment-table sal-table">
+                            <thead><tr><th>Month</th><th>Status</th><th class="num">Staff Paid</th><th class="num">Staff Pending</th><th class="num">Paid</th><th class="num">Pending</th><th class="num">Total Payable</th><th>Action</th></tr></thead>
+                            <tbody id="monthsBody"><tr><td colspan="8">Loading payment records…</td></tr></tbody>
+                        </table></div>
+                    </div>
+
+                    <div id="monthView" hidden>
+                        <div class="structure-toolbar">
+                            <div><button type="button" class="view-students-btn" id="backToMonths">← All months</button>
+                                <h3 id="monthTitle" class="sal-month-title"></h3><p id="monthSummary"></p></div>
+                            <div class="sal-toolbar-actions">
+                                <select id="monthSection" aria-label="Filter by section"><option value="">All staff</option><option value="teaching">Teaching</option><option value="non_teaching">Non-teaching</option></select>
+                                <button type="button" class="save-structure-btn" id="payAllBtn">Pay all pending</button>
+                            </div>
+                        </div>
+                        <div class="payment-table-wrap"><table class="payment-table sal-table">
+                            <thead><tr><th>ID</th><th>Name</th><th>Section</th><th>Gross</th><th>Deductions</th><th>Net Salary</th><th>Status</th><th>Paid On</th><th>Action</th></tr></thead>
+                            <tbody id="monthBody"></tbody>
+                        </table></div>
+                    </div>
+                </section>
+
+                <!-- SALARY STRUCTURE -->
+                <section id="panelStructure" hidden>
+                    <div class="structure-toolbar"><div><h3>Salary structure</h3><p>Set the monthly amount of every salary type for each person.</p></div>
+                        <button type="button" class="save-structure-btn" id="saveStructureBtn">Save changes</button></div>
+                    <p class="structure-note" id="structureNote">Blank fields do not apply to that person. Changes affect months that are not yet paid; salary already paid is never changed.</p>
+                    <div class="students-toolbar">
+                        <input type="search" id="structureSearch" placeholder="Search by name or post" aria-label="Search staff">
+                        <select id="structureSection" aria-label="Filter by section"><option value="">All staff</option><option value="teaching">Teaching</option><option value="non_teaching">Non-teaching</option></select>
+                        <span id="structureDirty" class="sal-dirty" hidden></span>
+                    </div>
+                    <div class="structure-table-wrap"><table class="structure-table sal-structure"><thead id="structureHead"></thead><tbody id="structureBody"></tbody></table></div>
+                </section>
+
+                <!-- SALARY TYPES -->
+                <section id="panelTypes" hidden>
+                    <div class="structure-toolbar"><div><h3>Salary types</h3><p>Earnings (Basic Pay, HRA…) add to salary; deductions (PF, tax…) are subtracted.</p></div>
+                        <button type="button" class="save-structure-btn" id="addTypeBtn">+ Add Salary Type</button></div>
+                    <div id="typesError" class="overview-error" role="alert" hidden></div>
+                    <div class="payment-table-wrap"><table class="payment-table sal-table">
+                        <thead><tr><th>Salary Type</th><th>Kind</th><th>Description</th><th>Action</th></tr></thead>
+                        <tbody id="typesBody"><tr><td colspan="4">Loading salary types…</td></tr></tbody>
+                    </table></div>
+                </section>
+            </section>
+        </main>
+    </div>
+
+    <!-- Add / edit salary type -->
+    <dialog class="fee-head-dialog" id="typeDialog"><form method="dialog" id="typeForm">
+        <div class="dialog-header"><h3 id="typeDialogTitle">Add Salary Type</h3><button type="button" class="dialog-close" data-close aria-label="Close">×</button></div>
+        <input type="hidden" id="typeId">
+        <label>Name *<input id="typeName" required maxlength="80" placeholder="e.g. House Rent Allowance"></label>
+        <label>Kind *<select id="typeKind"><option value="earning">Earning (added to salary)</option><option value="deduction">Deduction (subtracted from salary)</option></select></label>
+        <label>Description (optional)<input id="typeDescription" maxlength="255" placeholder="Short note for admins"></label>
+        <div class="dialog-actions"><button type="button" class="cancel-dialog" data-close>Cancel</button><button type="submit" class="save-structure-btn">Save Salary Type</button></div>
+    </form></dialog>
+
+    <!-- Record a payment -->
+    <dialog class="fee-head-dialog" id="payDialog"><form method="dialog" id="payForm">
+        <div class="dialog-header"><h3 id="payDialogTitle">Record salary payment</h3><button type="button" class="dialog-close" data-close aria-label="Close">×</button></div>
+        <p class="sal-dialog-summary" id="paySummary"></p>
+        <label>Payment date *<input id="payDate" type="date" required></label>
+        <label>Payment mode *<select id="payMode"><option>Bank Transfer</option><option>UPI</option><option>Cheque</option><option>Cash</option></select></label>
+        <label>Reference no. (optional)<input id="payRef" maxlength="50" placeholder="Created automatically if blank"></label>
+        <label>Remarks (optional)<input id="payRemarks" maxlength="255"></label>
+        <div class="dialog-actions"><button type="button" class="cancel-dialog" data-close>Cancel</button><button type="submit" class="save-structure-btn" id="paySubmit">Mark as paid</button></div>
+    </form></dialog>
+
+    <!-- Pay all pending -->
+    <dialog class="fee-head-dialog" id="bulkDialog"><form method="dialog" id="bulkForm">
+        <div class="dialog-header"><h3>Pay all pending</h3><button type="button" class="dialog-close" data-close aria-label="Close">×</button></div>
+        <p class="sal-dialog-summary" id="bulkSummary"></p>
+        <label>Who<select id="bulkSection"><option value="">All staff</option><option value="teaching">Teaching only</option><option value="non_teaching">Non-teaching only</option></select></label>
+        <label>Payment date *<input id="bulkDate" type="date" required></label>
+        <label>Payment mode *<select id="bulkMode"><option>Bank Transfer</option><option>UPI</option><option>Cheque</option><option>Cash</option></select></label>
+        <label>Remarks (optional)<input id="bulkRemarks" maxlength="255"></label>
+        <div class="dialog-actions"><button type="button" class="cancel-dialog" data-close>Cancel</button><button type="submit" class="save-structure-btn">Mark all as paid</button></div>
+    </form></dialog>
+
+    <!-- Staff details -->
+    <dialog class="fee-head-dialog sal-wide-dialog" id="staffDialog"><div>
+        <div class="dialog-header"><h3 id="staffDialogTitle">Staff</h3><button type="button" class="dialog-close" data-close aria-label="Close">×</button></div>
+        <div id="staffDialogBody"></div>
+    </div></dialog>
+
+    <script src="../js/api.js"></script>
+    <script src="../js/sidebar.js"></script>
+    <script src="../js/script.js"></script>
+    <script src="../js/salary.js"></script>
+</body>
+</html>

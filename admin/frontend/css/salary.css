@@ -1,0 +1,560 @@
+[hidden] {
+    display: none !important;
+}
+
+/* Salary page. Loaded after fees.css, which supplies the shared layout, tabs, tables and dialogs. */
+
+.sal-stats-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.sal-stats-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+@media (max-width: 1100px) {
+    .sal-stats-4 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+.sal-warning {
+    margin-bottom: 16px;
+    padding: 11px 13px;
+    border: 1px solid #e6cf9a;
+    border-radius: 8px;
+    color: #7a5a14;
+    background: #fff8e6;
+    font-size: 13px;
+}
+
+.sal-warning button {
+    margin-left: 8px;
+    padding: 4px 10px;
+    border: 1px solid #d8bd7a;
+    border-radius: 6px;
+    background: #fff;
+    color: #7a5a14;
+    font: 600 12px var(--font-main);
+    cursor: pointer;
+}
+
+.sal-table td {
+    vertical-align: middle;
+}
+
+.sal-table .num,
+.sal-structure .num {
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+    white-space: nowrap;
+}
+
+.sal-table th.num {
+    text-align: right;
+}
+
+.sal-muted {
+    color: var(--text-muted);
+    font-weight: 400;
+}
+
+.sal-month-title {
+    margin: 12px 0 0;
+    font-size: 19px;
+}
+
+#monthSummary {
+    margin: 6px 0 0;
+    color: var(--text-muted);
+    font-size: 13px;
+}
+
+.sal-toolbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.sal-toolbar-actions select {
+    height: 40px;
+    padding: 0 12px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: #fff;
+    font: inherit;
+    font-size: 14px;
+}
+
+.sal-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.sal-badge.paid,
+.sal-badge.completed,
+.sal-badge.earning {
+    color: #3f5a2d;
+    background: #e6efdc;
+}
+
+.sal-badge.pending,
+.sal-badge.deduction {
+    color: #8f362f;
+    background: #fbe6e3;
+}
+
+.sal-badge.partial {
+    color: #7a5a14;
+    background: #fbefcf;
+}
+
+.sal-badge.upcoming,
+.sal-badge.no-salary-set {
+    color: #5d645a;
+    background: #eceee9;
+}
+
+.sal-actions {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.sal-actions .head-action-btn,
+.sal-actions .view-students-btn {
+    white-space: nowrap;
+}
+
+/* Salary structure grid */
+.sal-structure {
+    min-width: 100%;
+}
+
+.sal-structure th small {
+    display: block;
+    font-weight: 500;
+    text-transform: none;
+    letter-spacing: 0;
+}
+
+.sal-structure td:first-child {
+    min-width: 190px;
+}
+
+.sal-structure td:first-child small {
+    display: block;
+    color: var(--text-muted);
+    font-weight: 400;
+}
+
+.sal-structure input.changed {
+    background: #fff8e6;
+    border-color: #d8bd7a;
+}
+
+.sal-structure .set-all-row td {
+    white-space: nowrap;
+}
+
+.sal-structure .set-all-row select {
+    width: 62px;
+    height: 34px;
+    margin-left: 4px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: #fff;
+    font-size: 12px;
+}
+
+.sal-structure .row-net.negative {
+    color: #b91c1c;
+}
+
+.sal-structure .row-total {
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+
+.sal-dirty {
+    color: #7a5a14;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+/* Dialogs */
+.sal-dialog-summary {
+    margin: 0 0 12px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    background: #f3f5ef;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.sal-wide-dialog {
+    width: min(860px, calc(100vw - 32px));
+    max-height: calc(100vh - 48px);
+    overflow-y: auto;
+}
+
+.sal-detail-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    margin-bottom: 18px;
+}
+
+/* Dedicated staff salary details page */
+.sal-detail-page .page-title h2 {
+    font-size: 24px;
+}
+
+.sal-detail-page .page-title p {
+    margin-top: 5px;
+    font-size: 13px;
+}
+
+.sal-detail-page .fee-stats-grid {
+    gap: 14px;
+    margin-bottom: 14px;
+}
+
+.sal-detail-page .fee-stat-card {
+    min-height: 0;
+    padding: 16px 18px;
+}
+
+.sal-detail-page .fee-stat-card span {
+    font-size: 12px;
+}
+
+.sal-detail-page .fee-stat-card strong {
+    margin: 5px 0 3px;
+    font-size: 22px;
+}
+
+.sal-detail-page .fee-stat-card small {
+    font-size: 11px;
+}
+
+.sal-detail-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 18px;
+}
+
+.sal-detail-toolbar .head-action-btn {
+    text-decoration: none;
+}
+
+.sal-profile-header {
+    margin-bottom: 20px;
+}
+
+.sal-detail-sections {
+    margin: 24px 0;
+}
+
+.sal-schedule-stats {
+    margin-top: 18px;
+}
+
+.sal-detail-section,
+.sal-history-section {
+    border: 1px solid #dce2d8;
+    border-radius: 12px;
+    padding: 20px 24px;
+    background: #fff;
+}
+
+.sal-detail-section + .sal-detail-section {
+    margin-top: 0;
+}
+
+.sal-detail-section h3,
+.sal-history-section h3 {
+    margin: 0 0 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #dce2d8;
+    color: #252b24;
+    font-size: 19px;
+}
+
+.sal-info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px 36px;
+}
+
+.sal-bank-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.sal-info-item {
+    min-width: 0;
+}
+
+.sal-info-label {
+    display: block;
+    margin-bottom: 5px;
+    color: #727a70;
+    font-size: 13px;
+}
+
+.sal-info-item strong {
+    display: block;
+    overflow-wrap: anywhere;
+    color: #252b24;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.sal-info-item strong.sal-positive { color: #16803e; }
+.sal-info-item strong.sal-net { color: #1d46b6; }
+
+.sal-history-section {
+    margin-top: 24px;
+}
+
+.sal-monthly-schedule {
+    margin-top: 24px;
+}
+
+.sal-history-section .payment-records-heading h3 {
+    border-bottom: 0;
+    margin-bottom: 4px;
+    padding-bottom: 0;
+}
+
+.sal-history-section .payment-records-heading {
+    margin-bottom: 20px;
+}
+
+.sal-section-note {
+    margin: -8px 0 16px;
+    color: var(--text-muted);
+    font-size: 13px;
+}
+
+.sal-schedule-list {
+    display: grid;
+    gap: 8px;
+}
+
+.sal-schedule-row {
+    display: grid;
+    grid-template-columns: minmax(100px, 1fr) auto auto auto;
+    align-items: center;
+    gap: 14px;
+    padding: 10px 0;
+    border-bottom: 1px solid #edf0ea;
+    font-size: 14px;
+}
+
+.sal-schedule-row:last-child {
+    border-bottom: 0;
+}
+
+.sal-schedule-pay {
+    padding: 5px 10px;
+    border: 1px solid #cfd7c8;
+    border-radius: 6px;
+    color: #48573d;
+    background: #fff;
+    font: 600 12px var(--font-main);
+    cursor: pointer;
+}
+
+.sal-schedule-pay:hover { background: #f3f6ee; }
+
+@media (max-width: 700px) {
+    .sal-detail-toolbar {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .sal-detail-section,
+    .sal-history-section {
+        padding: 20px;
+        border-radius: 12px;
+    }
+
+    .sal-detail-section h3,
+    .sal-history-section h3 {
+        font-size: 18px;
+    }
+
+    .sal-info-grid,
+    .sal-bank-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .sal-stats-2 {
+        grid-template-columns: 1fr;
+    }
+
+    .sal-schedule-row {
+        grid-template-columns: 1fr auto;
+    }
+
+    .sal-schedule-row .sal-badge {
+        grid-column: 1 / -1;
+        justify-self: start;
+    }
+
+    .sal-schedule-pay { justify-self: end; }
+}
+
+@media (max-width: 700px) {
+    .sal-detail-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.sal-card {
+    border: 1px solid #e1e4de;
+    border-radius: 10px;
+    padding: 14px 16px;
+    background: #fff;
+}
+
+.sal-card h4 {
+    margin: 0 0 10px;
+    font-size: 14px;
+}
+
+.sal-lines {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.sal-lines li {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 5px 0;
+    font-size: 13px;
+    border-bottom: 1px dashed #e8ebe6;
+}
+
+.sal-lines li:last-child {
+    border-bottom: 0;
+}
+
+.sal-lines li.total {
+    font-weight: 700;
+    border-top: 1px solid #d7ddd2;
+    border-bottom: 0;
+    margin-top: 4px;
+    padding-top: 8px;
+}
+
+.sal-lines li span:last-child {
+    font-variant-numeric: tabular-nums;
+}
+
+.sal-empty {
+    color: var(--text-muted);
+    font-size: 13px;
+    margin: 0;
+}
+
+.sal-bank-form {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px 14px;
+}
+
+.sal-bank-form label {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-muted);
+}
+
+.sal-bank-form input,
+.sal-bank-form select {
+    height: 38px;
+    padding: 0 10px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font: inherit;
+    font-size: 14px;
+    background: #fff;
+}
+
+.sal-bank-form .full {
+    grid-column: 1 / -1;
+}
+
+.sal-history-wrap {
+    overflow-x: auto;
+}
+
+.sal-history {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+.sal-history th,
+.sal-history td {
+    padding: 8px 10px;
+    border-bottom: 1px solid #e8ebe6;
+    text-align: left;
+    white-space: nowrap;
+}
+
+.sal-history th {
+    color: var(--text-muted);
+    font-size: 11px;
+    text-transform: uppercase;
+    background: #fafbf8;
+}
+
+.sal-history td.num,
+.sal-history th.num {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+}
+
+.sal-wide-dialog>div {
+    padding: 24px 26px;
+}
+
+.fee-head-dialog .sal-bank-form {
+    padding: 12px 0 0;
+    gap: 10px 14px;
+    margin-top: 4px;
+}
+
+.sal-pay-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+}
+
+.sal-pay-row select {
+    height: 42px;
+    min-width: 190px;
+    padding: 0 12px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: #fff;
+    font: inherit;
+    font-size: 14px;
+}

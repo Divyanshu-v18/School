@@ -26,6 +26,7 @@ class FeeHeadIn(SafeFormModel):
     frequency: str = Field(pattern=r"^(monthly|quarterly|half_yearly|yearly|one_time)$")
     due_day: Optional[int] = Field(default=None, ge=1, le=28)
     description: Optional[str] = Field(default=None, max_length=255)
+    late_fee: Optional[float] = Field(default=None, ge=0)
 
 
 class FeeStructureItem(SafeFormModel):
@@ -52,6 +53,7 @@ class FeePaymentUpdate(SafeFormModel):
     payment_date: Optional[str] = Field(default=None, pattern=r"^\d{4}-\d{2}-\d{2}$")
     payment_mode: Optional[str] = Field(default=None, pattern=r"^(Cash|Online|Cheque|UPI)$")
     remarks: Optional[str] = Field(default=None, max_length=255)
+    waive_fine: Optional[bool] = None
 
 class FineWaiverUpdate(SafeFormModel):
     """Admin update for waiving a student's late fee."""

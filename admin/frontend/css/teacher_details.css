@@ -185,6 +185,42 @@
 .profile-details-grid dt { margin-bottom: 5px; color: var(--text-light); font-size: 12px; }
 .profile-details-grid dd { margin: 0; color: var(--text-dark); font-size: 14px; font-weight: 500; overflow-wrap: anywhere; }
 
+.salary-schedule-note {
+    margin: -6px 0 14px;
+    color: var(--text-light);
+    font-size: 12px;
+}
+
+.teacher-salary-schedule {
+    display: grid;
+    gap: 0;
+}
+
+.teacher-salary-row {
+    display: grid;
+    grid-template-columns: minmax(100px, 1fr) auto auto;
+    align-items: center;
+    gap: 14px;
+    padding: 11px 0;
+    border-bottom: 1px solid var(--border-color);
+    font-size: 14px;
+}
+
+.teacher-salary-row:last-child { border-bottom: 0; }
+.teacher-salary-row strong { color: var(--text-dark); }
+
+.teacher-salary-badge {
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.teacher-salary-badge.pending { background: #fbe6e3; color: #9b3830; }
+.teacher-salary-badge.upcoming { background: #eceee9; color: #5d645a; }
+.teacher-salary-empty { margin: 0; color: var(--text-light); font-size: 13px; }
+
 .records-heading {
     display: flex;
     justify-content: space-between;
@@ -308,6 +344,8 @@
     .profile-details-grid { grid-template-columns: 1fr; }
     .summary-cards { grid-template-columns: 1fr; }
     .records-heading { align-items: flex-start; }
+    .teacher-salary-row { grid-template-columns: 1fr auto; }
+    .teacher-salary-badge { grid-column: 1 / -1; justify-self: start; }
 }
 
 @media print {

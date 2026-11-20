@@ -504,6 +504,63 @@ document.addEventListener("DOMContentLoaded", () => {
     /* --------------------------------------------------------------------------
        TAB 4: SALARY
        -------------------------------------------------------------------------- */
+    function salaryAcademicYear() {
+        const now = new Date();
+        const fallbackStart = now.getMonth() >= 3 ? now.getFullYear() : now.getFullYear() - 1;
+        const saved = localStorage.getItem("school_academic_year") || "";
+        return /^\d{4}-\d{4}$/.test(saved) ? saved : `${fallbackStart}-${fallbackStart + 1}`;
+    }
+
+    function salaryPeriods(year) {
+        const start = Number(year.slice(0, 4));
+        const labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        return Array.from({ length: 12 }, (_, index) => {
+            const month = ((index + 3) % 12) + 1;
+            const dateYear = index < 9 ? start : start + 1;
+            return { period: `${dateYear}-${String(month).padStart(2, "0")}`, label: `${labels[month - 1]} ${dateYear}` };
+        });
+    }
+
+    function renderSalarySchedule(data, payslips) {
+        const year = salaryAcademicYear();
+        const now = new Date();
+        const currentPeriod = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
+        const net = Number(data?.structure?.net_salary || 0);
+        const paidPeriods = new Set(payslips.filter(item => item.status === "Paid").map(item => item.period));
+        const pending = [], upcoming = [];
+        if (net > 0) salaryPeriods(year).forEach(item => {
+            if (paidPeriods.has(item.period)) return;
+            (item.period <= currentPeriod ? pending : upcoming).push(item);
+        });
+        const fill = (id, rows, emptyText) => {
+            const list = document.getElementById(id);
+            if (!list) return;
+            list.replaceChildren();
+            if (!rows.length) {
+                const empty = document.createElement("p");
+                empty.className = "teacher-salary-empty";
+                empty.textContent = emptyText; list.appendChild(empty); return;
+            }
+            rows.forEach(row => {
+                const item = document.createElement("div");
+                item.className = "teacher-salary-row";
+                const label = document.createElement("strong");
+                const value = document.createElement("span");
+                const badge = document.createElement("span");
+                label.textContent = row.label;
+                value.textContent = formatCurrency(net);
+                badge.className = `teacher-salary-badge ${id === "salaryPendingList" ? "pending" : "upcoming"}`;
+                badge.textContent = id === "salaryPendingList" ? "Pending" : "Upcoming";
+                item.append(label, value, badge); list.appendChild(item);
+            });
+        };
+        fill("salaryPendingList", pending, net > 0 ? "No pending salary for this academic year." : "No salary structure has been set.");
+        fill("salaryUpcomingList", upcoming, net > 0 ? "No upcoming salary remains in this academic year." : "No salary structure has been set.");
+        setText("salaryPendingNote", net > 0 ? `Unpaid salary for months that have started · Academic Year ${year}` : "Set a salary structure to calculate pending months.");
+        setText("salaryUpcomingNote", net > 0 ? `Planned salary for future months · Academic Year ${year}` : "Set a salary structure to calculate future months.");
+        return { pendingTotal: pending.length * net, upcomingTotal: upcoming.length * net };
+    }
+
     function renderSalary(data) {
         const summaryEl = document.getElementById("salarySummary");
         const historyBodyEl = document.getElementById("salaryHistoryBody");
@@ -511,6 +568,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const struct = data?.structure || {};
         const bank = data?.bank_details || {};
         const payslips = Array.isArray(data?.payslips) ? data.payslips : [];
+        const schedule = renderSalarySchedule(data, payslips);
 
         // Summary Cards
         if (summaryEl) {
@@ -519,30 +577,50 @@ document.addEventListener("DOMContentLoaded", () => {
                 createSummaryCard("Monthly Basic Pay", formatCurrency(struct.basic_pay)),
                 createSummaryCard("Gross Monthly Salary", formatCurrency(struct.gross_salary)),
                 createSummaryCard("Total Deductions", formatCurrency(struct.total_deductions)),
-                createSummaryCard("Net Take Home", formatCurrency(struct.net_salary))
+                createSummaryCard("Net Take Home", formatCurrency(struct.net_salary)),
+                createSummaryCard("Pending Salary", formatCurrency(schedule.pendingTotal)),
+                createSummaryCard("Upcoming Salary", formatCurrency(schedule.upcomingTotal))
             );
         }
 
-        // Structure breakdown fields
-        setText("salaryBasicPay", formatCurrency(struct.basic_pay));
-        setText("salaryHra", formatCurrency(struct.hra));
-        setText("salaryDa", formatCurrency(struct.da));
-        setText("salarySpecial", formatCurrency(struct.special_allowance));
-        setText("salaryGross", formatCurrency(struct.gross_salary));
+        // Earnings and deductions come from the Salary module, so they follow whatever salary types the school has set up.
+        const fillList = (listId, entries, emptyText, totals) => {
+            const dl = document.getElementById(listId);
+            if (!dl) return;
+            dl.replaceChildren();
+            if (!entries.length) {
+                const empty = document.createElement("div");
+                const note = document.createElement("dd");
+                note.textContent = emptyText;
+                empty.appendChild(note);
+                dl.appendChild(empty);
+            }
+            [...entries.map(e => [e.name, e.amount, ""]), ...totals].forEach(([label, amount, style, isText]) => {
+                const row = document.createElement("div");
+                const dt = document.createElement("dt");
+                const dd = document.createElement("dd");
+                dt.textContent = label;
+                dd.textContent = isText ? amount : formatCurrency(amount);
+                if (style) dd.style.cssText = style;
+                row.append(dt, dd);
+                dl.appendChild(row);
+            });
+        };
+        fillList("salaryEarningsList", Array.isArray(data?.earnings) ? data.earnings : [],
+            "No salary has been set yet. Add it in Salary > Salary Structure.",
+            [["Gross Monthly Salary", struct.gross_salary, "font-weight: 700; color: #15803d;"]]);
+        fillList("salaryDeductionsList", Array.isArray(data?.deductions) ? data.deductions : [], "No deductions.",
+            [["Casual Leave (CL) Balance", `${struct.cl_balance !== undefined ? struct.cl_balance : 12} Days`, "", true],
+             ["Total Deductions", struct.total_deductions, "color: #b91c1c;"],
+             ["Net Take Home Salary", struct.net_salary, "font-weight: 700; color: #1e40af;"]]);
 
-        setText("salaryPf", formatCurrency(struct.pf));
-        setText("salaryTax", formatCurrency(struct.tax_tds));
-        setText("salaryPt", formatCurrency(struct.professional_tax));
-        setText("salaryCl", struct.cl_balance !== undefined ? `${struct.cl_balance} Days` : "12 Days");
-        setText("salaryDeductions", formatCurrency(struct.total_deductions));
-        setText("salaryNet", formatCurrency(struct.net_salary));
-
-        // Bank details fields
-        setText("salaryBankName", bank.bank_name || "State Bank of India");
+        // Bank details fields (shown masked; they are edited in Salary > Staff)
+        setText("salaryBankName", bank.bank_name || "-");
         setText("salaryAccountNo", bank.account_number || "-");
         setText("salaryIfsc", bank.ifsc_code || "-");
         setText("salaryPan", bank.pan_number || "-");
-        setText("salaryPaymentMode", bank.payment_mode || "Direct Bank Transfer (NEFT)");
+        setText("salaryUpi", bank.upi_id || "-");
+        setText("salaryPaymentMode", bank.payment_mode || "-");
 
         // Payslips history table
         if (historyBodyEl) {

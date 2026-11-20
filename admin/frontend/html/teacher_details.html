@@ -178,25 +178,12 @@
                         <div class="overview-grid" style="margin-bottom: 24px;">
                             <section class="overview-card">
                                 <h2>Monthly Earnings & Allowances</h2>
-                                <dl class="profile-details-grid">
-                                    <div><dt>Basic Pay</dt><dd id="salaryBasicPay">-</dd></div>
-                                    <div><dt>House Rent Allowance (HRA)</dt><dd id="salaryHra">-</dd></div>
-                                    <div><dt>Dearness Allowance (DA)</dt><dd id="salaryDa">-</dd></div>
-                                    <div><dt>Special / Medical Allowance</dt><dd id="salarySpecial">-</dd></div>
-                                    <div><dt>Gross Monthly Salary</dt><dd id="salaryGross" style="font-weight: 700; color: #15803d;">-</dd></div>
-                                </dl>
+                                <dl class="profile-details-grid" id="salaryEarningsList"></dl>
                             </section>
 
                             <section class="overview-card">
                                 <h2>Deductions & Net Pay</h2>
-                                <dl class="profile-details-grid">
-                                    <div><dt>Provident Fund (PF - 12%)</dt><dd id="salaryPf">-</dd></div>
-                                    <div><dt>Income Tax (TDS)</dt><dd id="salaryTax">-</dd></div>
-                                    <div><dt>Professional Tax (PT)</dt><dd id="salaryPt">-</dd></div>
-                                    <div><dt>Casual Leave (CL) Balance</dt><dd id="salaryCl">-</dd></div>
-                                    <div><dt>Total Deductions</dt><dd id="salaryDeductions" style="color: #b91c1c;">-</dd></div>
-                                    <div><dt>Net Take Home Salary</dt><dd id="salaryNet" style="font-weight: 700; color: #1e40af;">-</dd></div>
-                                </dl>
+                                <dl class="profile-details-grid" id="salaryDeductionsList"></dl>
                             </section>
 
                             <section class="overview-card" style="grid-column: 1 / -1;">
@@ -206,8 +193,21 @@
                                     <div><dt>Account Number</dt><dd id="salaryAccountNo">-</dd></div>
                                     <div><dt>IFSC Code</dt><dd id="salaryIfsc">-</dd></div>
                                     <div><dt>PAN Number</dt><dd id="salaryPan">-</dd></div>
+                                    <div><dt>UPI ID</dt><dd id="salaryUpi">-</dd></div>
                                     <div><dt>Payment Mode</dt><dd id="salaryPaymentMode">-</dd></div>
                                 </dl>
+                            </section>
+
+                            <section class="overview-card">
+                                <h2>Pending Salary</h2>
+                                <p class="salary-schedule-note" id="salaryPendingNote">Loading salary schedule…</p>
+                                <div class="teacher-salary-schedule" id="salaryPendingList"></div>
+                            </section>
+
+                            <section class="overview-card">
+                                <h2>Upcoming Salary</h2>
+                                <p class="salary-schedule-note" id="salaryUpcomingNote">Loading salary schedule…</p>
+                                <div class="teacher-salary-schedule" id="salaryUpcomingList"></div>
                             </section>
                         </div>
 

@@ -21,7 +21,6 @@ ROLE_PERMISSIONS = {
         ("GET", "/students/{student_id}/marks"),
         ("GET", "/timetable"),
         ("GET", "/teachers/{teacher_id}/academic"),
-        ("GET", "/teachers/{teacher_id}/salary"),
         ("GET", "/calendar/events"),
         ("GET", "/notices"),
     },
