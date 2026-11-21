@@ -1,0 +1,221 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Admission Enquiry | Shivaji Kids Care Academy</title>
+    <meta name="description" content="Submit an admission enquiry to Shivaji Kids Care Academy.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../css/enquiry.css">
+</head>
+
+<body>
+
+<div class="page-background"></div>
+
+<header class="topbar">
+    <a href="../index.html" class="brand">
+        <div class="brand-logo">✦<small>SK</small></div>
+        <div class="brand-name">
+            <strong>SHIVAJI</strong>
+            <span>KIDS CARE ACADEMY</span>
+        </div>
+    </a>
+
+    <a href="../index.html" class="back-link">
+        ← Back to website
+    </a>
+</header>
+
+<main class="enquiry-container">
+
+    <section class="intro">
+        <div class="eyebrow">
+            <span></span>
+            ADMISSIONS OPEN FOR ENQUIRIES
+        </div>
+
+        <h1>Every great journey<br>starts with <span>a conversation.</span></h1>
+
+        <p>
+            Thank you for considering Shivaji Kids Care Academy.
+            Share a few details with us and our school team can
+            guide you through the admission process.
+        </p>
+
+        <div class="intro-points">
+            <div><span>✦</span> Personalised admission guidance</div>
+            <div><span>✦</span> Information about classes</div>
+            <div><span>✦</span> A simple first step for parents</div>
+        </div>
+    </section>
+
+    <section class="form-card">
+
+        <div class="form-heading">
+            <div>
+                <span class="section-label">ADMISSION ENQUIRY</span>
+                <h2>Tell us about your child.</h2>
+                <p>Fields marked with * are required.</p>
+            </div>
+
+            <div class="form-icon">✧</div>
+        </div>
+
+        <form id="enquiryForm">
+
+            <div class="form-section-title">
+                <span>01</span>
+                Parent / Guardian Details
+            </div>
+
+            <div class="form-grid">
+
+                <div class="field">
+                    <label for="parentName">Full Name *</label>
+                    <input
+                        type="text"
+                        id="parentName"
+                        name="parentName"
+                        placeholder="Enter your full name"
+                        autocomplete="name"
+                        required>
+                </div>
+
+                <div class="field">
+                    <label for="phone">Mobile Number *</label>
+                    <input
+                        type="tel"
+                        id="phone"
+                        name="phone"
+                        placeholder="10-digit mobile number"
+                        inputmode="numeric"
+                        pattern="[6-9][0-9]{9}"
+                        maxlength="10"
+                        autocomplete="tel"
+                        required>
+                </div>
+
+                <div class="field full">
+                    <label for="email">Email Address</label>
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="Enter your email address"
+                        autocomplete="email">
+                </div>
+
+            </div>
+
+            <div class="form-divider"></div>
+
+            <div class="form-section-title">
+                <span>02</span>
+                Child's Details
+            </div>
+
+            <div class="form-grid">
+
+                <div class="field">
+                    <label for="childName">Child's Full Name *</label>
+                    <input
+                        type="text"
+                        id="childName"
+                        name="childName"
+                        placeholder="Enter child's name"
+                        required>
+                </div>
+
+                <div class="field">
+                    <label for="dob">Date of Birth</label>
+                    <input
+                        type="date"
+                        id="dob"
+                        name="dob">
+                </div>
+
+                <div class="field">
+                    <label for="classApplying">Class Applying For *</label>
+                    <select id="classApplying" name="classApplying" required>
+                        <option value="">Select a class</option>
+                        <option value="Kids Care">Kids Care</option>
+                        <option value="Nursery">Nursery</option>
+                        <option value="LKG">LKG</option>
+                        <option value="UKG">UKG</option>
+                        <option value="Class 1">Class 1</option>
+                        <option value="Class 2">Class 2</option>
+                        <option value="Class 3">Class 3</option>
+                        <option value="Class 4">Class 4</option>
+                        <option value="Class 5">Class 5</option>
+                        <option value="Class 6">Class 6</option>
+                        <option value="Class 7">Class 7</option>
+                        <option value="Class 8">Class 8</option>
+                        <option value="Class 9">Class 9</option>
+                        <option value="Class 10">Class 10</option>
+                        <option value="Class 11">Class 11</option>
+                        <option value="Class 12">Class 12</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label for="previousSchool">Previous School</label>
+                    <input
+                        type="text"
+                        id="previousSchool"
+                        name="previousSchool"
+                        placeholder="Enter previous school (if applicable)">
+                </div>
+
+                <div class="field full">
+                    <label for="message">Your Message</label>
+                    <textarea
+                        id="message"
+                        name="message"
+                        rows="4"
+                        placeholder="Any questions or information you'd like to share?"></textarea>
+                </div>
+
+            </div>
+
+            <div class="form-divider"></div>
+
+            <label class="consent">
+                <input type="checkbox" id="consent" required>
+                <span>
+                    I agree to be contacted by Shivaji Kids Care Academy
+                    regarding this admission enquiry.
+                </span>
+            </label>
+
+            <button type="submit" class="submit-button">
+                Submit Enquiry <span>↗</span>
+            </button>
+
+            <p class="form-status" id="formStatus" role="status" aria-live="polite"></p>
+
+            <p class="privacy-note">
+                This is an admission enquiry, not an official student registration.
+            </p>
+
+        </form>
+
+    </section>
+
+    <footer>
+        © <span id="year"></span> Shivaji Kids Care Academy
+        <span>Learn · Grow · Belong</span>
+    </footer>
+
+</main>
+
+<script src="../js/enquiry.js"></script>
+
+</body>
+</html>
