@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Student and teacher registration portal.">
+    <meta name="description" content="Student, teacher and non-teaching staff registration portal.">
 
     <title>Registration | ABC Public School</title>
 
@@ -29,37 +29,53 @@
 
         <main class="main-content registration-main">
 
+            <!-- HEADER -->
             <header class="registration-header">
+
                 <h2>ABC Public School</h2>
 
-             <div class="topbar-actions">
-                <button class="notification-btn" id="notificationBtn" title="Notifications">
-    ♧
-    <span class="notification-dot"></span>
-</button>
-        <div class="top-profile">
-            <div class="profile-avatar">AS</div>
+                <div class="topbar-actions">
 
-            <div class="top-profile-info">
-                <strong>Admin</strong>
-                <span>Administrator</span>
-            </div>
-        </div>
-    </div>  
+                    <button class="notification-btn" id="notificationBtn" title="Notifications">
+                        ♧
+                        <span class="notification-dot"></span>
+                    </button>
+
+                    <div class="top-profile">
+
+                        <div class="profile-avatar">AS</div>
+
+                        <div class="top-profile-info">
+                            <strong>Admin</strong>
+                            <span>Administrator</span>
+                        </div>
+
+                    </div>
+
+                </div>
+
             </header>
 
+
+            <!-- REGISTRATION CONTENT -->
             <section class="registration-content">
 
                 <div class="registration-heading">
+
                     <h1>Registration</h1>
+
                     <p>
-                        Register new students and teachers in the school management system.
+                        Register new students, teachers and non-teaching staff
+                        in the school management system.
                     </p>
+
                 </div>
+
 
                 <h2 class="registration-section-title">
                     Choose Registration Type
                 </h2>
+
 
                 <div class="registration-grid">
 
@@ -85,6 +101,7 @@
 
                     </article>
 
+
                     <!-- TEACHER REGISTRATION -->
 
                     <article class="registration-card">
@@ -96,7 +113,7 @@
                         <h3>Teacher Registration</h3>
 
                         <p>
-                            Register a new teacher or staff member.
+                            Register a new teacher.
                             Enter personal information, contact details
                             and professional information.
                         </p>
@@ -107,12 +124,41 @@
 
                     </article>
 
+
+                    <!-- NON-TEACHING STAFF REGISTRATION -->
+
+                    <article class="registration-card">
+
+                        <div class="registration-icon">
+                            ♟
+                        </div>
+
+                        <h3>Non-Teaching Staff Registration</h3>
+
+                        <p>
+                            Register school support and administrative staff
+                            such as peons, maids, drivers, accountants,
+                            fee counter staff and other employees.
+                        </p>
+
+                        <a href="non_teaching_staff_form.html" class="registration-button">
+                            + Add Non-Teaching Staff
+                        </a>
+
+                    </article>
+
                 </div>
 
+
+                <!-- REGISTRATION NOTE -->
+
                 <div class="registration-note">
+
                     <strong>Note:</strong>
+
                     Please verify all details before submitting a new
-                    student or teacher registration.
+                    student, teacher or non-teaching staff registration.
+
                 </div>
 
             </section>
@@ -121,9 +167,13 @@
 
     </div>
 
+
+    <!-- EXISTING JAVASCRIPT FILES -->
+
     <script src="../js/api.js"></script>
     <script src="../js/sidebar.js"></script>
     <script src="../js/script.js"></script>
 
 </body>
+
 </html>
